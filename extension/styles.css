@@ -2,11 +2,19 @@
 
 /* 1. Level Balon Chat: Sentiment Badge & Intent Label */
 .emotext-badges-container {
-    display: inline-flex;
+    position: absolute;
+    top: -10px;             /* Menempel/Menutup layer atas gelembung */
+    right: 12px;            /* Sisi kanan gelembung */
+    display: flex;
     align-items: center;
-    gap: 6px;
-    margin-left: 8px;
-    vertical-align: middle;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2px 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 100;
+    pointer-events: auto;
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
 .emotext-snt-badge {
@@ -63,23 +71,24 @@
 }
 
 .emotext-int-badge {
-    border-radius: 12px;
-    font-size: 11px;
-    padding: 2px 8px;
-    background: rgba(0, 0, 0, 0.05);
-    color: #555;
-    border: 1px solid rgba(0,0,0,0.1);
-    font-weight: 500;
+    border-radius: 8px;
+    font-size: 10px;
+    padding: 1px 6px;
+    background: #f0f2f5;
+    color: #54656f;
+    border: 1px solid rgba(0,0,0,0.05);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 /* 2. Level Header Chat: Customer Health Bar */
 .emotext-health-container {
-    width: 100%;
-    max-width: 200px;
-    height: 4px;
-    background-color: #e0e0e0;
+    width: 120px;
+    height: 3px;
+    background-color: rgba(0,0,0,0.1);
     border-radius: 2px;
-    margin-top: 4px;
+    margin-top: 2px;
     overflow: hidden;
 }
 

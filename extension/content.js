@@ -156,10 +156,10 @@ async function processMessageNode(msgContainer) {
 
     const analysis = await mockAnalyzeAPI(text, 'user');
     
-    const metaContainer = msgContainer.querySelector('div[data-testid="msg-meta"]');
-    if (metaContainer) {
-        metaContainer.appendChild(createBadges(analysis.sentiment, analysis.intent, 'mid', 'user'));
-    }
+    // Inject Badges overlapping the top-right of the bubble
+    const bubble = msgContainer.querySelector('.copyable-text')?.parentElement || msgContainer;
+    bubble.style.position = 'relative'; 
+    bubble.appendChild(createBadges(analysis.sentiment, analysis.intent, 'mid', 'user'));
 
     updateHealthBar(analysis.health_score);
     if (analysis.suggestion) injectSuggestion(analysis.suggestion);
