@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Emotext-CRM Extension",
+  "version": "1.0.0",
+  "description": "WhatsApp Web CRM Extension for Sentiment & Intent Analysis",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Emotext-CRM Login"
+  },
+  "host_permissions": [
+    "https://web.whatsapp.com/*",
+    "https://api.emotext-crm.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
