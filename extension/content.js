@@ -1,17 +1,26 @@
 /**
- * Emotext-CRM Extension - Content Script (Deep-Dive Diagnostic)
+ * Emotext-CRM Extension - Content Script (Master PRD Compliant)
  */
 
 const DUMMY_MODE = true; 
+let COMPANY_API_KEY = null;
 
-console.log('[Emotext-CRM] Deep-Dive Script Active.');
+console.log('[Emotext-CRM] Extension Logic Active.');
+
+// 1. Initial configuration
+chrome.storage.local.get(['emotext_api_key'], (result) => {
+    COMPANY_API_KEY = result.emotext_api_key || 'DUMMY_KEY';
+});
 
 // Helper: Create Sentiment Badge & Intent Label
 function createBadges(sentiment, intent, messageId, senderId) {
     const container = document.createElement('div');
     container.className = 'emotext-badges-container';
+    
     const sentimentBadge = document.createElement('div');
     sentimentBadge.className = `emotext-snt-badge emotext-snt-${sentiment.toLowerCase()}`;
+    
+    // Feedback dropdown
     const dropdown = document.createElement('div');
     dropdown.className = 'emotext-snt-dropdown';
     ['Positive', 'Neutral', 'Negative'].forEach(opt => {
@@ -20,54 +29,105 @@ function createBadges(sentiment, intent, messageId, senderId) {
         option.innerText = opt;
         option.onclick = (e) => {
             e.stopPropagation();
-            sendFeedback(messageId, senderId, opt.toLowerCase());
+            console.log('[Emotext-CRM] Feedback logic:', opt);
             sentimentBadge.className = `emotext-snt-badge emotext-snt-${opt.toLowerCase()}`;
             dropdown.style.display = 'none';
         };
         dropdown.appendChild(option);
     });
     sentimentBadge.appendChild(dropdown);
+    
     const intentLabel = document.createElement('div');
     intentLabel.className = 'emotext-int-badge';
+    if (intent.toLowerCase() === 'media') {
+        intentLabel.classList.add('emotext-int-media');
+    }
     intentLabel.innerText = intent;
+    
     container.appendChild(sentimentBadge);
     container.appendChild(intentLabel);
     return container;
 }
 
+// FR-08: Context Window Scraping
+function getContextMessages(currentNode, limit = 3) {
+    const context = [];
+    let prev = currentNode.previousElementSibling;
+    while (prev && context.length < limit) {
+        const textNode = prev.querySelector('.copyable-text [dir="ltr"]') || prev.querySelector('span[dir="ltr"]');
+        if (textNode) {
+            const isIncoming = prev.classList.contains('message-in') || prev.closest('.message-in');
+            context.unshift({
+                text: textNode.innerText,
+                role: isIncoming ? 'user' : 'admin'
+            });
+        }
+        prev = prev.previousElementSibling;
+    }
+    return context;
+}
+
+// FR-09: Media Detection
+function detectMedia(msgContainer) {
+    const mediaIndicators = [
+        'img', 'video', 
+        '[data-testid="audio-download"]',
+        '[data-testid="ptt-status-icon"]',
+        '[data-testid="media-url-link"]'
+    ];
+    for (let selector of mediaIndicators) {
+        if (msgContainer.querySelector(selector)) return true;
+    }
+    return false;
+}
+
 // Helper: Mock API
-async function mockAnalyzeAPI(text, senderId) {
+async function mockAnalyzeAPI(text, senderId, context = []) {
     return new Promise(resolve => {
         setTimeout(() => {
             let sentiment = 'neutral';
             let intent = 'inquiry';
             let health_score = 70;
             let suggestion = "Baik Kak, ada yang bisa kami bantu?";
+            
             const lowerText = text.toLowerCase();
-            if (lowerText.includes('rusak') || lowerText.includes('kecewa') || lowerText.includes('jelek')) {
+            if (lowerText === "[media]") {
+                intent = "media";
+            } else if (lowerText.includes('rusak') || lowerText.includes('kecewa')) {
                 sentiment = 'negative'; intent = 'complaint'; health_score = 30;
                 suggestion = "Mohon maaf atas kendalanya. Boleh kirimkan detail pesanan Anda?";
-            } else if (lowerText.includes('bagus') || lowerText.includes('keren') || lowerText.includes('terima kasih')) {
+            } else if (lowerText.includes('bagus') || lowerText.includes('terima kasih')) {
                 sentiment = 'positive'; intent = 'appreciation'; health_score = 90;
                 suggestion = "Terima kasih kembali! Senang bisa melayani Anda.";
-            } else if (lowerText.includes('order') || lowerText.includes('pesan')) {
-                intent = 'order'; suggestion = "Untuk pemesanan, silakan isi form berikut ya Kak.";
             }
+            
             resolve({ sentiment, intent, health_score, suggestion });
         }, 200);
     });
 }
 
-function getChatFooter() {
-    let footer = document.querySelector('[data-testid="footer"]') || document.querySelector('footer');
-    if (footer) return footer;
-    const input = document.querySelector('div[contenteditable="true"]');
-    if (input) return input.closest('[role="contentinfo"]') || input.parentElement.parentElement;
-    return null;
+// FR-03: Sidebar Priority Icon
+function processSidebarChat(chatCell) {
+    if (chatCell.dataset.emotextSidebarProcessed) return;
+    
+    // Check if last message is a complaint (Simplified for demo)
+    // In real app, we check the metadata/intent assigned to this chat
+    const lastMsgText = chatCell.querySelector('[data-testid="last-msg-status"]')?.parentElement?.innerText || "";
+    if (lastMsgText.toLowerCase().includes('rusak') || lastMsgText.toLowerCase().includes('lapor')) {
+        let avatarContainer = chatCell.querySelector('[data-testid="avatar-container"]') || chatCell.children[0];
+        if (avatarContainer) {
+            avatarContainer.style.position = 'relative';
+            const dot = document.createElement('div');
+            dot.className = 'emotext-priority-dot';
+            avatarContainer.appendChild(dot);
+        }
+    }
+    chatCell.dataset.emotextSidebarProcessed = "true";
 }
 
+// Main Processors
 function injectSuggestion(suggestionText) {
-    const footer = getChatFooter();
+    const footer = document.querySelector('[data-testid="footer"]') || document.querySelector('footer');
     if (!footer) return;
     let container = footer.parentElement.querySelector('.emotext-suggest-container');
     if (!container) {
@@ -108,98 +168,77 @@ function updateHealthBar(score) {
     const healthBar = healthContainer.querySelector('.emotext-health-bar');
     if (healthBar) {
         healthBar.style.width = `${score}%`;
-        if (score < 40) healthBar.style.background = '#FF4B4B';
-        else if (score < 70) healthBar.style.background = '#FFC107';
-        else healthBar.style.background = '#25D366';
+        healthBar.style.background = score < 40 ? '#FF4B4B' : (score < 70 ? '#FFC107' : '#25D366');
     }
 }
 
 async function processMessageNode(msgContainer) {
     if (!msgContainer || msgContainer.dataset.emotextProcessed) return;
 
-    // Log that we found a potential message
-    console.log('[Emotext-CRM] Checking message container...', msgContainer.className);
+    const textNode = msgContainer.querySelector('.copyable-text [dir="ltr"]') || msgContainer.querySelector('span[dir="ltr"]');
+    const isMedia = detectMedia(msgContainer);
+    
+    if (!textNode && !isMedia) return;
 
-    // 1. Check for text content more aggressively
-    // We try many potential text wrappers
-    const textNode = msgContainer.querySelector('.copyable-text [dir="ltr"]') || 
-                     msgContainer.querySelector('.selectable-text') ||
-                     msgContainer.querySelector('[data-pre-plain-text] + div') ||
-                     msgContainer.querySelector('span[dir="ltr"]');
-
-    if (!textNode) {
-        console.log('[Emotext-CRM] Skip: Could not find text node in container.');
-        return;
-    }
-
-    const text = textNode.innerText;
-    if (!text || text.length < 2) {
-        console.log('[Emotext-CRM] Skip: Text too short or empty.');
-        return;
-    }
-
-    // Identify if incoming (Customer)
-    // Most WA versions use classes like 'message-in', but some use attributes
-    const isIncoming = msgContainer.classList.contains('message-in') || 
-                       msgContainer.innerHTML.includes('message-in') || // fuzzy check
-                       msgContainer.closest('.message-in') !== null;
+    const text = textNode ? textNode.innerText : "[MEDIA]";
+    const isIncoming = msgContainer.classList.contains('message-in') || msgContainer.closest('.message-in');
 
     if (!isIncoming) {
-        console.log('[Emotext-CRM] Skip: Outgoing message (not customer).');
-        // Mark as processed anyway so we don't spam logs
         msgContainer.dataset.emotextProcessed = "true";
         return;
     }
 
     msgContainer.dataset.emotextProcessed = "true";
-    console.log(`[Emotext-CRM] Analyzing: "${text.substring(0, 30)}..."`);
-
-    const analysis = await mockAnalyzeAPI(text, 'user');
     
-    // Inject Badges overlapping the top-right of the bubble
+    // FR-08: Gather context
+    const context = getContextMessages(msgContainer, 3);
+    
+    const analysis = await mockAnalyzeAPI(text, 'user', context);
+    
     const bubble = msgContainer.querySelector('.copyable-text')?.parentElement || msgContainer;
     bubble.style.position = 'relative'; 
-    bubble.appendChild(createBadges(analysis.sentiment, analysis.intent, 'mid', 'user'));
+    bubble.appendChild(createBadges(analysis.sentiment, analysis.intent, 'id', 'user'));
 
     updateHealthBar(analysis.health_score);
     if (analysis.suggestion) injectSuggestion(analysis.suggestion);
 }
 
-function initObserver() {
-    console.log('[Emotext-CRM] Initializing Observer System...');
-    
-    const observer = new MutationObserver((mutations) => {
+// Observers
+function initObservers() {
+    const mainObserver = new MutationObserver((mutations) => {
         mutations.forEach(mutation => {
-            if (mutation.type === 'childList') {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) {
-                        const messages = node.querySelectorAll ? node.querySelectorAll('[data-testid="msg-container"]') : [];
-                        if (node.getAttribute && node.getAttribute('data-testid') === 'msg-container') processMessageNode(node);
-                        messages.forEach(m => processMessageNode(m));
-                    }
-                });
-            }
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType !== 1) return;
+                
+                // Messages
+                const msgs = node.querySelectorAll('[data-testid="msg-container"]');
+                msgs.forEach(m => processMessageNode(m));
+                if (node.dataset?.testid === 'msg-container') processMessageNode(node);
+
+                // Sidebar Chats
+                const cells = node.querySelectorAll('[data-testid="cell-frame-container"]');
+                cells.forEach(c => processSidebarChat(c));
+            });
         });
     });
 
     const checkPanel = () => {
         const panel = document.querySelector('[data-testid="conversation-panel-messages"]');
         if (panel && !panel.dataset.emotextObserved) {
-            console.log('[Emotext-CRM] Success: Chat Panel Found!');
             panel.dataset.emotextObserved = "true";
-            observer.observe(panel, { childList: true, subtree: true });
-            
-            // Process existing
-            const existing = panel.querySelectorAll('[data-testid="msg-container"]');
-            console.log(`[Emotext-CRM] Found ${existing.length} existing messages.`);
-            existing.forEach(m => processMessageNode(m));
+            mainObserver.observe(panel, { childList: true, subtree: true });
+            panel.querySelectorAll('[data-testid="msg-container"]').forEach(m => processMessageNode(m));
+        }
+        
+        const sidebar = document.querySelector('[data-testid="chat-list"]');
+        if (sidebar && !sidebar.dataset.emotextObserved) {
+            sidebar.dataset.emotextObserved = "true";
+            mainObserver.observe(sidebar, { childList: true, subtree: true });
+            sidebar.querySelectorAll('[data-testid="cell-frame-container"]').forEach(c => processSidebarChat(c));
         }
     };
 
     setInterval(checkPanel, 2000);
-    checkPanel();
 }
 
-boot = () => { setTimeout(initObserver, 1000); };
-if (document.readyState === 'complete' || document.readyState === 'interactive') boot();
-else window.addEventListener('load', boot);
+setTimeout(initObservers, 2000);

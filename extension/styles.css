@@ -149,3 +149,23 @@
 .emotext-suggest-pill::before {
     content: '✨ ';
 }
+
+/* 3. Level Sidebar: Priority Icon */
+.emotext-priority-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: #ff4b4b;
+    border: 2px solid white;
+    border-radius: 50%;
+    z-index: 50;
+    box-shadow: 0 0 4px rgba(255, 75, 75, 0.4);
+}
+
+.emotext-int-badge.emotext-int-media {
+    background: #e7f3ff;
+    color: #007bff;
+    border-color: #007bff44;
+}
