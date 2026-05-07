@@ -196,6 +196,7 @@ async function processMessageNode(msgContainer) {
     
     const bubble = msgContainer.querySelector('.copyable-text')?.parentElement || msgContainer;
     bubble.style.position = 'relative'; 
+    bubble.style.overflow = 'visible'; 
     bubble.appendChild(createBadges(analysis.sentiment, analysis.intent, 'id', 'user'));
 
     updateHealthBar(analysis.health_score);
