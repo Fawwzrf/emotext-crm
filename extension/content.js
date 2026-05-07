@@ -31,7 +31,6 @@ function createBadges(sentiment, intent, messageId, senderId) {
             e.stopPropagation();
             console.log('[Emotext-CRM] Feedback logic:', opt);
             sentimentBadge.className = `emotext-snt-badge emotext-snt-${opt.toLowerCase()}`;
-            dropdown.style.display = 'none';
         };
         dropdown.appendChild(option);
     });
