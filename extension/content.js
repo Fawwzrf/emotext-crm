@@ -27,10 +27,35 @@ function createBadges(sentiment, intent, messageId, senderId) {
         const option = document.createElement('div');
         option.className = 'emotext-snt-option';
         option.innerText = opt;
-        option.onclick = (e) => {
+        
+        option.onclick = async (e) => {
             e.stopPropagation();
-            console.log('[Emotext-CRM] Feedback logic:', opt);
-            sentimentBadge.className = `emotext-snt-badge emotext-snt-${opt.toLowerCase()}`;
+            const correctedValue = opt.toLowerCase();
+            
+            // 1. Update tampilan visual badge secara instan
+            sentimentBadge.className = `emotext-snt-badge emotext-snt-${correctedValue}`;
+            console.log(`[Emotext-CRM] Mengirim koreksi: ${sentiment} -> ${correctedValue}`);
+
+            // 2. Ambil teks pesan dari elemen bubble chat terdekat
+            const bubble = container.closest('[data-testid="msg-container"]');
+            const messageText = bubble ? (bubble.querySelector('span[dir="ltr"]')?.innerText || "Unknown") : "Unknown";
+
+            // 3. Kirim ke Backend API /feedback
+            try {
+                await fetch('http://127.0.0.1:8000/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message_text: messageText,
+                        original_sentiment: sentiment,
+                        corrected_sentiment: correctedValue,
+                        admin_id: "admin_01" // Identitas admin yang melakukan koreksi
+                    })
+                });
+                console.log('[Emotext-CRM] Feedback berhasil disimpan.');
+            } catch (err) {
+                console.error('[Emotext-CRM] Gagal mengirim feedback:', err);
+            }
         };
         dropdown.appendChild(option);
     });

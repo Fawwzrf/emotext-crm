@@ -24,6 +24,15 @@ class MessageLog(Base):
     sentiment = Column(String)
     intent = Column(String)
 
+class ManualCorrection(Base):
+    __tablename__ = "manual_corrections"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    message_text = Column(Text)
+    original_sentiment = Column(String)
+    corrected_sentiment = Column(String)
+    admin_id = Column(String)
+
 # Buat file emotext.db dan tabelnya secara otomatis
 Base.metadata.create_all(bind=engine)
 
@@ -61,6 +70,12 @@ class AnalyzeRequest(BaseModel):
     timestamp: str
     message_type: str
 
+class FeedbackRequest(BaseModel):
+    message_text: str
+    original_sentiment: str
+    corrected_sentiment: str
+    admin_id: str
+
 # Membuat Endpoint POST /analyze
 @app.post("/analyze")
 async def analyze_message(data: AnalyzeRequest, db: Session = Depends(get_db)):
@@ -93,16 +108,28 @@ async def analyze_message(data: AnalyzeRequest, db: Session = Depends(get_db)):
         suggestion = "Halo Kak! Produk tersebut saat ini ready stock. Ingin pesan berapa banyak?"
 
     # 2. Simpan Pesan Baru ke Database Terlebih Dahulu
-    new_log = MessageLog(
-        sender_id=data.sender_id,
-        sender_name=data.sender_name,
-        message_text=data.context[-1].text,
-        sentiment=sentiment,
-        intent=intent
-    )
-    db.add(new_log)
-    db.commit()
-    db.refresh(new_log)
+    # CEK DUPLIKASI (Mencegah pesan tersimpan ganda saat halaman di-reload)
+    existing_msg = db.query(MessageLog).filter(
+        MessageLog.sender_id == data.sender_id,
+        MessageLog.message_text == data.context[-1].text
+    ).first()
+
+    if not existing_msg:
+        # Jika belum ada di database, baru kita simpan
+        new_log = MessageLog(
+            sender_id=data.sender_id,
+            sender_name=data.sender_name,
+            message_text=data.context[-1].text,
+            sentiment=sentiment,
+            intent=intent
+        )
+        db.add(new_log)
+        db.commit()
+        db.refresh(new_log)
+        print("-> Pesan BARU berhasil disimpan ke DB.")
+    else:
+        # Jika sudah ada, abaikan saja
+        print("-> Pesan LAMA terdeteksi (efek reload), diabaikan.")
 
     # 3. ALGORITMA HEALTH SCORE KUMULATIF
     # Ambil SEMUA riwayat sentimen dari pelanggan ini
@@ -194,3 +221,23 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
 @app.get("/health-score")
 async def get_health_score():
     return {"message": "Endpoint health-score berjalan dengan baik!"}
+
+@app.post("/feedback")
+async def save_feedback(data: FeedbackRequest, db: Session = Depends(get_db)):
+    new_correction = ManualCorrection(
+        message_text=data.message_text,
+        original_sentiment=data.original_sentiment,
+        corrected_sentiment=data.corrected_sentiment,
+        admin_id=data.admin_id
+    )
+    db.add(new_correction)
+    db.commit()
+    db.refresh(new_correction)
+    
+    print("=========================================")
+    print(f"KOREKSI DITERIMA!")
+    print(f"Pesan: {data.message_text}")
+    print(f"Lama: {data.original_sentiment} -> Baru: {data.corrected_sentiment}")
+    print("=========================================\n")
+    
+    return {"status": "success", "correction_id": new_correction.id}
