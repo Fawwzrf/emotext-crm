@@ -2,7 +2,7 @@
  * Emotext-CRM Extension - Content Script (Master PRD Compliant)
  */
 
-const DUMMY_MODE = true; 
+const DUMMY_MODE = false; 
 let COMPANY_API_KEY = null;
 
 console.log('[Emotext-CRM] Extension Logic Active.');
@@ -80,29 +80,44 @@ function detectMedia(msgContainer) {
     return false;
 }
 
-// Helper: Mock API
-async function mockAnalyzeAPI(text, senderId, context = []) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            let sentiment = 'neutral';
-            let intent = 'inquiry';
-            let health_score = 70;
-            let suggestion = "Baik Kak, ada yang bisa kami bantu?";
-            
-            const lowerText = text.toLowerCase();
-            if (lowerText === "[media]") {
-                intent = "media";
-            } else if (lowerText.includes('rusak') || lowerText.includes('kecewa')) {
-                sentiment = 'negative'; intent = 'complaint'; health_score = 30;
-                suggestion = "Mohon maaf atas kendalanya. Boleh kirimkan detail pesanan Anda?";
-            } else if (lowerText.includes('bagus') || lowerText.includes('terima kasih')) {
-                sentiment = 'positive'; intent = 'appreciation'; health_score = 90;
-                suggestion = "Terima kasih kembali! Senang bisa melayani Anda.";
-            }
-            
-            resolve({ sentiment, intent, health_score, suggestion });
-        }, 200);
-    });
+// API
+// Mengirim data ke FastAPI Server Anda
+async function mockAnalyzeAPI(text, senderId, senderName, context = []) {
+    try {
+        // PERBAIKAN: Gabungkan riwayat chat (context) dengan pesan saat ini (text)
+        const fullContext = [...context, { text: text, role: 'user' }];
+
+        const response = await fetch('http://127.0.0.1:8000/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender_id: senderId,
+                sender_name: senderName,
+                context: fullContext,
+                timestamp: new Date().toISOString(),
+                message_type: text === "[MEDIA]" ? "media" : "text"
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        // Menerima balasan dari FastAPI
+        const result = await response.json();
+        return result;
+
+    } catch (error) {
+        console.error('[Emotext-CRM] API Error:', error);
+        return { 
+            sentiment: 'neutral', 
+            intent: 'offline', 
+            health_score: 50, 
+            suggestion: null 
+        };
+    }
 }
 
 // FR-03: Sidebar Priority Icon
@@ -192,7 +207,12 @@ async function processMessageNode(msgContainer) {
     // FR-08: Gather context
     const context = getContextMessages(msgContainer, 3);
     
-    const analysis = await mockAnalyzeAPI(text, 'user', context);
+    // Ambil nama kontak dari header WhatsApp Web
+    const headerTitle = document.querySelector('[data-testid="conversation-info-header-chat-title"]') || document.querySelector('[data-testid="conversation-header"] span[dir="auto"]');
+    const contactName = headerTitle ? headerTitle.innerText : "Unknown";
+    
+    // Masukkan contactName ke dalam fungsi
+    const analysis = await mockAnalyzeAPI(text, 'user_id_sementara', contactName, context);
     
     const bubble = msgContainer.querySelector('.copyable-text')?.parentElement || msgContainer;
     bubble.style.position = 'relative'; 
