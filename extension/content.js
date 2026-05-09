@@ -211,8 +211,11 @@ async function processMessageNode(msgContainer) {
     const headerTitle = document.querySelector('[data-testid="conversation-info-header-chat-title"]') || document.querySelector('[data-testid="conversation-header"] span[dir="auto"]');
     const contactName = headerTitle ? headerTitle.innerText : "Unknown";
     
-    // Masukkan contactName ke dalam fungsi
-    const analysis = await mockAnalyzeAPI(text, 'user_id_sementara', contactName, context);
+    // Buat ID unik berdasarkan nama
+    const uniqueId = contactName.replace(/\s+/g, '_').toLowerCase();
+    
+    // analysis
+    const analysis = await mockAnalyzeAPI(text, uniqueId, contactName, context);
     
     const bubble = msgContainer.querySelector('.copyable-text')?.parentElement || msgContainer;
     bubble.style.position = 'relative'; 

@@ -7,6 +7,10 @@ uvicorn main:app --reload
 ```
 
 ---
+
+Buka browser dan akses http://127.0.0.1:8000/docs.
+
+---
 ## Lain lain
 Pastikan Library Sudah Terinstal
 Buka terminal Anda, pastikan Anda berada di dalam folder backend dan virtual environment (venv) sudah aktif. Instal library yang dibutuhkan dengan perintah ini:

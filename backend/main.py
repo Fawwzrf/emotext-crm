@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import List
 
 # Import SQLAlchemy
-from sqlalchemy import create_engine, Column, Integer, String, Text
+from sqlalchemy import create_engine, Column, Integer, String, Text, func
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 
 # Konfigurasi Database SQLite
@@ -64,47 +64,35 @@ class AnalyzeRequest(BaseModel):
 # Membuat Endpoint POST /analyze
 @app.post("/analyze")
 async def analyze_message(data: AnalyzeRequest, db: Session = Depends(get_db)):
-    # Ambil teks pesan terakhir dari user dan ubah ke huruf kecil semua
+    # 1. Deteksi Sentimen & Intensi Pesan Saat Ini (Rule-Based)
     last_message = data.context[-1].text.lower()
     
-    # Siapkan nilai default (jika tidak ada kata kunci yang cocok)
     sentiment = "neutral"
     intent = "general"
-    health_score = 70
-    health_status = "Good"
     suggestion = "Baik Kak, ada yang bisa kami bantu?"
     confidence = 0.85
 
-    # Logika Rule-Based (Pengganti sementara model ML)
     if data.message_type == "media" or "[media]" in last_message:
         intent = "media"
         suggestion = "Terima kasih atas lampirannya. Akan kami cek segera."
-        
     elif any(word in last_message for word in ["rusak", "kecewa", "jelek", "kurang", "lambat"]):
         sentiment = "negative"
         intent = "complaint"
-        health_score = 30
-        health_status = "At Risk"
         suggestion = "Mohon maaf atas ketidaknyamanan ini. Boleh kirimkan foto detail kendalanya?"
         confidence = 0.95
-        
     elif any(word in last_message for word in ["bagus", "terima kasih", "mantap", "puas", "keren"]):
         sentiment = "positive"
         intent = "appreciation"
-        health_score = 95
-        health_status = "Loyal"
         suggestion = "Terima kasih kembali! Senang bisa melayani Anda."
         confidence = 0.98
-        
     elif any(word in last_message for word in ["pesan", "order", "beli", "mau", "checkout"]):
         intent = "order"
         suggestion = "Siap Kak! Untuk pemesanan, mohon informasikan alamat lengkapnya ya."
-        
     elif any(word in last_message for word in ["stok", "harga", "tanya", "ready"]):
         intent = "inquiry"
         suggestion = "Halo Kak! Produk tersebut saat ini ready stock. Ingin pesan berapa banyak?"
 
-    # Simpan data ke Database
+    # 2. Simpan Pesan Baru ke Database Terlebih Dahulu
     new_log = MessageLog(
         sender_id=data.sender_id,
         sender_name=data.sender_name,
@@ -115,22 +103,91 @@ async def analyze_message(data: AnalyzeRequest, db: Session = Depends(get_db)):
     db.add(new_log)
     db.commit()
     db.refresh(new_log)
-    # -------------------------------------
 
-    # Cetak ke terminal agar mudah dipantau
+    # 3. ALGORITMA HEALTH SCORE KUMULATIF
+    # Ambil SEMUA riwayat sentimen dari pelanggan ini
+    past_interactions = db.query(MessageLog.sentiment).filter(MessageLog.sender_id == data.sender_id).all()
+    
+    total_score = 0
+    for (snt,) in past_interactions:
+        if snt == "positive":
+            total_score += 100
+        elif snt == "negative":
+            total_score += 30
+        else:
+            total_score += 70
+            
+    # Hitung rata-rata
+    if len(past_interactions) > 0:
+        cumulative_score = int(total_score / len(past_interactions))
+    else:
+        cumulative_score = 70 # Default jika belum ada riwayat
+
+    # Tentukan Status Loyalitas berdasarkan Rata-rata
+    if cumulative_score >= 80:
+        health_status = "Loyal"
+    elif cumulative_score >= 50:
+        health_status = "Good"
+    else:
+        health_status = "At Risk"
+
+    # 4. Cetak ke Terminal
     print("=========================================")
-    print(f"Pesan dari {data.sender_name} berhasil disimpan ke Database! (ID: {new_log.id})")
-    print(f"[USER]: {data.context[-1].text}")
+    print(f"Pesan dari: {data.sender_name} | Interaksi ke-{len(past_interactions)}")
+    print(f"[CHAT]: {data.context[-1].text}")
+    print(f"[PREDICTION] Sentimen: {sentiment.upper()} | Intensi: {intent.upper()}")
+    print(f"[LOYALTY] Cumulative Score: {cumulative_score} ({health_status.upper()})")
     print("=========================================\n")
     
-    # Kembalikan hasil yang sudah dinamis ke Ekstensi
+    # 5. Kembalikan ke Ekstensi
     return {
         "sentiment": sentiment,
         "intent": intent,
         "confidence": confidence,
-        "health_score": health_score,
+        "health_score": cumulative_score,
         "health_status": health_status,
         "suggestion": suggestion
+    }
+
+@app.get("/dashboard-stats")
+async def get_dashboard_stats(db: Session = Depends(get_db)):
+    # 1. Hitung total pesan yang masuk
+    total_messages = db.query(MessageLog).count()
+
+    # 2. Hitung persentase Intensi (Order vs Complaint vs Inquiry, dll)
+    intent_counts = db.query(
+        MessageLog.intent, 
+        func.count(MessageLog.intent)
+    ).group_by(MessageLog.intent).all()
+    
+    # Ubah hasil query (list of tuples) menjadi dictionary agar mudah dibaca di Dashboard
+    intent_stats = {intent: count for intent, count in intent_counts}
+
+    # 3. Hitung tren Sentimen
+    sentiment_counts = db.query(
+        MessageLog.sentiment, 
+        func.count(MessageLog.sentiment)
+    ).group_by(MessageLog.sentiment).all()
+    
+    sentiment_stats = {sentiment: count for sentiment, count in sentiment_counts}
+
+    # 4. Ambil daftar pelanggan terbaru (untuk melihat siapa saja yang aktif)
+    recent_customers = db.query(MessageLog.sender_name, MessageLog.sentiment, MessageLog.intent)\
+        .order_by(MessageLog.id.desc())\
+        .limit(5)\
+        .all()
+
+    return {
+        "summary": {
+            "total_interactions": total_messages,
+            "top_intent": max(intent_stats, key=intent_stats.get) if intent_stats else "N/A"
+        },
+        "intents": intent_stats,
+        "sentiments": sentiment_stats,
+        "recent_activity": [
+            {"name": name, "sentiment": snt, "intent": intnt} 
+            for name, snt, intnt in recent_customers
+        ]
     }
 
 # Membuat Endpoint GET /health-score
