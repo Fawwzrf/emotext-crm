@@ -66,11 +66,15 @@ security_scheme = HTTPBearer()
 # Dependency untuk Validasi Token API Key Perusahaan
 def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security_scheme)):
     token = credentials.credentials
+    print(f"[AUTH DEBUG] API Key diterima: '{token}'")
     if not token:
+        print("[AUTH DEBUG] Gagal: Token kosong / tidak ada.")
         raise HTTPException(status_code=401, detail="Unauthorized: Missing API Key")
     # Validasi API key sederhana (Diberikan akses jika token DUMMY_KEY atau memiliki prefiks EMOTEXT_)
     if token != "DUMMY_KEY" and not token.startswith("EMOTEXT_") and len(token) < 8:
+        print(f"[AUTH DEBUG] Gagal: Token '{token}' tidak memenuhi syarat (harus 'DUMMY_KEY', berawalan 'EMOTEXT_', atau >= 8 karakter).")
         raise HTTPException(status_code=401, detail="Unauthorized: Invalid API Key")
+    print("[AUTH DEBUG] Akses Diterima.")
     return token
 
 # Membuat Struktur Data Input (Validasi Request)
@@ -104,7 +108,7 @@ async def analyze_message(
     last_message = data.context[-1].text.lower()
     
     sentiment = "neutral"
-    intent = "general"
+    intent = "other"
     suggestion = "Baik Kak, ada yang bisa kami bantu?"
     confidence = 0.85
 
@@ -118,7 +122,7 @@ async def analyze_message(
         confidence = 0.95
     elif any(word in last_message for word in ["bagus", "terima kasih", "mantap", "puas", "keren"]):
         sentiment = "positive"
-        intent = "appreciation"
+        intent = "other"
         suggestion = "Terima kasih kembali! Senang bisa melayani Anda."
         confidence = 0.98
     elif any(word in last_message for word in ["pesan", "order", "beli", "mau", "checkout"]):
@@ -238,10 +242,34 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
         ]
     }
 
-# Membuat Endpoint GET /health-score
-@app.get("/health-score")
-async def get_health_score():
-    return {"message": "Endpoint health-score berjalan dengan baik!"}
+# Membuat Endpoint GET /health-score/{sender_id} dengan Proteksi Token
+@app.get("/health-score/{sender_id}")
+async def get_health_score(
+    sender_id: str,
+    db: Session = Depends(get_db),
+    token: str = Depends(verify_api_key)
+):
+    past_interactions = db.query(MessageLog.sentiment).filter(MessageLog.sender_id == sender_id).all()
+    
+    total_score = 0
+    for (snt,) in past_interactions:
+        if snt == "positive":
+            total_score += 100
+        elif snt == "negative":
+            total_score += 30
+        else:
+            total_score += 70
+            
+    if len(past_interactions) > 0:
+        cumulative_score = int(total_score / len(past_interactions))
+    else:
+        cumulative_score = 70 # Default jika belum ada riwayat
+
+    return {
+        "sender_id": sender_id,
+        "health_score": cumulative_score,
+        "interactions_count": len(past_interactions)
+    }
 
 # Membuat Endpoint POST /feedback dengan Proteksi Token & Fitur Intensi
 @app.post("/feedback")

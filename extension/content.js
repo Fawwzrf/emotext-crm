@@ -31,10 +31,11 @@ let TERMS_AGREED = false;
 chrome.storage.local.get(['emotext_api_key', 'emotext_terms_agreed'], (result) => {
     TERMS_AGREED = result.emotext_terms_agreed || false;
     COMPANY_API_KEY = result.emotext_api_key || 'DUMMY_KEY';
+    console.log(`[Emotext-CRM] API Key termuat: "${COMPANY_API_KEY}" (Persetujuan Syarat: ${TERMS_AGREED})`);
 
     if (TERMS_AGREED) {
         console.log('[Emotext-CRM] Syarat & Ketentuan disetujui. Memulai monitoring WhatsApp CRM...');
-        setTimeout(initObservers, 2000);
+        initObservers(); // Memulai instan tanpa penundaan (setTimeout)
     } else {
         console.warn('[Emotext-CRM] Ekstensi dinonaktifkan karena Syarat & Ketentuan belum disetujui. Harap buka popup ekstensi.');
     }
@@ -125,7 +126,7 @@ function createBadges(sentiment, intent, messageId, senderId) {
     // Feedback dropdown untuk Intensi
     const intDropdown = document.createElement('div');
     intDropdown.className = 'emotext-int-dropdown';
-    ['General', 'Complaint', 'Appreciation', 'Order', 'Inquiry', 'Media'].forEach(opt => {
+    ['Order', 'Inquiry', 'Media', 'Complaint', 'Other'].forEach(opt => {
         const option = document.createElement('div');
         option.className = 'emotext-snt-option'; // Menggunakan gaya opsi yang sama
         option.innerText = opt;
@@ -248,28 +249,77 @@ async function analyzeMessageAPI(text, senderId, senderName, context = []) {
         console.error('[Emotext-CRM] API Analysis Error:', error);
         return { 
             sentiment: 'neutral', 
-            intent: 'offline', 
+            intent: 'other', 
             health_score: 50, 
             suggestion: null 
         };
     }
 }
 
-// FR-03: Sidebar Priority Icon
-function processSidebarChat(chatCell) {
-    if (chatCell.dataset.emotextSidebarProcessed) return;
+// FR-03: Sidebar Priority Icon & Customer Health Score Urgency Indicator
+async function processSidebarChat(chatCell) {
+    const lastMsgEl = chatCell.querySelector(SELECTORS.lastMsgStatus)?.parentElement;
+    const lastMsgText = lastMsgEl ? lastMsgEl.innerText : "";
+
+    // Hanya proses jika belum pernah diproses atau pesan terakhir berubah
+    if (chatCell.dataset.emotextSidebarProcessed === "true" && chatCell.dataset.emotextLastMsg === lastMsgText) {
+        return;
+    }
     
-    const lastMsgText = chatCell.querySelector(SELECTORS.lastMsgStatus)?.parentElement?.innerText || "";
-    if (lastMsgText.toLowerCase().includes('rusak') || lastMsgText.toLowerCase().includes('lapor')) {
+    chatCell.dataset.emotextSidebarProcessed = "true";
+    chatCell.dataset.emotextLastMsg = lastMsgText;
+
+    const titleEl = chatCell.querySelector('[data-testid="chat-title"]') || chatCell.querySelector('span[title]');
+    const contactName = titleEl ? (titleEl.title || titleEl.innerText) : null;
+    if (!contactName) return;
+
+    const uniqueId = contactName.replace(/\s+/g, '_').toLowerCase();
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/health-score/${uniqueId}`, {
+            headers: {
+                'Authorization': `Bearer ${COMPANY_API_KEY}`
+            }
+        });
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const score = data.health_score;
+
         let avatarContainer = chatCell.querySelector(SELECTORS.avatarContainer) || chatCell.children[0];
         if (avatarContainer) {
             avatarContainer.style.position = 'relative';
-            const dot = document.createElement('div');
-            dot.className = 'emotext-priority-dot';
-            avatarContainer.appendChild(dot);
+            
+            // Hapus badge lama jika ada
+            const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
+            if (existing) existing.remove();
+
+            const badge = document.createElement('div');
+            badge.className = 'emotext-sidebar-health-badge';
+            badge.innerText = score;
+            
+            // Tentukan warna & bayangan berdasarkan tingkat keparahan/urgensi
+            if (score < 50) {
+                badge.style.backgroundColor = '#FF4B4B';
+                badge.style.color = '#ffffff';
+                badge.style.boxShadow = '0 0 10px #FF4B4B';
+                badge.title = `Urgensi Tinggi (Health Score: ${score})`;
+            } else if (score < 80) {
+                badge.style.backgroundColor = '#FFC107';
+                badge.style.color = '#0f172a';
+                badge.style.boxShadow = '0 0 6px #FFC107';
+                badge.title = `Urgensi Sedang (Health Score: ${score})`;
+            } else {
+                badge.style.backgroundColor = '#25D366';
+                badge.style.color = '#ffffff';
+                badge.title = `Urgensi Rendah (Health Score: ${score})`;
+            }
+
+            avatarContainer.appendChild(badge);
         }
+    } catch (err) {
+        console.error('[Emotext-CRM] Gagal memuat health score sidebar:', err);
     }
-    chatCell.dataset.emotextSidebarProcessed = "true";
 }
 
 // Suggestion UI Injector
@@ -316,7 +366,7 @@ function updateHealthBar(score) {
     const healthBar = healthContainer.querySelector('.emotext-health-bar');
     if (healthBar) {
         healthBar.style.width = `${score}%`;
-        healthBar.style.background = score < 40 ? '#FF4B4B' : (score < 70 ? '#FFC107' : '#25D366');
+        healthBar.style.background = score < 50 ? '#FF4B4B' : (score < 80 ? '#FFC107' : '#25D366');
     }
 }
 
@@ -395,6 +445,9 @@ function initObservers() {
             sidebar.querySelectorAll(SELECTORS.cellFrame).forEach(c => processSidebarChat(c));
         }
     };
+    // Jalankan pemindaian pertama secara sinkron dan instan
+    checkPanel();
 
-    setInterval(checkPanel, 2000);
+    // Lakukan pemindaian berkala setiap 1000ms agar responsif
+    setInterval(checkPanel, 1000);
 }
