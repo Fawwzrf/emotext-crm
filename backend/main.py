@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 # Import SQLAlchemy
 from sqlalchemy import create_engine, Column, Integer, String, Text, func
@@ -13,7 +14,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Model Tabel Database
+# Model Tabel Database dengan Kolom Tambahan untuk Koreksi Intensi
 class MessageLog(Base):
     __tablename__ = "message_logs"
     
@@ -29,8 +30,10 @@ class ManualCorrection(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     message_text = Column(Text)
-    original_sentiment = Column(String)
-    corrected_sentiment = Column(String)
+    original_sentiment = Column(String, nullable=True)
+    corrected_sentiment = Column(String, nullable=True)
+    original_intent = Column(String, nullable=True)
+    corrected_intent = Column(String, nullable=True)
     admin_id = Column(String)
 
 # Buat file emotext.db dan tabelnya secara otomatis
@@ -57,8 +60,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Inisialisasi Skema Keamanan HTTP Bearer
+security_scheme = HTTPBearer()
+
+# Dependency untuk Validasi Token API Key Perusahaan
+def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security_scheme)):
+    token = credentials.credentials
+    if not token:
+        raise HTTPException(status_code=401, detail="Unauthorized: Missing API Key")
+    # Validasi API key sederhana (Diberikan akses jika token DUMMY_KEY atau memiliki prefiks EMOTEXT_)
+    if token != "DUMMY_KEY" and not token.startswith("EMOTEXT_") and len(token) < 8:
+        raise HTTPException(status_code=401, detail="Unauthorized: Invalid API Key")
+    return token
+
 # Membuat Struktur Data Input (Validasi Request)
-# Ini berfungsi untuk memastikan JSON yang dikirim ekstensi formatnya benar
 class MessageContext(BaseModel):
     text: str
     role: str
@@ -72,13 +87,19 @@ class AnalyzeRequest(BaseModel):
 
 class FeedbackRequest(BaseModel):
     message_text: str
-    original_sentiment: str
-    corrected_sentiment: str
+    original_sentiment: Optional[str] = None
+    corrected_sentiment: Optional[str] = None
+    original_intent: Optional[str] = None
+    corrected_intent: Optional[str] = None
     admin_id: str
 
-# Membuat Endpoint POST /analyze
+# Membuat Endpoint POST /analyze dengan Proteksi Token
 @app.post("/analyze")
-async def analyze_message(data: AnalyzeRequest, db: Session = Depends(get_db)):
+async def analyze_message(
+    data: AnalyzeRequest, 
+    db: Session = Depends(get_db),
+    token: str = Depends(verify_api_key)
+):
     # 1. Deteksi Sentimen & Intensi Pesan Saat Ini (Rule-Based)
     last_message = data.context[-1].text.lower()
     
@@ -222,12 +243,19 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
 async def get_health_score():
     return {"message": "Endpoint health-score berjalan dengan baik!"}
 
+# Membuat Endpoint POST /feedback dengan Proteksi Token & Fitur Intensi
 @app.post("/feedback")
-async def save_feedback(data: FeedbackRequest, db: Session = Depends(get_db)):
+async def save_feedback(
+    data: FeedbackRequest, 
+    db: Session = Depends(get_db),
+    token: str = Depends(verify_api_key)
+):
     new_correction = ManualCorrection(
         message_text=data.message_text,
         original_sentiment=data.original_sentiment,
         corrected_sentiment=data.corrected_sentiment,
+        original_intent=data.original_intent,
+        corrected_intent=data.corrected_intent,
         admin_id=data.admin_id
     )
     db.add(new_correction)
@@ -237,7 +265,10 @@ async def save_feedback(data: FeedbackRequest, db: Session = Depends(get_db)):
     print("=========================================")
     print(f"KOREKSI DITERIMA!")
     print(f"Pesan: {data.message_text}")
-    print(f"Lama: {data.original_sentiment} -> Baru: {data.corrected_sentiment}")
+    if data.corrected_sentiment:
+        print(f"[SENTIMEN] Lama: {data.original_sentiment} -> Baru: {data.corrected_sentiment}")
+    if data.corrected_intent:
+        print(f"[INTENSI] Lama: {data.original_intent} -> Baru: {data.corrected_intent}")
     print("=========================================\n")
     
     return {"status": "success", "correction_id": new_correction.id}

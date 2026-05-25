@@ -4,14 +4,14 @@
 .emotext-badges-container {
     position: absolute;
     top: 3px;             
-    /* Mengunci posisi mulai dari sisi kanan gelembung */
-    left: calc(100% + 5px); 
+    /* Mengunci posisi mulai dari sisi kanan gelembung pada layar lebar */
+    left: calc(100% + 6px); 
     display: flex;
     align-items: center;
     gap: 6px;
     white-space: nowrap; /* Mencegah teks turun ke bawah */
     
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 4px 10px;
@@ -19,8 +19,27 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
     z-index: 9999 !important;
     pointer-events: auto;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dinamis terhadap dimensi layar: reposisi jika lebar layar sempit (responsive fallback) */
+@media (max-width: 1100px) {
+    .emotext-badges-container {
+        left: auto;
+        right: 12px;
+        top: -14px; /* Mengambang di atas gelembung chat agar tidak terpotong ke kanan */
+        background: rgba(15, 23, 42, 0.9); /* Tema gelap premium agar kontras */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        padding: 3px 8px;
+    }
+    .emotext-badges-container:hover {
+        background: rgba(15, 23, 42, 0.98);
+    }
+    .emotext-badges-container .emotext-int-badge {
+        color: #cbd5e1; /* Sesuaikan warna label teks intent */
+    }
 }
 
 
@@ -81,10 +100,6 @@
     padding: 4px;
 }
 
-.emotext-snt-badge:hover .emotext-snt-dropdown {
-    display: flex;
-}
-
 /* Invisible bridge to prevent dropdown from disappearing when moving mouse */
 .emotext-snt-dropdown::before {
     content: "";
@@ -100,6 +115,47 @@
 .emotext-snt-badge:hover .emotext-snt-dropdown,
 .emotext-snt-dropdown:hover {
     display: flex;
+}
+
+/* Intent Feedback Dropdown */
+.emotext-int-dropdown {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: -10px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    min-width: 110px;
+    z-index: 10000 !important;
+    overflow: hidden;
+    padding: 4px;
+}
+
+.emotext-int-badge {
+    position: relative;
+    cursor: pointer;
+}
+
+.emotext-int-badge:hover .emotext-int-dropdown,
+.emotext-int-dropdown:hover {
+    display: flex;
+}
+
+/* Invisible bridge for intent dropdown to prevent premature mouseout */
+.emotext-int-dropdown::before {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    right: -20px;
+    height: 40px;
+    background: transparent;
+    z-index: -1;
 }
 
 .emotext-snt-option {
