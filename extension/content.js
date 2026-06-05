@@ -500,49 +500,61 @@ function injectStatusIndicator(isActive) {
     if (!indicator) {
         indicator = document.createElement('div');
         indicator.id = 'emotext-status-indicator';
+        
+        // Memposisikan di sidebar paling kiri yang sempit
         indicator.style.position = 'fixed';
-        indicator.style.top = '12px';
-        indicator.style.left = '80px'; // Sebelah foto profil kiri
+        indicator.style.top = '260px'; // Kira-kira di bawah logo Meta AI
+        indicator.style.left = '12px'; // Pas di tengah sidebar kiri (lebar sidebar ~64px)
         indicator.style.zIndex = '9999';
+        
+        // Desain melingkar layaknya ikon WA
+        indicator.style.width = '40px';
+        indicator.style.height = '40px';
+        indicator.style.borderRadius = '50%';
+        indicator.style.background = 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)';
         indicator.style.display = 'flex';
         indicator.style.alignItems = 'center';
-        indicator.style.gap = '6px';
-        indicator.style.padding = '4px 8px';
-        indicator.style.background = 'rgba(15, 23, 42, 0.8)';
-        indicator.style.borderRadius = '12px';
-        indicator.style.border = '1px solid #334155';
-        indicator.style.backdropFilter = 'blur(4px)';
-        indicator.style.color = '#f8fafc';
-        indicator.style.fontSize = '11px';
+        indicator.style.justifyContent = 'center';
+        indicator.style.color = 'white';
+        indicator.style.fontWeight = 'bold';
+        indicator.style.fontSize = '18px';
         indicator.style.fontFamily = 'system-ui, sans-serif';
-        indicator.style.fontWeight = '600';
-        indicator.style.pointerEvents = 'none'; // Jangan ganggu klik WA
+        indicator.style.boxShadow = '0 4px 6px rgba(0,0,0,0.3)';
+        indicator.style.cursor = 'help';
         
+        // Logo "E" untuk Emotext
+        indicator.innerText = 'E';
+        
+        // Titik status (hijau/merah) di sudut kanan atas
         const dot = document.createElement('div');
         dot.id = 'emotext-status-dot';
-        dot.style.width = '8px';
-        dot.style.height = '8px';
+        dot.style.position = 'absolute';
+        dot.style.top = '-2px';
+        dot.style.right = '-2px';
+        dot.style.width = '12px';
+        dot.style.height = '12px';
         dot.style.borderRadius = '50%';
-        
-        const text = document.createElement('span');
-        text.id = 'emotext-status-text';
+        dot.style.border = '2px solid #0f172a'; // Warna background sidebar WA dark mode
         
         indicator.appendChild(dot);
-        indicator.appendChild(text);
         document.body.appendChild(indicator);
     }
     
+    const indicatorEl = document.getElementById('emotext-status-indicator');
     const dot = document.getElementById('emotext-status-dot');
-    const text = document.getElementById('emotext-status-text');
     
     if (isActive) {
         dot.style.background = '#10b981'; // Green
-        dot.style.boxShadow = '0 0 6px rgba(16, 185, 129, 0.5)';
-        text.innerText = 'Emotext: ON';
+        dot.style.boxShadow = '0 0 4px #10b981';
+        indicatorEl.title = 'Emotext CRM: ON (Aktif)';
     } else {
         dot.style.background = '#ef4444'; // Red
-        dot.style.boxShadow = '0 0 6px rgba(239, 68, 68, 0.5)';
-        text.innerText = 'Emotext: OFF (Login Req)';
+        dot.style.boxShadow = '0 0 4px #ef4444';
+        indicatorEl.title = 'Emotext CRM: OFF (Silakan Login)';
+        indicatorEl.style.background = '#475569'; // Warna abu-abu redup jika mati
     }
 }
 
+// ---------------------------------------------------------
+// ENTRY POINT
+// ---------------------------------------------------------
