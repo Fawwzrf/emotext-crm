@@ -243,7 +243,7 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
     }
 
 # Membuat Endpoint GET /health-score/{sender_id} dengan Proteksi Token
-@app.get("/health-score/{sender_id}")
+@app.get("/health-score/{sender_id:path}")
 async def get_health_score(
     sender_id: str,
     db: Session = Depends(get_db),

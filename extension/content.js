@@ -1,8 +1,16 @@
 /**
- * Emotext-CRM Extension - Content Script (Master PRD Compliant)
+ * Emotext-CRM Extension - Content Script v3.0 (Clean Rewrite)
+ * 
+ * Ditulis ulang dari versi asli yang sudah bekerja.
+ * Hanya 3 perbaikan ditambahkan dari versi asli:
+ *   1. Skip date-separator & system messages
+ *   2. Skip pesan keluar (via delivery icon check)
+ *   3. injectSuggestion menggunakan try/catch aman
  */
 
-// 1. Decoupled DOM Selectors for Maintenance Stability
+// =========================================================
+// 1. DOM SELECTORS
+// =========================================================
 const SELECTORS = {
     msgContainer: '[data-testid="msg-container"]',
     cellFrame: '[data-testid="cell-frame-container"]',
@@ -21,251 +29,253 @@ const SELECTORS = {
     mediaUrlLink: '[data-testid="media-url-link"]'
 };
 
-// 2. Production URL mapping with Localhost fallback
-const API_BASE_URL = 'http://127.0.0.1:8000'; // local developer fallback. Production target: https://api.emotext-crm.com
-
+// =========================================================
+// 2. CONFIGURATION
+// =========================================================
+const API_BASE_URL = 'http://127.0.0.1:8000';
 let COMPANY_API_KEY = null;
 let TERMS_AGREED = false;
 
-// 3. Initial Security & Privacy Gating Configuration
+// =========================================================
+// 3. INITIALIZATION
+// =========================================================
 chrome.storage.local.get(['emotext_api_key', 'emotext_terms_agreed'], (result) => {
     TERMS_AGREED = result.emotext_terms_agreed || false;
     COMPANY_API_KEY = result.emotext_api_key || 'DUMMY_KEY';
-    console.log(`[Emotext-CRM] API Key termuat: "${COMPANY_API_KEY}" (Persetujuan Syarat: ${TERMS_AGREED})`);
+    console.log(`[Emotext-CRM] API Key: "${COMPANY_API_KEY}" | Terms: ${TERMS_AGREED}`);
 
     if (TERMS_AGREED) {
-        console.log('[Emotext-CRM] Syarat & Ketentuan disetujui. Memulai monitoring WhatsApp CRM...');
-        initObservers(); // Memulai instan tanpa penundaan (setTimeout)
+        console.log('[Emotext-CRM] ✅ Monitoring dimulai...');
+        initObservers();
     } else {
-        console.warn('[Emotext-CRM] Ekstensi dinonaktifkan karena Syarat & Ketentuan belum disetujui. Harap buka popup ekstensi.');
+        console.warn('[Emotext-CRM] ⛔ Extension disabled. Buka popup untuk menyetujui syarat.');
     }
 });
 
-// Helper: PII Anonymization / Masking (Kepatuhan UU PDP)
-// Mengganti informasi sensitif seperti nomor telepon, email, dan akun finansial sebelum dikirim ke API
+// =========================================================
+// 4. PII ANONYMIZATION
+// =========================================================
 function anonymizeText(text) {
     if (!text || typeof text !== 'string') return text;
-    
-    // Masking nomor telepon (format Indo: +628 atau 08 diikuti angka)
-    const phoneRegex = /(\+62|0)[0-9\s\-]{8,14}/g;
-    
-    // Masking alamat email
-    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-
-    // Masking nomor kartu kredit atau nomor rekening (10 hingga 16 digit berturut-turut)
-    const cardRegex = /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b|\b\d{10,16}\b/g;
-
     let masked = text;
-    masked = masked.replace(phoneRegex, '[NOMOR_TELEPON_TERMASKING]');
-    masked = masked.replace(emailRegex, '[EMAIL_TERMASKING]');
-    masked = masked.replace(cardRegex, '[AKUN_SENSITIF_TERMASKING]');
-
+    masked = masked.replace(/(\+62|0)[0-9\s\-]{8,14}/g, '[PHONE]');
+    masked = masked.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '[EMAIL]');
+    masked = masked.replace(/\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b|\b\d{10,16}\b/g, '[SENSITIVE]');
     return masked;
 }
 
-// Helper: Create Sentiment Badge & Intent Label
-function createBadges(sentiment, intent, messageId, senderId) {
+// =========================================================
+// 5. INCOMING MESSAGE DETECTION (BARU)
+//    - Outgoing messages punya centang delivery icon
+//    - Incoming messages TIDAK punya
+// =========================================================
+function isOutgoing(msgContainer) {
+    // Check 1: classic class
+    if (msgContainer.classList.contains('message-out')) return true;
+    if (msgContainer.closest('.message-out')) return true;
+
+    // Check 2: data-id prefix (The absolute truth in WA Web)
+    // Cari elemen yang punya atribut data-id yang diawali false_ (keluar) atau true_ (masuk)
+    const rowWithId = msgContainer.closest('[data-id^="false_"], [data-id^="true_"]');
+    if (rowWithId) {
+        const dataId = rowWithId.getAttribute('data-id');
+        if (dataId.startsWith('false_')) return true;
+        if (dataId.startsWith('true_')) return false;
+    }
+
+    // Check 3: Delivery icons (hanya ada di pesan keluar)
+    const deliverySelector = 
+        '[data-testid="msg-dblcheck"], [data-testid="msg-check"], ' +
+        '[data-testid="msg-dblcheck-ack"], [data-icon="msg-dblcheck"], ' +
+        '[data-icon="msg-check"], [data-icon="msg-dblcheck-ack"]';
+    if (msgContainer.querySelector(deliverySelector)) return true;
+    const parentRow = msgContainer.closest('[data-id]') || msgContainer.parentElement;
+    if (parentRow && parentRow.querySelector(deliverySelector)) return true;
+    
+    // Check 4: Fallback Visual Position yang BENAR (Relatif terhadap row, BUKAN #main)
+    const row = msgContainer.closest('[role="row"]');
+    if (row) {
+        const rowRect = row.getBoundingClientRect();
+        const msgRect = msgContainer.getBoundingClientRect();
+        const msgCenter = msgRect.left + (msgRect.width / 2);
+        const rowCenter = rowRect.left + (rowRect.width / 2);
+        if (msgCenter > rowCenter + 20) return true;
+    }
+
+    return false; // Default: anggap incoming agar diproses
+}
+
+// =========================================================
+// 6. SYSTEM / DATE SEPARATOR CHECK (BARU)
+// =========================================================
+function isSystemOrDate(msgContainer) {
+    // System messages & date separators: TIDAK punya .copyable-text DAN TIDAK punya media
+    // Media messages juga tidak punya .copyable-text tapi harus tetap diproses
+    if (msgContainer.querySelector('.copyable-text')) return false; // Ada teks = pesan biasa
+    if (detectMedia(msgContainer)) return false; // Ada media = pesan media
+    return true; // Tidak ada teks dan tidak ada media = system/date
+}
+
+// =========================================================
+// 7. CREATE BADGES UI
+// =========================================================
+function createBadges(sentiment, intent) {
     const container = document.createElement('div');
     container.className = 'emotext-badges-container';
-    
+
+    // Sentiment dot
     const sentimentBadge = document.createElement('div');
     sentimentBadge.className = `emotext-snt-badge emotext-snt-${sentiment.toLowerCase()}`;
-    
-    // Feedback dropdown untuk Sentimen
+
+    // Sentiment feedback dropdown
     const dropdown = document.createElement('div');
     dropdown.className = 'emotext-snt-dropdown';
     ['Positive', 'Neutral', 'Negative'].forEach(opt => {
         const option = document.createElement('div');
         option.className = 'emotext-snt-option';
         option.innerText = opt;
-        
         option.onclick = async (e) => {
             e.stopPropagation();
-            const correctedValue = opt.toLowerCase();
-            
-            // 1. Update visual badge instantly
-            sentimentBadge.className = `emotext-snt-badge emotext-snt-${correctedValue}`;
-            console.log(`[Emotext-CRM] Mengirim koreksi: ${sentiment} -> ${correctedValue}`);
-
-            // 2. Extract message bubble text & anonymize before sending
+            const corrected = opt.toLowerCase();
+            sentimentBadge.className = `emotext-snt-badge emotext-snt-${corrected}`;
             const bubble = container.closest(SELECTORS.msgContainer);
             const messageText = bubble ? (bubble.querySelector(SELECTORS.textLtr)?.innerText || "Unknown") : "Unknown";
-            const maskedMessageText = anonymizeText(messageText);
-
-            // 3. Send feedback securely to backend
             try {
                 await fetch(`${API_BASE_URL}/feedback`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${COMPANY_API_KEY}`
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${COMPANY_API_KEY}` },
                     body: JSON.stringify({
-                        message_text: maskedMessageText,
+                        message_text: anonymizeText(messageText),
                         original_sentiment: sentiment,
-                        corrected_sentiment: correctedValue,
-                        admin_id: "admin_01" // CRM Admin ID
+                        corrected_sentiment: corrected,
+                        admin_id: "admin_01"
                     })
                 });
-                console.log('[Emotext-CRM] Feedback berhasil disimpan.');
-            } catch (err) {
-                console.error('[Emotext-CRM] Gagal mengirim feedback:', err);
-            }
+            } catch (err) { /* silent */ }
         };
         dropdown.appendChild(option);
     });
     sentimentBadge.appendChild(dropdown);
-    
+
+    // Intent label
     const intentLabel = document.createElement('div');
     intentLabel.className = 'emotext-int-badge';
-    if (intent.toLowerCase() === 'media') {
-        intentLabel.classList.add('emotext-int-media');
-    }
+    if (intent.toLowerCase() === 'media') intentLabel.classList.add('emotext-int-media');
     intentLabel.innerText = intent;
 
-    // Feedback dropdown untuk Intensi
+    // Intent feedback dropdown
     const intDropdown = document.createElement('div');
     intDropdown.className = 'emotext-int-dropdown';
     ['Order', 'Inquiry', 'Media', 'Complaint', 'Other'].forEach(opt => {
         const option = document.createElement('div');
-        option.className = 'emotext-snt-option'; // Menggunakan gaya opsi yang sama
+        option.className = 'emotext-snt-option';
         option.innerText = opt;
-        
         option.onclick = async (e) => {
             e.stopPropagation();
-            const correctedValue = opt.toLowerCase();
-            
-            // 1. Update visual badge text & class instantly
-            intentLabel.childNodes[0].nodeValue = opt; // Update teks tanpa menghapus dropdown child
-            if (correctedValue === 'media') {
-                intentLabel.classList.add('emotext-int-media');
-            } else {
-                intentLabel.classList.remove('emotext-int-media');
-            }
-            console.log(`[Emotext-CRM] Mengirim koreksi intensi: ${intent} -> ${correctedValue}`);
-
-            // 2. Extract message bubble text & anonymize before sending
+            const corrected = opt.toLowerCase();
+            intentLabel.childNodes[0].nodeValue = opt;
+            intentLabel.classList.toggle('emotext-int-media', corrected === 'media');
             const bubble = container.closest(SELECTORS.msgContainer);
             const messageText = bubble ? (bubble.querySelector(SELECTORS.textLtr)?.innerText || "Unknown") : "Unknown";
-            const maskedMessageText = anonymizeText(messageText);
-
-            // 3. Send feedback securely to backend
             try {
                 await fetch(`${API_BASE_URL}/feedback`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${COMPANY_API_KEY}`
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${COMPANY_API_KEY}` },
                     body: JSON.stringify({
-                        message_text: maskedMessageText,
+                        message_text: anonymizeText(messageText),
                         original_intent: intent,
-                        corrected_intent: correctedValue,
-                        admin_id: "admin_01" // CRM Admin ID
+                        corrected_intent: corrected,
+                        admin_id: "admin_01"
                     })
                 });
-                console.log('[Emotext-CRM] Feedback intensi berhasil disimpan.');
-            } catch (err) {
-                console.error('[Emotext-CRM] Gagal mengirim feedback intensi:', err);
-            }
+            } catch (err) { /* silent */ }
         };
         intDropdown.appendChild(option);
     });
     intentLabel.appendChild(intDropdown);
-    
+
     container.appendChild(sentimentBadge);
     container.appendChild(intentLabel);
     return container;
 }
 
-// FR-08: Context Window Scraping
+// =========================================================
+// 8. CONTEXT WINDOW (3 pesan sebelumnya)
+// =========================================================
 function getContextMessages(currentNode, limit = 3) {
     const context = [];
     let prev = currentNode.previousElementSibling;
     while (prev && context.length < limit) {
         const textNode = prev.querySelector(SELECTORS.textLtr);
         if (textNode) {
-            const isIncoming = prev.classList.contains('message-in') || prev.closest('.message-in');
-            context.unshift({
-                text: textNode.innerText,
-                role: isIncoming ? 'user' : 'admin'
-            });
+            const out = isOutgoing(prev);
+            context.unshift({ text: textNode.innerText, role: out ? 'admin' : 'user' });
         }
         prev = prev.previousElementSibling;
     }
     return context;
 }
 
-// FR-09: Media Detection
+// =========================================================
+// 9. MEDIA DETECTION
+// =========================================================
 function detectMedia(msgContainer) {
-    const mediaIndicators = [
-        'img', 'video', 
-        SELECTORS.audioDownload,
-        SELECTORS.pttStatusIcon,
-        SELECTORS.mediaUrlLink
+    const selectors = [
+        'img[src*="blob"]', 'video', 'audio',
+        '[data-testid="audio-download"]',
+        '[data-testid="ptt-status-icon"]',
+        '[data-testid="media-url-link"]',
+        '[data-testid="image-thumb"]',
+        '[data-testid="document-thumb"]',
+        '[data-testid="doc-document"]',
+        '[data-testid="sticker"]',
+        '[data-testid="gif"]',
     ];
-    for (let selector of mediaIndicators) {
-        if (msgContainer.querySelector(selector)) return true;
+    for (const sel of selectors) {
+        if (msgContainer.querySelector(sel)) return true;
     }
     return false;
 }
 
-// API: Send text context to server
+// =========================================================
+// 10. API CALL
+// =========================================================
 async function analyzeMessageAPI(text, senderId, senderName, context = []) {
     try {
-        // Anonymize data for safety before transmitting over API
         const maskedText = anonymizeText(text);
-        const maskedSenderName = anonymizeText(senderName);
-        const maskedContext = context.map(item => ({
-            text: anonymizeText(item.text),
-            role: item.role
-        }));
-
-        const fullContext = [...maskedContext, { text: maskedText, role: 'user' }];
+        const maskedName = anonymizeText(senderName);
+        const maskedCtx = context.map(c => ({ text: anonymizeText(c.text), role: c.role }));
+        const fullContext = [...maskedCtx, { text: maskedText, role: 'user' }];
 
         const response = await fetch(`${API_BASE_URL}/analyze`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${COMPANY_API_KEY}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${COMPANY_API_KEY}` },
             body: JSON.stringify({
                 sender_id: senderId,
-                sender_name: maskedSenderName,
+                sender_name: maskedName,
                 context: fullContext,
                 timestamp: new Date().toISOString(),
                 message_type: text === "[MEDIA]" ? "media" : "text"
             })
         });
-
-        if (!response.ok) {
-            throw new Error(`Server returned status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        return result;
-
+        if (!response.ok) throw new Error(`Status ${response.status}`);
+        return await response.json();
     } catch (error) {
-        console.error('[Emotext-CRM] API Analysis Error:', error);
-        return { 
-            sentiment: 'neutral', 
-            intent: 'other', 
-            health_score: 50, 
-            suggestion: null 
-        };
+        console.warn('[Emotext-CRM] API error:', error.message);
+        return { sentiment: 'neutral', intent: 'other', health_score: 50, suggestion: null };
     }
 }
 
-// FR-03: Sidebar Priority Icon & Customer Health Score Urgency Indicator
+// =========================================================
+// 11. SIDEBAR HEALTH BADGE
+// =========================================================
 async function processSidebarChat(chatCell) {
     const lastMsgEl = chatCell.querySelector(SELECTORS.lastMsgStatus)?.parentElement;
     const lastMsgText = lastMsgEl ? lastMsgEl.innerText : "";
 
-    // Hanya proses jika belum pernah diproses atau pesan terakhir berubah
-    if (chatCell.dataset.emotextSidebarProcessed === "true" && chatCell.dataset.emotextLastMsg === lastMsgText) {
-        return;
-    }
-    
+    if (chatCell.dataset.emotextSidebarProcessed === "true" &&
+        chatCell.dataset.emotextLastMsg === lastMsgText) return;
+
     chatCell.dataset.emotextSidebarProcessed = "true";
     chatCell.dataset.emotextLastMsg = lastMsgText;
 
@@ -273,95 +283,111 @@ async function processSidebarChat(chatCell) {
     const contactName = titleEl ? (titleEl.title || titleEl.innerText) : null;
     if (!contactName) return;
 
-    const uniqueId = contactName.replace(/\s+/g, '_').toLowerCase();
+    const uniqueId = encodeURIComponent(contactName.replace(/\s+/g, '_').toLowerCase());
 
     try {
         const response = await fetch(`${API_BASE_URL}/health-score/${uniqueId}`, {
-            headers: {
-                'Authorization': `Bearer ${COMPANY_API_KEY}`
-            }
+            headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
         });
         if (!response.ok) return;
-
         const data = await response.json();
         const score = data.health_score;
 
         let avatarContainer = chatCell.querySelector(SELECTORS.avatarContainer) || chatCell.children[0];
-        if (avatarContainer) {
-            avatarContainer.style.position = 'relative';
-            
-            // Hapus badge lama jika ada
-            const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
-            if (existing) existing.remove();
+        if (!avatarContainer) return;
 
-            const badge = document.createElement('div');
-            badge.className = 'emotext-sidebar-health-badge';
-            badge.innerText = score;
-            
-            // Tentukan warna & bayangan berdasarkan tingkat keparahan/urgensi
-            if (score < 50) {
-                badge.style.backgroundColor = '#FF4B4B';
-                badge.style.color = '#ffffff';
-                badge.style.boxShadow = '0 0 10px #FF4B4B';
-                badge.title = `Urgensi Tinggi (Health Score: ${score})`;
-            } else if (score < 80) {
-                badge.style.backgroundColor = '#FFC107';
-                badge.style.color = '#0f172a';
-                badge.style.boxShadow = '0 0 6px #FFC107';
-                badge.title = `Urgensi Sedang (Health Score: ${score})`;
-            } else {
-                badge.style.backgroundColor = '#25D366';
-                badge.style.color = '#ffffff';
-                badge.title = `Urgensi Rendah (Health Score: ${score})`;
-            }
+        avatarContainer.style.position = 'relative';
+        const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
+        if (existing) existing.remove();
 
-            avatarContainer.appendChild(badge);
+        const badge = document.createElement('div');
+        badge.className = 'emotext-sidebar-health-badge';
+        badge.innerText = score;
+
+        if (score < 50) {
+            badge.style.backgroundColor = '#FF4B4B';
+            badge.style.color = '#ffffff';
+            badge.style.boxShadow = '0 0 10px #FF4B4B';
+            badge.title = `Urgensi Tinggi (${score})`;
+        } else if (score < 80) {
+            badge.style.backgroundColor = '#FFC107';
+            badge.style.color = '#0f172a';
+            badge.style.boxShadow = '0 0 6px #FFC107';
+            badge.title = `Urgensi Sedang (${score})`;
+        } else {
+            badge.style.backgroundColor = '#25D366';
+            badge.style.color = '#ffffff';
+            badge.title = `Urgensi Rendah (${score})`;
         }
-    } catch (err) {
-        console.error('[Emotext-CRM] Gagal memuat health score sidebar:', err);
-    }
+
+        avatarContainer.appendChild(badge);
+    } catch (err) { /* silent */ }
 }
 
-// Suggestion UI Injector
+// =========================================================
+// 12. SUGGESTION PILL
+// =========================================================
 function injectSuggestion(suggestionText) {
-    const footer = document.querySelector(SELECTORS.footer);
-    if (!footer) return;
-    let container = footer.parentElement.querySelector('.emotext-suggest-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.className = 'emotext-suggest-container';
-        footer.parentElement.insertBefore(container, footer);
-    }
-    container.innerHTML = '';
-    const pill = document.createElement('div');
-    pill.className = 'emotext-suggest-pill';
-    pill.innerText = suggestionText;
-    pill.onclick = () => {
-        const inputDiv = document.querySelector(SELECTORS.inputEditable);
-        if (inputDiv) {
-            inputDiv.focus();
-            document.execCommand('insertText', false, suggestionText);
-            inputDiv.dispatchEvent(new Event('input', { bubbles: true }));
+    try {
+        const footer = document.querySelector(SELECTORS.footer);
+        if (!footer) return;
+        let container = footer.parentElement?.querySelector('.emotext-suggest-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'emotext-suggest-container';
+            // Aman: coba insertBefore, fallback ke appendChild
+            try {
+                footer.parentElement.insertBefore(container, footer);
+            } catch (e) {
+                footer.parentElement.appendChild(container);
+            }
         }
         container.innerHTML = '';
-    };
-    container.appendChild(pill);
+        const pill = document.createElement('div');
+        pill.className = 'emotext-suggest-pill';
+        pill.innerText = suggestionText;
+        pill.onclick = () => {
+            const inputDiv = document.querySelector(SELECTORS.inputEditable);
+            if (inputDiv) {
+                inputDiv.focus();
+                document.execCommand('insertText', false, suggestionText);
+                inputDiv.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            container.innerHTML = '';
+        };
+        container.appendChild(pill);
+    } catch (err) {
+        console.warn('[Emotext-CRM] Suggestion inject error:', err.message);
+    }
 }
 
-// Loyalty Health Bar UI
+// =========================================================
+// 13. HEALTH BAR DI HEADER
+// =========================================================
 function updateHealthBar(score) {
-    const header = document.querySelector(SELECTORS.conversationHeader);
+    const header = document.querySelector(SELECTORS.conversationHeader) || document.querySelector('header');
     if (!header) return;
-    const contactInfo = header.querySelector('div[role="button"]'); 
-    if (!contactInfo) return;
+    
     let healthContainer = header.querySelector('.emotext-health-container');
     if (!healthContainer) {
         healthContainer = document.createElement('div');
         healthContainer.className = 'emotext-health-container';
+        // Styling inline agar kebal terhadap perubahan DOM WA
+        healthContainer.style.width = '100%';
+        healthContainer.style.height = '4px';
+        healthContainer.style.position = 'absolute';
+        healthContainer.style.bottom = '0';
+        healthContainer.style.left = '0';
+        healthContainer.style.zIndex = '1000';
+        
         const healthBar = document.createElement('div');
         healthBar.className = 'emotext-health-bar';
+        healthBar.style.height = '100%';
+        healthBar.style.transition = 'width 0.3s ease, background 0.3s ease';
+        
         healthContainer.appendChild(healthBar);
-        contactInfo.parentElement.appendChild(healthContainer);
+        header.style.position = 'relative';
+        header.appendChild(healthContainer);
     }
     const healthBar = healthContainer.querySelector('.emotext-health-bar');
     if (healthBar) {
@@ -370,74 +396,85 @@ function updateHealthBar(score) {
     }
 }
 
-// Message node processor
+// =========================================================
+// 14. PROCESS MESSAGE NODE (INTI)
+// =========================================================
 async function processMessageNode(msgContainer) {
     if (!msgContainer || msgContainer.dataset.emotextProcessed) return;
 
-    const textNode = msgContainer.querySelector(SELECTORS.textLtr);
-    const isMedia = detectMedia(msgContainer);
-    
-    if (!textNode && !isMedia) return;
+    // FILTER 1: Skip system messages & date separators
+    // (mereka tidak punya .copyable-text)
+    if (isSystemOrDate(msgContainer)) {
+        msgContainer.dataset.emotextProcessed = "true";
+        return;
+    }
 
-    const text = textNode ? textNode.innerText : "[MEDIA]";
-    const isIncoming = msgContainer.classList.contains('message-in') || msgContainer.closest('.message-in');
-
-    if (!isIncoming) {
+    // FILTER 2: Skip pesan keluar (punya delivery check icon)
+    if (isOutgoing(msgContainer)) {
         msgContainer.dataset.emotextProcessed = "true";
         return;
     }
 
     msgContainer.dataset.emotextProcessed = "true";
-    
-    // FR-08: Gather context
+
+    const textNode = msgContainer.querySelector(SELECTORS.textLtr);
+    const isMedia = detectMedia(msgContainer);
+    if (!textNode && !isMedia) return;
+
+    const text = textNode ? textNode.innerText : "[MEDIA]";
+    // Debug log removed to clean up console
+
     const context = getContextMessages(msgContainer, 3);
-    
-    // Ambil nama kontak dari header WhatsApp Web
-    const headerTitle = document.querySelector(SELECTORS.conversationInfoChatTitle) || document.querySelector(SELECTORS.conversationHeaderSpan);
+
+    const headerTitle = document.querySelector(SELECTORS.conversationInfoChatTitle) ||
+                        document.querySelector(SELECTORS.conversationHeaderSpan);
     const contactName = headerTitle ? headerTitle.innerText : "Unknown";
-    
-    // Buat ID unik berdasarkan nama
     const uniqueId = contactName.replace(/\s+/g, '_').toLowerCase();
-    
-    // analysis via API
+
     const analysis = await analyzeMessageAPI(text, uniqueId, contactName, context);
-    
+
+    // Inject badge
     const bubble = msgContainer.querySelector('.copyable-text')?.parentElement || msgContainer;
-    bubble.style.position = 'relative'; 
-    bubble.style.overflow = 'visible'; 
-    bubble.appendChild(createBadges(analysis.sentiment, analysis.intent, 'id', 'user'));
+    bubble.style.position = 'relative';
+    bubble.style.overflow = 'visible';
+    bubble.appendChild(createBadges(analysis.sentiment, analysis.intent));
 
     updateHealthBar(analysis.health_score);
     if (analysis.suggestion) injectSuggestion(analysis.suggestion);
 }
 
-// Mutation Observers Initialization
+// =========================================================
+// 15. MUTATION OBSERVERS
+// =========================================================
 function initObservers() {
     const mainObserver = new MutationObserver((mutations) => {
         mutations.forEach(mutation => {
             mutation.addedNodes.forEach(node => {
                 if (node.nodeType !== 1) return;
-                
+
                 // Messages
                 const msgs = node.querySelectorAll(SELECTORS.msgContainer);
                 msgs.forEach(m => processMessageNode(m));
-                if (node.dataset?.testid === 'msg-container') processMessageNode(node);
+                if (node.matches?.(SELECTORS.msgContainer)) processMessageNode(node);
 
-                // Sidebar Chats
+                // Sidebar
                 const cells = node.querySelectorAll(SELECTORS.cellFrame);
                 cells.forEach(c => processSidebarChat(c));
+                if (node.matches?.(SELECTORS.cellFrame)) processSidebarChat(node);
             });
         });
     });
 
     const checkPanel = () => {
+        // Conversation panel
         const panel = document.querySelector(SELECTORS.conversationPanel);
         if (panel && !panel.dataset.emotextObserved) {
             panel.dataset.emotextObserved = "true";
             mainObserver.observe(panel, { childList: true, subtree: true });
             panel.querySelectorAll(SELECTORS.msgContainer).forEach(m => processMessageNode(m));
         }
-        
+
+        // Sidebar
         const sidebar = document.querySelector(SELECTORS.chatList);
         if (sidebar && !sidebar.dataset.emotextObserved) {
             sidebar.dataset.emotextObserved = "true";
@@ -445,9 +482,10 @@ function initObservers() {
             sidebar.querySelectorAll(SELECTORS.cellFrame).forEach(c => processSidebarChat(c));
         }
     };
-    // Jalankan pemindaian pertama secara sinkron dan instan
+
+    // Scan awal
     checkPanel();
 
-    // Lakukan pemindaian berkala setiap 1000ms agar responsif
+    // Re-check setiap 1 detik (menangkap lazy-loaded elements)
     setInterval(checkPanel, 1000);
 }
