@@ -39,17 +39,19 @@ let TERMS_AGREED = false;
 // =========================================================
 // 3. INITIALIZATION
 // =========================================================
-chrome.storage.local.get(['emotext_api_key', 'emotext_terms_agreed'], (result) => {
+chrome.storage.local.get(['emotext_terms_agreed', 'emotext_api_key'], (result) => {
     TERMS_AGREED = result.emotext_terms_agreed || false;
-    COMPANY_API_KEY = result.emotext_api_key || 'DUMMY_KEY';
-    console.log(`[Emotext-CRM] API Key: "${COMPANY_API_KEY}" | Terms: ${TERMS_AGREED}`);
+    COMPANY_API_KEY = result.emotext_api_key || null;
+    
+    injectStatusIndicator(COMPANY_API_KEY !== null);
 
-    if (TERMS_AGREED) {
-        console.log('[Emotext-CRM] ✅ Monitoring dimulai...');
-        initObservers();
-    } else {
-        console.warn('[Emotext-CRM] ⛔ Extension disabled. Buka popup untuk menyetujui syarat.');
+    if (!TERMS_AGREED || !COMPANY_API_KEY) {
+        console.warn('[Emotext-CRM] ⚠️ Extension disabled. Buka popup untuk login.');
+        return;
     }
+
+    console.log('[Emotext-CRM] 🚀 Monitoring dimulai...');
+    initObservers();
 });
 
 // =========================================================
@@ -489,3 +491,58 @@ function initObservers() {
     // Re-check setiap 1 detik (menangkap lazy-loaded elements)
     setInterval(checkPanel, 1000);
 }
+
+// =========================================================
+// 16. WA UI STATUS INDICATOR
+// =========================================================
+function injectStatusIndicator(isActive) {
+    let indicator = document.getElementById('emotext-status-indicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'emotext-status-indicator';
+        indicator.style.position = 'fixed';
+        indicator.style.top = '12px';
+        indicator.style.left = '80px'; // Sebelah foto profil kiri
+        indicator.style.zIndex = '9999';
+        indicator.style.display = 'flex';
+        indicator.style.alignItems = 'center';
+        indicator.style.gap = '6px';
+        indicator.style.padding = '4px 8px';
+        indicator.style.background = 'rgba(15, 23, 42, 0.8)';
+        indicator.style.borderRadius = '12px';
+        indicator.style.border = '1px solid #334155';
+        indicator.style.backdropFilter = 'blur(4px)';
+        indicator.style.color = '#f8fafc';
+        indicator.style.fontSize = '11px';
+        indicator.style.fontFamily = 'system-ui, sans-serif';
+        indicator.style.fontWeight = '600';
+        indicator.style.pointerEvents = 'none'; // Jangan ganggu klik WA
+        
+        const dot = document.createElement('div');
+        dot.id = 'emotext-status-dot';
+        dot.style.width = '8px';
+        dot.style.height = '8px';
+        dot.style.borderRadius = '50%';
+        
+        const text = document.createElement('span');
+        text.id = 'emotext-status-text';
+        
+        indicator.appendChild(dot);
+        indicator.appendChild(text);
+        document.body.appendChild(indicator);
+    }
+    
+    const dot = document.getElementById('emotext-status-dot');
+    const text = document.getElementById('emotext-status-text');
+    
+    if (isActive) {
+        dot.style.background = '#10b981'; // Green
+        dot.style.boxShadow = '0 0 6px rgba(16, 185, 129, 0.5)';
+        text.innerText = 'Emotext: ON';
+    } else {
+        dot.style.background = '#ef4444'; // Red
+        dot.style.boxShadow = '0 0 6px rgba(239, 68, 68, 0.5)';
+        text.innerText = 'Emotext: OFF (Login Req)';
+    }
+}
+
