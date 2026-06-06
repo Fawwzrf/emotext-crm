@@ -12,7 +12,8 @@
   },
   "host_permissions": [
     "https://web.whatsapp.com/*",
-    "https://api.emotext-crm.com/*"
+    "https://api.emotext-crm.com/*",
+    "http://127.0.0.1:8000/*"
   ],
   "content_scripts": [
     {

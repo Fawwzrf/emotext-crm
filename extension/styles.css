@@ -1,35 +1,80 @@
 /* Emotext-CRM Extension Styles */
 
-/* 1. Level Balon Chat: Sentiment Badge & Intent Label */
+
 .emotext-badges-container {
     position: absolute;
-    top: -10px;             /* Menempel/Menutup layer atas gelembung */
-    right: 12px;            /* Sisi kanan gelembung */
+    top: 3px;             
+    /* Mengunci posisi mulai dari sisi kanan gelembung pada layar lebar */
+    left: calc(100% + 6px); 
     display: flex;
     align-items: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2px 8px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    z-index: 100;
+    gap: 6px;
+    white-space: nowrap; /* Mencegah teks turun ke bawah */
+    
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 4px 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
+    z-index: 9999 !important;
     pointer-events: auto;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dinamis terhadap dimensi layar: reposisi jika lebar layar sempit (responsive fallback) */
+@media (max-width: 1100px) {
+    .emotext-badges-container {
+        left: auto;
+        right: 12px;
+        top: -14px; /* Mengambang di atas gelembung chat agar tidak terpotong ke kanan */
+        background: rgba(15, 23, 42, 0.9); /* Tema gelap premium agar kontras */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        padding: 3px 8px;
+    }
+    .emotext-badges-container:hover {
+        background: rgba(15, 23, 42, 0.98);
+    }
+    .emotext-badges-container .emotext-int-badge {
+        color: #cbd5e1; /* Sesuaikan warna label teks intent */
+    }
+}
+
+
+.emotext-badges-container:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .emotext-snt-badge {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     cursor: pointer;
     display: inline-block;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     position: relative;
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
+    border: 1.5px solid rgba(255,255,255,0.8);
 }
 
 .emotext-snt-badge:hover {
-    transform: scale(1.2);
+    /* Menghapus scale agar tidak flicker saat transisi mouse */
+    transform: none;
+}
+
+/* Sensor transparan untuk menjaga koneksi hover antara titik dan menu */
+.emotext-snt-badge::after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    right: -15px;
+    bottom: -10px;
+    background: transparent;
+    z-index: 1;
 }
 
 .emotext-snt-negative { background-color: #FF4B4B; }
@@ -39,48 +84,110 @@
 /* In-loop Feedback Dropdown */
 .emotext-snt-dropdown {
     position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    z-index: 1000;
+    bottom: calc(100% + 10px);
+    left: -10px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     display: none;
     flex-direction: column;
-    padding: 4px;
     min-width: 100px;
+    z-index: 10000 !important;
+    overflow: hidden;
+    padding: 4px;
 }
+
+/* Invisible bridge to prevent dropdown from disappearing when moving mouse */
+.emotext-snt-dropdown::before {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    right: -20px;
+    height: 40px;
+    background: transparent;
+    z-index: -1;
+}
+
 .emotext-snt-badge:hover .emotext-snt-dropdown,
 .emotext-snt-dropdown:hover {
     display: flex;
 }
 
-.emotext-snt-option {
-    padding: 6px 10px;
-    font-size: 11px;
-    color: #333;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-.emotext-snt-option:hover {
-    background: #f0f2f5;
+/* Intent Feedback Dropdown */
+.emotext-int-dropdown {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: -10px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    min-width: 110px;
+    z-index: 10000 !important;
+    overflow: hidden;
+    padding: 4px;
 }
 
 .emotext-int-badge {
-    border-radius: 8px;
-    font-size: 10px;
-    padding: 1px 6px;
-    background: #f0f2f5;
-    color: #54656f;
-    border: 1px solid rgba(0,0,0,0.05);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
+    position: relative;
+    cursor: pointer;
 }
+
+.emotext-int-badge:hover .emotext-int-dropdown,
+.emotext-int-dropdown:hover {
+    display: flex;
+}
+
+/* Invisible bridge for intent dropdown to prevent premature mouseout */
+.emotext-int-dropdown::before {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    right: -20px;
+    height: 40px;
+    background: transparent;
+    z-index: -1;
+}
+
+.emotext-snt-option {
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.emotext-snt-option:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: #000;
+}
+
+.emotext-int-badge {
+    font-size: 9px;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.emotext-snt-positive { background-color: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+.emotext-snt-neutral { background-color: #64748b; box-shadow: 0 0 8px rgba(100, 116, 139, 0.4); }
+.emotext-snt-negative { background-color: #f43f5e; box-shadow: 0 0 8px rgba(244, 63, 94, 0.4); }
 
 /* 2. Level Header Chat: Customer Health Bar */
 .emotext-health-container {
@@ -111,6 +218,24 @@
     border: 2px solid white;
     z-index: 10;
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.emotext-sidebar-health-badge {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ffffff;
+    z-index: 100 !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 4. Smart Suggestion Integration: Pill */

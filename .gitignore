@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+*.pt
+*.safetensors
+config.json
+tokenizer_config.json
+tokenizer.json
+
+.venv/

@@ -1,0 +1,8 @@
+transformers
+fastapi
+uvicorn
+torch
+python-multipart
+sentence-transformers
+sqlalchemy
+psycopg2-binary

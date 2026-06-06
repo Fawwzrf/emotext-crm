@@ -1,0 +1,34 @@
+[
+  {
+    "intent": "inquiry",
+    "responses": [
+      "Halo kak 😊 ada yang bisa kami bantu terkait produk?",
+      "Silakan kak, kami siap bantu info produk yang kakak butuhkan",
+      "Boleh kak, ingin tanya produk yang mana?"
+    ]
+  },
+  {
+    "intent": "order",
+    "responses": [
+      "Siap kak 🙌 mau order produk yang mana?",
+      "Boleh kak, silakan kirim detail pesanan ya",
+      "Kami bantu proses ordernya kak 😊"
+    ]
+  },
+  {
+    "intent": "complaint",
+    "responses": [
+      "Mohon maaf atas kendalanya kak 🙏 kami bantu cek ya",
+      "Kami sangat menyesal atas hal ini, bisa kirim detailnya kak?",
+      "Tim kami segera menindaklanjuti keluhan kakak"
+    ]
+  },
+  {
+    "intent": "other",
+    "responses": [
+      "Baik kak, kami bantu ya 😊",
+      "Silakan kak, ada yang bisa dibantu?",
+      "Terima kasih sudah menghubungi kami"
+    ]
+  }
+]

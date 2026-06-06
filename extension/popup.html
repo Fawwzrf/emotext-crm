@@ -1,86 +1,368 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Emotext-CRM Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            width: 300px;
-            padding: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-            color: #333;
+        :root {
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --danger: #ef4444;
         }
+
+        body {
+            width: 320px;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #25D366;
-            letter-spacing: -1px;
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
+
         .subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        /* Step Management */
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Terms & Conditions styles */
+        .terms-container {
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #cbd5e1;
+            background: #0f172a;
+            margin-bottom: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .terms-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .terms-container::-webkit-scrollbar-thumb {
+            background-color: var(--border);
+            border-radius: 4px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input {
+            margin-top: 3px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
             font-size: 12px;
-            color: #666;
+            color: var(--text-muted);
+            user-select: none;
+            line-height: 1.4;
         }
+
+        /* Form Controls */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
+
         label {
             display: block;
-            font-size: 13px;
-            margin-bottom: 5px;
-            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #e2e8f0;
         }
-        input {
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 10px 12px;
+            background: #0f172a;
+            border: 1px solid var(--border);
             border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
             box-sizing: border-box;
             outline: none;
-            transition: border 0.3s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        input:focus {
-            border-color: #25D366;
+
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
         }
+
+        /* Password Wrapper for Eye Icon */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            padding-right: 36px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: var(--text-main);
+        }
+
         button {
             width: 100%;
-            padding: 12px;
-            background: #25D366;
-            color: white;
+            padding: 11px;
+            background: var(--primary);
+            color: #0f172a;
             border: none;
             border-radius: 8px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background-color 0.2s, transform 0.1s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        button:hover {
-            background: #128C7E;
+
+        button:hover:not(:disabled) {
+            background: var(--primary-hover);
         }
+
+        button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background: #475569;
+            color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Spinner Animation */
+        .spinner {
+            animation: rotate 2s linear infinite;
+            z-index: 2;
+            width: 16px;
+            height: 16px;
+        }
+        .spinner .path {
+            stroke: currentColor;
+            stroke-linecap: round;
+            animation: dash 1.5s ease-in-out infinite;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes dash {
+            0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+            50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+            100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+        }
+
         #status {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 12px;
-            height: 15px;
+            min-height: 18px;
+            font-weight: 500;
         }
-        .success { color: #25D366; }
-        .error { color: #ef4444; }
+
+        .success { color: var(--primary); }
+        .error { color: var(--danger); }
+        .info { color: #3b82f6; }
+
+        /* Dashboard Styles */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-email {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">EmoText CRM</div>
-        <div class="subtitle">AI-Powered WA Intelligence</div>
+        <div class="subtitle">Enterprise AI Intelligence & Analytics</div>
     </div>
     
-    <div class="form-group">
-        <label for="apiKey">Company API Key</label>
-        <input type="password" id="apiKey" placeholder="Paste your API key here...">
+    <div class="card">
+        <!-- STEP 1: Terms & Conditions -->
+        <div id="step-terms" class="step active">
+            <label>Syarat & Ketentuan Penggunaan</label>
+            <div class="terms-container">
+                <strong>PENTING: Harap Baca Dengan Seksama</strong><br><br>
+                1. <strong>Tujuan Penggunaan</strong>: Ekstensi ini digunakan untuk menganalisis sentimen dan intensi pesan pada WhatsApp Web guna keperluan operasional CRM internal.<br><br>
+                2. <strong>Keamanan Data (UU PDP)</strong>: Seluruh konten pesan yang dianalisis akan diproses dan dikirim ke server CRM Anda. Ekstensi ini mendukung penyaringan otomatis (anonymization) data sensitif seperti nomor telepon pribadi sebelum dikirimkan ke server.<br><br>
+                3. <strong>Kebijakan Pihak Ketiga</strong>: Penggunaan ekstensi ini di WhatsApp Web dapat melanggar Ketentuan Layanan (ToS) WhatsApp/Meta. Pengguna bertanggung jawab penuh atas segala risiko pemblokiran akun WhatsApp yang digunakan oleh agen customer service.<br><br>
+                4. <strong>Lisensi & Hak Cipta</strong>: Seluruh kode dan infrastruktur dikembangkan untuk penggunaan internal perusahaan resmi yang sah. Segala modifikasi ilegal di luar izin manajemen dilarang.
+            </div>
+            
+            <div class="checkbox-group" id="agree-container">
+                <input type="checkbox" id="agreeCheck">
+                <div class="checkbox-label" for="agreeCheck">
+                    Saya memahami risiko ToS WhatsApp Web dan setuju untuk memproses data sesuai aturan privasi perusahaan.
+                </div>
+            </div>
+            
+            <button id="nextBtn" disabled>Setuju & Lanjutkan</button>
+        </div>
+
+        <!-- STEP 2: Login Form -->
+        <div id="step-login" class="step">
+            <div class="form-group">
+                <label for="emailInput">Alamat Email</label>
+                <input type="email" id="emailInput" placeholder="admin@perusahaan.com">
+            </div>
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="passwordInput" placeholder="Masukkan password...">
+                    <div class="toggle-password" id="togglePassword" title="Show/Hide Password">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="loginBtn">Masuk (Login)</button>
+        </div>
+
+        <!-- STEP 3: Dashboard (Logged In) -->
+        <div id="step-dashboard" class="step">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-details">
+                    <div class="user-email" id="displayEmail">admin@perusahaan.com</div>
+                    <div class="user-role">Agen Customer Service</div>
+                </div>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 16px; line-height: 1.5;">
+                Ekstensi Emotext CRM sedang aktif dan memonitor pesan masuk di WhatsApp Web Anda.
+            </p>
+            <button id="logoutBtn" class="btn-logout">Logout Akun</button>
+        </div>
     </div>
-    
-    <button id="saveBtn">Save & Authenticate</button>
+
     <div id="status"></div>
 
     <script src="popup.js"></script>
