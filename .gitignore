@@ -10,4 +10,14 @@ tokenizer.json
 .venv/
 
 # Secrets — jangan pernah di-commit!
-.env
+.env
+
+# Laravel (dashboard/)
+dashboard/vendor/
+dashboard/node_modules/
+dashboard/.env
+dashboard/storage/framework/cache/data/*
+!dashboard/storage/framework/cache/data/.gitignore
+dashboard/storage/logs/*.log
+dashboard/public/build/
+dashboard/public/hot
