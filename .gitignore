@@ -21,3 +21,5 @@ dashboard/storage/framework/cache/data/*
 dashboard/storage/logs/*.log
 dashboard/public/build/
 dashboard/public/hot
+
+extension/node_modules/

@@ -37,7 +37,63 @@
                 </div>
             @endif
 
+            <!-- 1. Per-Contact Health Stats -->
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Contact Analytics</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
+                    <div class="p-2 bg-green-50 rounded-xl mr-3">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Happy Contacts (>80%)</p>
+                        <h3 class="text-xl font-bold text-green-600">{{ number_format($stats['positive_contacts']) }}</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
+                    <div class="p-2 bg-red-50 rounded-xl mr-3">
+                        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">At Risk Contacts (<50%)</p>
+                        <h3 class="text-xl font-bold text-red-600">{{ number_format($stats['negative_contacts']) }}</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
+                    <div class="p-2 bg-gray-50 rounded-xl mr-3">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Avg Confidence</p>
+                        <h3 class="text-xl font-bold text-gray-700">{{ $stats['avg_confidence'] }}%</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
+                    <div class="p-2 bg-blue-50 rounded-xl mr-3">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Total Contacts</p>
+                        <h3 class="text-xl font-bold text-gray-700">{{ number_format($stats['total_contacts']) }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Message Level Stats -->
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Message Analytics</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
+                    <div class="p-2 bg-blue-50 rounded-xl mr-3">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Pesan Diproses</p>
+                        <h3 class="text-xl font-bold text-gray-700">{{ number_format($stats['total_processed']) }}</h3>
+                    </div>
+                </div>
+
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
                     <div class="p-2 bg-green-50 rounded-xl mr-3">
                         <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -67,29 +123,58 @@
                         <h3 class="text-xl font-bold text-gray-700">{{ $stats['avg_confidence'] }}%</h3>
                     </div>
                 </div>
-
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
-                    <div class="p-2 bg-blue-50 rounded-xl mr-3">
-                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    </div>
-                    <div>
-                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Processed</p>
-                        <h3 class="text-xl font-bold text-gray-700">{{ number_format($stats['total_processed']) }}</h3>
-                    </div>
-                </div>
             </div>
 
-            <div class="bg-gray-200/50 p-1 rounded-xl inline-flex mb-8 w-full md:w-auto">
-                <button class="px-6 py-2 text-sm font-medium text-gray-500 flex items-center opacity-50 cursor-not-allowed"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Text Analyzer</button>
-                <button class="px-6 py-2 text-sm font-medium text-gray-500 flex items-center opacity-50 cursor-not-allowed"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Batch Upload</button>
+            <div class="bg-gray-200/50 p-1 rounded-xl inline-flex mb-8 w-full md:w-auto" x-data="{ showTextModal: false, showRagModal: false }">
+                <button @click="showTextModal = true" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Test AI Model</button>
+                <button @click="showRagModal = true" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Upload Dokumen RAG</button>
                 
+                <!-- Text Analyzer Modal -->
+                <div x-show="showTextModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="flex items-center justify-center min-h-screen p-4 text-center">
+                        <div x-show="showTextModal" x-transition.opacity class="fixed inset-0 transition-opacity" style="background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" @click="showTextModal = false"></div>
+                        <div x-show="showTextModal" x-transition class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full p-6 border border-gray-100">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Test AI Sentiment Model</h3>
+                            <p class="text-sm text-gray-500 mb-6">Uji coba model klasifikasi teks IndoBERT secara langsung.</p>
+                            
+                            <textarea class="w-full border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 mb-4 p-3 text-sm" rows="4" placeholder="Ketik kalimat komplain atau pujian di sini..."></textarea>
+                            
+                            <div class="flex justify-end gap-3 mt-4">
+                                <button @click="showTextModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200">Batal</button>
+                                <button @click="alert('API sedang dalam proses integrasi dengan ekstensi.')" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm" style="background-color: #2563eb; color: white;">Analisis Teks</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAG Upload Modal -->
+                <div x-show="showRagModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="flex items-center justify-center min-h-screen p-4 text-center">
+                        <div x-show="showRagModal" x-transition.opacity class="fixed inset-0 transition-opacity" style="background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" @click="showRagModal = false"></div>
+                        <div x-show="showRagModal" x-transition class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full p-6 border border-gray-100">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Upload Dokumen Pengetahuan RAG</h3>
+                            <p class="text-sm text-gray-500 mb-6">Unggah file PDF atau DOCX berisi FAQ/SOP. AI akan menggunakan dokumen ini sebagai basis pengetahuan untuk meracik balasan.</p>
+                            
+                            <div class="border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-8 flex flex-col justify-center items-center mb-6 hover:bg-blue-50 transition cursor-pointer">
+                                <svg class="w-10 h-10 text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                <span class="text-sm font-semibold text-blue-600">Klik untuk browse atau drag file kemari</span>
+                                <span class="text-xs text-gray-400 mt-1">Maks. 5MB per file (PDF, DOCX)</span>
+                            </div>
+
+                            <div class="flex justify-end gap-3 mt-4">
+                                <button @click="showRagModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200">Tutup</button>
+                                <button @click="alert('Modul VectorDB RAG akan segera diaktifkan.'); showRagModal = false;" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm" style="background-color: #2563eb; color: white;">Upload & Proses</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
                 <button @click="tab = 'sample'" 
                     :class="tab === 'sample' ? 'bg-white text-gray-900 shadow-sm font-bold' : 'text-gray-700 font-medium'"
                     class="px-6 py-2 text-sm rounded-lg flex items-center transition-all">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> Sample Data
                 </button>
 
-                <button @click="tab = 'analytics'" 
+                <button @click="tab = 'analytics'; setTimeout(() => window.dispatchEvent(new Event('resize')), 50);" 
                     :class="tab === 'analytics' ? 'bg-white text-gray-900 shadow-sm font-bold' : 'text-gray-700 font-medium'"
                     class="px-6 py-2 text-sm rounded-lg flex items-center transition-all">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> Analytics
@@ -108,99 +193,127 @@
             </div>
 
             <div x-show="tab === 'sample'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95">
-                <h3 class="text-xl font-bold text-gray-800">Sample Data Exploration</h3>
-                <p class="text-sm text-gray-500 mb-6">Explore pre-analyzed customer reviews and social media posts to understand sentiment patterns and see the analysis system in action.</p>
+                <h3 class="text-xl font-bold text-gray-800">Daftar Kontak (CRM View)</h3>
+                <p class="text-sm text-gray-500 mb-6">Klik pada masing-masing kontak untuk melihat detail dan riwayat keluhan/pesan mereka.</p>
 
                 <div class="space-y-4">
-                    @forelse($messages as $msg)
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative" x-data="{ showReply: false }">
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="flex items-center space-x-3">
-                                    <span class="px-3 py-1 bg-gray-50 border border-gray-100 text-[11px] rounded-lg font-bold text-gray-600 uppercase">{{ $msg->intent }}</span>
-                                    <span class="text-xs text-gray-400">{{ $msg->created_at->format('Y-m-d') }}</span>
+                    @forelse($contactsPaginator as $contact)
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" x-data="{ expanded: false }">
+                            
+                            <!-- Contact Header (Clickable) -->
+                            <div @click="expanded = !expanded" class="p-5 cursor-pointer hover:bg-gray-50 flex items-center justify-between transition border-b border-transparent" :class="expanded ? 'border-gray-100 bg-gray-50' : ''">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold">
+                                        {{ substr($contact->sender_name ?? $contact->sender_id, 0, 1) }}
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-800">{{ $contact->sender_name ?? $contact->sender_id }}</h4>
+                                        <p class="text-xs text-gray-500">{{ $contact->total_msgs }} Pesan &bull; Terakhir aktif: {{ \Carbon\Carbon::parse($contact->last_interaction)->diffForHumans() }}</p>
+                                    </div>
                                 </div>
-                                <div class="flex flex-col items-end">
-                                    <span class="px-4 py-1 rounded-lg text-[11px] font-black tracking-widest {{ $msg->sentiment == 'positive' ? 'bg-black text-white' : ($msg->sentiment == 'negative' ? 'bg-red-500 text-white' : 'bg-gray-400 text-white') }}">
-                                        {{ strtoupper($msg->sentiment) }}
-                                    </span>
-                                    <span class="text-[10px] text-gray-400 mt-1 font-semibold">{{ number_format($msg->confidence * 100, 1) }}% confidence</span>
+                                
+                                <div class="flex items-center gap-6">
+                                    <!-- Health Status -->
+                                    <div class="text-right hidden sm:block">
+                                        <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Health Score</p>
+                                        @if($contact->health_score >= 80)
+                                            <span class="text-green-600 font-bold">{{ round($contact->health_score) }}% (Positif)</span>
+                                        @elseif($contact->health_score < 50)
+                                            <span class="text-red-600 font-bold">{{ round($contact->health_score) }}% (At Risk)</span>
+                                        @else
+                                            <span class="text-gray-600 font-bold">{{ round($contact->health_score) }}% (Netral)</span>
+                                        @endif
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform duration-200" :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                                 </div>
                             </div>
 
-                            <p class="text-gray-700 text-sm mb-6 leading-relaxed font-medium">
-                                {{ $msg->message }}
-                            </p>
+                            <!-- Expanded Message List -->
+                            <div x-show="expanded" x-collapse x-cloak class="bg-gray-50 p-5 border-t border-gray-100">
+                                <h5 class="text-sm font-bold text-gray-700 mb-4">Riwayat Pesan Terakhir</h5>
+                                <div class="space-y-4">
+                                    @foreach($contact->messages as $msg)
+                                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative" x-data="{ showReply: false, showDetails: false }">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <div class="flex items-center space-x-3">
+                                                    <span class="px-3 py-1 bg-gray-50 border border-gray-100 text-[11px] rounded-lg font-bold text-gray-600 uppercase">{{ $msg->intent }}</span>
+                                                    <span class="text-xs text-gray-400">{{ $msg->created_at ? $msg->created_at->format('Y-m-d H:i') : 'Baru saja' }}</span>
+                                                </div>
+                                                <div class="flex flex-col items-end">
+                                                    <span class="px-4 py-1 rounded-lg text-[11px] font-black tracking-widest {{ $msg->sentiment == 'positive' ? 'bg-black text-white' : ($msg->sentiment == 'negative' ? 'bg-red-500 text-white' : 'bg-gray-400 text-white') }}">
+                                                        {{ strtoupper($msg->sentiment) }}
+                                                    </span>
+                                                </div>
+                                            </div>
 
-                            <div class="flex justify-between items-center pt-4 border-t border-gray-50 relative">
-                                <div class="flex items-center space-x-6 text-[12px] font-bold">
-                                    <span class="text-[#22c55e] flex items-center">
-                                        Positive: <span class="ml-1 opacity-90">{{ $msg->sentiment == 'positive' ? round($msg->confidence * 100) : '0' }}%</span>
-                                    </span>
-                                    <span class="text-[#ef4444] flex items-center">
-                                        Negative: <span class="ml-1 opacity-90">{{ $msg->sentiment == 'negative' ? round($msg->confidence * 100) : '0' }}%</span>
-                                    </span>
-                                    <span class="text-gray-400 flex items-center">
-                                        Neutral: <span class="ml-1 opacity-90">23%</span>
-                                    </span>
-                                </div>
-                                
-                                <div class="flex space-x-2">
-                                    <button @click="showReply = true" class="px-4 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-xs font-bold text-indigo-700 hover:bg-indigo-100 transition">
-                                        Generate Reply
-                                    </button>
-                                    <button class="px-4 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition font-medium">
-                                        View Details
-                                    </button>
-                                </div>
+                                            <p class="text-gray-800 text-sm mb-4 leading-relaxed font-medium">
+                                                "{{ $msg->message }}"
+                                            </p>
 
-                                <div x-show="showReply" x-cloak @click.away="showReply = false" 
-                                    class="absolute z-50 bottom-16 right-0 w-80 bg-white border border-indigo-100 shadow-xl rounded-xl p-4 transition-all">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Saran Balasan ({{ $msg->intent }})</span>
-                                        <button @click="showReply = false" class="text-gray-400 hover:text-gray-600 text-lg">&times;</button>
-                                    </div>
-                                    <p class="text-[11px] text-gray-600 italic mb-4 leading-relaxed">"{{ $msg->reply_suggestion }}"</p>
-                                    
-                                    <div class="flex items-center space-x-2 mt-4">
-                                        <a href="https://wa.me/{{ $msg->clean_phone }}?text={{ rawurlencode($msg->reply_suggestion) }}" 
-                                           target="_blank" 
-                                           class="flex-[2] inline-flex items-center justify-center bg-white border border-gray-200 rounded-lg py-2 px-3 hover:bg-gray-50 transition shadow-sm">
-                                            <svg class="w-4 h-4 mr-1.5 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.445 0 .081 5.391.079 11.99c0 2.112.552 4.175 1.598 5.987L0 24l6.149-1.613a11.78 11.78 0 005.894 1.57h.005c6.604 0 11.967-5.391 11.97-11.99a11.812 11.812 0 00-3.483-8.47z"/>
-                                            </svg>
-                                            <span class="text-[10px] font-bold text-[#25D366]">Kirim</span>
-                                        </a>
+                                            <div class="flex justify-between items-center pt-3 border-t border-gray-50">
+                                                <div class="text-[11px] font-bold flex gap-3">
+                                                    <span class="text-gray-400">Confidence: {{ number_format($msg->confidence * 100, 1) }}%</span>
+                                                </div>
+                                                
+                                                <div class="flex space-x-2">
+                                                    <button @click="showReply = true" class="px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-[11px] font-bold text-indigo-700 hover:bg-indigo-100 transition">Generate Reply</button>
+                                                    <button @click="showDetails = true" class="px-3 py-1.5 border border-gray-200 rounded-lg text-[11px] font-bold text-gray-700 hover:bg-gray-50 transition">View Details</button>
+                                                </div>
+                                            </div>
 
-                                        <button @click="navigator.clipboard.writeText('{{ $msg->reply_suggestion }}'); alert('Copied!');" 
-                                            class="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded-lg text-[10px] font-bold hover:bg-gray-200 transition shadow-sm border border-gray-200">
-                                            Salin Teks
-                                        </button>
-                                    </div>
-                                    
-                                    <form action="{{ route('messages.resolve', $msg->id) }}" method="POST" class="mt-2">
-                                        @csrf
-                                        @patch
-                                        <button type="submit" 
-                                            class="w-full py-2 bg-gray-800 text-white rounded-lg text-[10px] font-bold hover:bg-black transition">
-                                            Tandai Selesai (Resolve)
-                                        </button>
-                                    </form>
+                                            <!-- Reply Popup Inline -->
+                                            <div x-show="showReply" x-collapse x-cloak class="mt-4 pt-4 border-t border-gray-100">
+                                                <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Saran Balasan AI</span>
+                                                        <button @click="showReply = false" class="text-gray-400 hover:text-gray-600 text-lg">&times;</button>
+                                                    </div>
+                                                    <p class="text-xs text-gray-700 mb-4 leading-relaxed bg-white p-3 rounded-lg border border-gray-200 shadow-sm">"{{ $msg->reply_suggestion }}"</p>
+                                                    
+                                                    <div class="flex flex-col sm:flex-row gap-2">
+                                                        <button @click="navigator.clipboard.writeText('{{ $msg->reply_suggestion }}'); alert('Disalin ke clipboard!');" 
+                                                            class="flex-1 bg-green-50 text-green-700 py-2 rounded-lg text-xs font-bold hover:bg-green-100 transition border border-green-200">
+                                                            📋 Salin Teks
+                                                        </button>
+                                                        
+                                                        <form action="{{ route('messages.resolve', $msg->id) }}" method="POST" class="flex-1">
+                                                            @csrf @method('PATCH')
+                                                            <button type="submit" class="w-full py-2 bg-gray-800 text-white rounded-lg text-xs font-bold hover:bg-black transition">✓ Tandai Selesai</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                    @if($msg->status == 'resolved')
-                                        <p class="text-[9px] text-green-600 mt-2 font-bold italic">
-                                            ✓ Diselesaikan oleh: {{ $msg->resolver->name ?? 'Admin' }}
-                                        </p>
-                                    @endif
+                                            <!-- Details Modal -->
+                                            <div x-show="showDetails" x-cloak class="fixed inset-0 z-[100] overflow-y-auto">
+                                                <div class="flex items-center justify-center min-h-screen p-4 text-center">
+                                                    <div x-show="showDetails" x-transition.opacity class="fixed inset-0 transition-opacity" style="background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" @click="showDetails = false"></div>
+                                                    <div x-show="showDetails" x-transition class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full p-6 border border-gray-100">
+                                                        <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Detail Pesan Masuk</h3>
+                                                        <div class="space-y-3 text-sm text-gray-700 mb-6">
+                                                            <div class="grid grid-cols-3 gap-2"><span class="font-semibold text-gray-500">ID Pesan:</span> <span class="col-span-2 font-mono">#{{ $msg->id }}</span></div>
+                                                            <div class="grid grid-cols-3 gap-2"><span class="font-semibold text-gray-500">Sentimen:</span> <span class="col-span-2 uppercase font-bold">{{ $msg->sentiment }} ({{ number_format($msg->confidence * 100, 1) }}%)</span></div>
+                                                            <div class="grid grid-cols-3 gap-2"><span class="font-semibold text-gray-500">Status:</span> 
+                                                                <span class="col-span-2 font-bold">{{ $msg->status == 'resolved' ? '✅ Diselesaikan oleh ' . ($msg->resolver->name ?? 'Admin') : '⌛ Menunggu' }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <button @click="showDetails = false" class="w-full inline-flex justify-center rounded-lg border border-gray-300 px-4 py-2 bg-white text-sm font-bold text-gray-700 hover:bg-gray-50">Tutup</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     @empty
                         <div class="p-12 text-center bg-white rounded-2xl border border-dashed text-gray-500 italic">
-                            No data available.
+                            Belum ada kontak atau pesan yang masuk.
                         </div>
                     @endforelse
                 </div>
-                <div class="mt-6">{{ $messages->links() }}</div>
+                <div class="mt-6">{{ $contactsPaginator->links() }}</div>
             </div>
         </div>
     </div>

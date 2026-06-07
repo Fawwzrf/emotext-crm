@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('messages', function (Blueprint $table) {
             // FK ke users — isolasi data per perusahaan
-            $table->foreignId('user_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->after('id')->constrained()->cascadeOnDelete();
             // Nama pengirim (sender_name dari extension)
             $table->string('sender_name')->nullable()->after('sender_id');
         });

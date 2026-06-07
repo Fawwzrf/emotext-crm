@@ -534,4 +534,4 @@ function injectStatusIndicator(isActive) {
         indicatorEl.title = 'Emotext CRM: OFF (Silakan Login)';
         indicatorEl.style.background = '#475569'; 
     }
-}
+}if (typeof module !== 'undefined') module.exports = { detectMedia, createBadges, updateHealthBar, injectStatusIndicator };

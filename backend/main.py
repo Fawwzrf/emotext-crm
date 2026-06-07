@@ -147,26 +147,33 @@ def analyze_message(
     else:
         print("-> Pesan LAMA terdeteksi (efek reload), diabaikan.")
 
-    # 4. Hitung Health Score Kumulatif
-    past_interactions = db.query(Message.sentiment).filter(
+    # 4. Hitung Health Score Kumulatif via SQL Aggregation
+    from sqlalchemy import case, func
+    stats = db.query(
+        func.count(Message.id).label("total_msgs"),
+        func.sum(
+            case(
+                (Message.sentiment == "positive", 100),
+                (Message.sentiment == "negative", 30),
+                else_=70
+            )
+        ).label("total_score")
+    ).filter(
         Message.user_id   == auth["user_id"],
         Message.sender_id == data.sender_id
-    ).all()
+    ).first()
 
-    total_score = 0
-    for (snt,) in past_interactions:
-        if snt == "positive":   total_score += 100
-        elif snt == "negative": total_score += 30
-        else:                   total_score += 70
+    total_msgs = stats.total_msgs or 0
+    total_score = stats.total_score or 0
 
-    cumulative_score = int(total_score / len(past_interactions)) if past_interactions else 70
+    cumulative_score = int(total_score / total_msgs) if total_msgs > 0 else 70
 
     if cumulative_score >= 80:   health_status = "Loyal"
     elif cumulative_score >= 50: health_status = "Good"
     else:                        health_status = "At Risk"
 
     print("=========================================")
-    print(f"Pesan dari: {data.sender_name} | Interaksi ke-{len(past_interactions)}")
+    print(f"Pesan dari: {data.sender_name} | Interaksi ke-{total_msgs}")
     print(f"[CHAT]: {data.context[-1].text}")
     print(f"[PREDICTION] Sentimen: {sentiment.upper()} | Intensi: {intent.upper()}")
     print(f"[LOYALTY] Cumulative Score: {cumulative_score} ({health_status.upper()})")
@@ -182,45 +189,6 @@ def analyze_message(
     }
 
 
-@app.get("/dashboard-stats")
-def get_dashboard_stats(
-    db: Session = Depends(get_db),
-    auth: dict = Depends(verify_api_key)
-):
-    user_id = auth["user_id"]
-
-    total_messages = db.query(Message).filter(Message.user_id == user_id).count()
-
-    intent_counts = db.query(
-        Message.intent,
-        func.count(Message.intent)
-    ).filter(Message.user_id == user_id).group_by(Message.intent).all()
-    intent_stats = {intent: count for intent, count in intent_counts}
-
-    sentiment_counts = db.query(
-        Message.sentiment,
-        func.count(Message.sentiment)
-    ).filter(Message.user_id == user_id).group_by(Message.sentiment).all()
-    sentiment_stats = {sentiment: count for sentiment, count in sentiment_counts}
-
-    recent_customers = db.query(Message.sender_name, Message.sentiment, Message.intent)\
-        .filter(Message.user_id == user_id)\
-        .order_by(Message.id.desc())\
-        .limit(5)\
-        .all()
-
-    return {
-        "summary": {
-            "total_interactions": total_messages,
-            "top_intent": max(intent_stats, key=intent_stats.get) if intent_stats else "N/A"
-        },
-        "intents":    intent_stats,
-        "sentiments": sentiment_stats,
-        "recent_activity": [
-            {"name": name, "sentiment": snt, "intent": intnt}
-            for name, snt, intnt in recent_customers
-        ]
-    }
 
 
 @app.get("/health-score/{sender_id:path}")
@@ -229,23 +197,30 @@ def get_health_score(
     db: Session = Depends(get_db),
     auth: dict = Depends(verify_api_key)
 ):
-    past_interactions = db.query(Message.sentiment).filter(
+    from sqlalchemy import case, func
+    stats = db.query(
+        func.count(Message.id).label("total_msgs"),
+        func.sum(
+            case(
+                (Message.sentiment == "positive", 100),
+                (Message.sentiment == "negative", 30),
+                else_=70
+            )
+        ).label("total_score")
+    ).filter(
         Message.user_id   == auth["user_id"],
         Message.sender_id == sender_id
-    ).all()
+    ).first()
 
-    total_score = 0
-    for (snt,) in past_interactions:
-        if snt == "positive":   total_score += 100
-        elif snt == "negative": total_score += 30
-        else:                   total_score += 70
+    total_msgs = stats.total_msgs or 0
+    total_score = stats.total_score or 0
 
-    cumulative_score = int(total_score / len(past_interactions)) if past_interactions else 70
+    cumulative_score = int(total_score / total_msgs) if total_msgs > 0 else 70
 
     return {
         "sender_id":          sender_id,
         "health_score":       cumulative_score,
-        "interactions_count": len(past_interactions)
+        "interactions_count": total_msgs
     }
 
 
