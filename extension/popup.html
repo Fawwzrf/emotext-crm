@@ -295,6 +295,31 @@
             color: var(--danger);
             border-color: rgba(239, 68, 68, 0.3);
         }
+
+        /* Trial Badge */
+        .trial-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .trial-badge.trial   { background: #ede9fe; color: #6d28d9; }
+        .trial-badge.warning { background: #fef3c7; color: #92400e; }
+        .trial-badge.expired { background: #fee2e2; color: #991b1b; }
+        .trial-badge.active  { background: #d1fae5; color: #065f46; }
+
+        .btn-open-dashboard {
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            color: white;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .btn-open-dashboard:hover:not(:disabled) {
+            opacity: 0.9;
+            background: linear-gradient(135deg, #059669 0%, #2563eb 100%);
+        }
     </style>
 </head>
 <body>
@@ -353,13 +378,15 @@
                 <div class="user-avatar" id="userAvatar">A</div>
                 <div class="user-details">
                     <div class="user-email" id="displayEmail">admin@perusahaan.com</div>
-                    <div class="user-role">Agen Customer Service</div>
+                    <div class="user-role" id="displayCompany" style="font-size:11px;color:var(--text-muted);margin-top:2px;"></div>
+                    <span class="trial-badge trial" id="trialBadge">Trial: 7 hari tersisa</span>
                 </div>
             </div>
-            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 16px; line-height: 1.5;">
-                Ekstensi Emotext CRM sedang aktif dan memonitor pesan masuk di WhatsApp Web Anda.
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 12px; line-height: 1.5;">
+                Extension aktif dan memonitor pesan masuk di WhatsApp Web.
             </p>
-            <button id="logoutBtn" class="btn-logout">Logout Akun</button>
+            <button id="openDashboardBtn" class="btn-open-dashboard">Buka Dashboard Analitik</button>
+            <button id="logoutBtn" class="btn-logout" style="margin-top:8px;">Logout Akun</button>
         </div>
     </div>
 
