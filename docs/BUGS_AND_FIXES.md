@@ -17,6 +17,22 @@ Dokumen ini melacak riwayat *bug* yang ditemukan pada sistem Emotext-CRM beserta
 | 7  | Dashboard (Laravel) | Mengalami masalah fatal *N+1 Query* di `dashboard.blade.php` karena memanggil relasi *resolver* di dalam *loop*. Terdapat juga *logic bug* di mana filter prioritas menyebabkan indikator metrik/stat berubah karena builder *query* yang termutasi. | **HIGH** | Menambahkan optimasi `with('resolver')` pada *Controller*. Memisahkan `$baseQuery` dan `$filteredQuery` menggunakan perintah `(clone $baseQuery)` agar perhitungan kartu metrik tetap murni. Melengkapi sistem dengan PHPUnit *Feature Test* untuk memastikan keamanan data jangka panjang. |
 | 8  | Dashboard UI (Blade) | *Pop-up* "Saran Balasan" terpotong (*clipping*) akibat `overflow-hidden` pada elemen parent. Efek *blur* (*backdrop-filter*) pada modal tidak muncul, dan warna tombol *tailwind* gagal me-render. | **LOW** (Visual) | Mengubah desain *pop-up* "Saran Balasan" dari `absolute` menjadi `inline` agar melebar dengan mulus (efek *accordion*). Menginjeksi CSS murni (*inline style*) untuk memaksa *backdrop blur* dan warna *background* tombol modal. |
 | 9  | Dashboard Analytics | *Pie Chart* hanya menampilkan warna abu-abu (Netral) karena logika terikat pada *Health Score* Kontak, bukan Pesan. Selain itu, *Chart.js* gagal memuat ukuran grafik (*blank/invisible*) karena diinisialisasi saat berada di dalam tab tersembunyi (`display: none`). | **MEDIUM** | Mengembalikan perhitungan `$pieData` di *Controller* menggunakan metrik Pesan (*positive/negative count*). Menambahkan fungsi *trigger* ukuran jendela (`window.dispatchEvent(new Event('resize'))`) pada tombol transisi *Alpine.js* agar Chart.js mencetak ulang dimensinya saat *tab* terlihat. |
+| 10 | Keamanan (Laravel) | Route `messages.resolve` (PATCH) berada di luar perlindungan middleware `auth`, memungkinkan penyerang menutup tiket pesan tanpa *login*. | **CRITICAL** | Memindahkan pendefinisian route `messages.resolve` ke dalam blok `Route::middleware('auth')` untuk mencegah eksploitasi URL terbuka. |
+| 11 | Backend API (FastAPI) | Terjadi *Race Condition* saat Ekstensi Chrome terpicu ganda (*double fetch*), sehingga membuat beberapa baris data kembar di Database PostgreSQL secara bersamaan. Algoritma dedup tidak sempat mencegah karena transaksi paralel. | **CRITICAL** | Membangun sistem "In-Memory Lock/Cache" di level Python menggunakan struktur `dict` dan `threading.Lock()` untuk membuang permintaan identik dari `sender_id` yang sama dalam jeda kurang dari 5 detik. |
+---
+
+## ✨ Fitur Baru yang Diimplementasikan
+
+Selain perbaikan *bug*, dokumen ini juga melacak fitur fungsional utama yang telah berhasil diimplementasikan ke dalam kode untuk menunjang kebutuhan bisnis (*Business Logic*):
+
+| No | Komponen | Nama Fitur | Deskripsi Pekerjaan |
+|----|----------|------------|---------------------|
+| 1  | Dashboard (Blade) | **Perombakan UI Daftar Kontak (Accordion CRM View)** | Merombak "Sample Data" yang awalnya hanya tumpukan pesan tak beraturan menjadi struktur "Daftar Kontak" yang dikelompokkan berdasarkan nomor/nama WA (`sender_id`). Menambahkan efek *Accordion* agar baris bisa diklik untuk melebar ke bawah dan menampilkan riwayat pesan tiap individu. |
+| 2  | Dashboard (Controller & UI) | **Pemisahan Metrik Ganda (Dual Metrics)** | Memecah kartu statistik Dasbor menjadi dua baris: **Contact Analytics** (Total pelanggan, tingkat risiko) dan **Message Analytics** (Volume pesan, rata-rata sentimen) agar informasi terbaca jelas dari sudut pandang prospek pelanggan maupun volume chat. |
+| 3  | Dashboard (Blade) | **Perbaikan Bug Tombol Resolve** | Memperbaiki *syntax error* di mana penulisan `@patch` menyebabkan error 500 (Route not defined). Diganti dengan sintaks Laravel yang valid yaitu `@method('PATCH')`. |
+| 4  | Database (Laravel) | **Skema Langganan (SaaS Trial System)** | Membuat migrasi `add_trial_fields_to_users_table` untuk menambahkan kolom `trial_ends_at`, `subscription_status`, dan `company_name` di tabel `users` guna mendukung logika masa percobaan dan *billing*. |
+| 5  | Database (Laravel) | **Skema Isolasi Data Perusahaan** | Membuat migrasi `add_user_id_and_sender_name_to_messages_table` agar setiap pesan WA terikat pada `user_id` (ID Perusahaan), sehingga data pelanggan dari klien A tidak terekspos ke dasbor klien B. |
+
 ---
 
 ## ⚠️ Keterbatasan Sistem dan Bug Terbuka (Open Issues)
@@ -54,7 +70,7 @@ Bagian ini memuat masalah logika atau keterbatasan sistem (*Known Limitations*) 
 
 ## 💡 Rekomendasi Arsitektur & Fungsionalitas Mendatang
 
-Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*), berikut adalah 4 rekomendasi utama untuk fase penyempurnaan (V2.0) guna menunjang skala bisnis:
+Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*), berikut adalah beberapa rekomendasi utama untuk fase penyempurnaan (V2.0) guna menunjang skala bisnis:
 
 ### 1. Ekstraksi Histori Chat Awal (Initial Sync)
 - **Kondisi Saat Ini:** Ekstensi hanya mulai menghitung skor CRM ketika ada pesan *baru* yang masuk saat ekstensi aktif (atau saat _chat_ baru saja dirender di layar). Database *fresh* akan selalu memunculkan angka netral 70.
@@ -71,3 +87,57 @@ Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*
 ### 4. Beralih ke Async Database Driver & Connection Pooling di FastAPI
 - **Kondisi Saat Ini:** FastAPI menggunakan `create_engine` standar. Kita telah melihat bahwa koneksi ke *Supabase PostgreSQL* bisa mengalami *Timeout* (SQLSTATE 08006). Jika ekstensi mengirim 100 *request* serentak, koneksi DB bisa tersendat.
 - **Rekomendasi:** Aktifkan **IPv4 Connection Pooling (PgBouncer)** di pengaturan Dasbor Supabase. Selain itu, migrasi *SQLAlchemy* di `database.py` agar menggunakan *driver* asinkron (`asyncpg` alih-alih `psycopg2`). Ini akan membebaskan *Event Loop* FastAPI untuk menangani ribuan *request* tanpa menunggu antrean *database*.
+
+### 5. Website Produk Terintegrasi (Landing Page & Onboarding)
+- **Rencana Pengguna:** Daripada membuat *empty state* kompleks di Dasbor, visi utamanya adalah membangun *website* produk komersial di halaman depan (sebelum masuk `/dashboard`).
+- **Rekomendasi Implementasi:** Buat halaman utama (`/`) di Laravel yang berisi *Landing Page*, Harga (Pricing/Stripe), panduan Instalasi Ekstensi Chrome, dan penjelasan fitur. *Empty state* di Dashboard cukup dihubungkan dengan *link* "Lihat Panduan Instalasi" yang mengarah ke dokumentasi di *website* produk tersebut.
+
+### 6. Visualisasi Komparasi Tanggal & Word Cloud di Analytics
+- **Kondisi Saat Ini:** Data grafik (Tren & Distribusi Sentimen) bersifat statis pada "Hari Ini", dan tidak memuat alasan spesifik *mengapa* sentimen negatif terjadi.
+- **Rekomendasi:** 
+  1. Tambahkan *Date Picker* global untuk memfilter data (Hari Ini, 7 Hari Terakhir, Bulan Ini) beserta persentase komparasinya (misal: "Naik 5% dari minggu lalu").
+  2. Implementasikan ekstraksi kata kunci di *backend* FastAPI (NLP untuk mendeteksi subjek seperti "pengiriman", "rusak", "pelayanan") lalu visualisasikan dalam bentuk *Word Cloud* di Dashboard agar manajemen mengetahui akar masalah komplain secara instan.
+
+### 7. Integrasi Vector Database (pgvector) untuk Modul RAG
+- **Kondisi Saat Ini:** Modul *Upload* Dokumen RAG belum terhubung ke mesin pengindeksan, dan kemampuan "Saran Balasan AI" saat ini murni menggunakan pencocokan *template JSON* yang statis.
+- **Rekomendasi:** Karena Anda sudah menggunakan infrastruktur Supabase, aktifkan modul **pgvector**. Ketika Admin mengunggah dokumen SOP/FAQ dalam bentuk PDF, sistem akan mengekstrak teksnya dan menyimpannya sebagai *Embeddings*. Ekstensi kemudian dapat menarik jawaban dinamis berbasis konteks korporat dari Vector Database tersebut, bukan lagi kalimat *template* statis.
+
+## 🚨 Bug & Kerentanan Keamanan Baru (Belum Terselesaikan)
+
+
+### 2. Tidak Ada Rate Limiting di FastAPI maupun Laravel
+- **Kondisi Saat Ini:** Baik di `main.py` maupun `api.php`, tidak ada mekanisme *rate limiting*.
+- **Dampak:** Penyerang bisa melakukan *brute-force* request ke endpoint `/analyze`, berpotensi membuat server AI crash karena model IndoBERT memakan memori berat per request.
+- **Rekomendasi:** Implementasikan rate limiter di FastAPI (misal `slowapi`) dan di Laravel (`throttle` middleware).
+
+
+### 4. Backend Logging Hanya Menggunakan `print()`
+- **Kondisi Saat Ini:** Seluruh logging di FastAPI menggunakan `print()` biasa tanpa file log persisten.
+- **Dampak:** Di lingkungan production, output akan hilang saat service di-restart, menyulitkan proses debugging.
+- **Rekomendasi:** Gunakan modul `logging` standar Python dan arahkan output ke file log (`app.log`).
+
+## 💡 Rekomendasi Teknis untuk Level Produk SaaS
+
+### 5. Token API Tersimpan Polos di Database (`api_token` Plain Text)
+- **Kondisi Saat Ini:** Token API di `users` disimpan dan dibandingkan secara *plain text*.
+- **Rekomendasi:** Hash token API di database (misalnya dengan SHA-256) agar jika database bocor, token kredensial klien tetap aman.
+
+### 6. `ManualCorrection` Tidak Memiliki Timestamps
+- **Kondisi Saat Ini:** Model `ManualCorrection` di SQLAlchemy tidak memiliki kolom `created_at` atau `updated_at`.
+- **Rekomendasi:** Tambahkan timestamps untuk mempermudah pemilahan data saat melakukan *fine-tuning* AI di masa mendatang.
+
+### 7. Kartu "Avg Confidence" Muncul Duplikat di Dashboard
+- **Kondisi Saat Ini:** Di file `dashboard.blade.php`, kartu "Avg Confidence" dirender di dua tempat (baris kontak dan baris metrik pesan).
+- **Rekomendasi:** Hapus salah satu kartu yang duplikat dan ganti dengan metrik yang lebih relevan (misal: Rata-rata waktu penyelesaian).
+
+### 8. Penggunaan `document.execCommand()` yang Sudah Deprecated
+- **Kondisi Saat Ini:** Di `content.js`, fungsi `injectSuggestion` menggunakan `document.execCommand('insertText')`.
+- **Rekomendasi:** Migrasikan ke API Clipboard modern atau *input injection* yang sesuai spesifikasi W3C karena API lama bisa dihapus sewaktu-waktu oleh Google Chrome.
+
+### 9. Hard-Coded `admin_id: "admin_01"` di Ekstensi
+- **Kondisi Saat Ini:** Saat koreksi sentimen dari ekstensi, payload yang dikirim men-set `admin_id` ke "admin_01" secara *hardcode*.
+- **Rekomendasi:** Gunakan data ID pengguna atau nama perusahaan riil yang didapat dari sesi login ekstensi.
+
+### 10. `getReplyTemplate()` Duplikasi Logika RAG
+- **Kondisi Saat Ini:** Fungsi statis pencocokan niat (*intent*) ke pesan balasan terdapat ganda: di `DashboardController.php` (Laravel) dan di `rag_service.py` (FastAPI).
+- **Rekomendasi:** Pusatkan *source of truth* logika saran balasan di backend AI. Laravel cukup merender apa yang diterima dari API FastAPI.

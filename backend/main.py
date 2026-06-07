@@ -7,6 +7,29 @@ from ai_service import predict_sentiment_and_intent
 from rag_service import get_smart_suggestion
 import hashlib
 import secrets
+import time
+import threading
+
+# Cache untuk mencegah Race Condition / Spam request
+RECENT_MESSAGES = {}
+recent_messages_lock = threading.Lock()
+
+def check_and_set_recent(sender_id, message_text):
+    key = f"{sender_id}:{message_text}"
+    current_time = time.time()
+    with recent_messages_lock:
+        if key in RECENT_MESSAGES:
+            # Jika ada request identik dalam 5 detik terakhir, tolak
+            if current_time - RECENT_MESSAGES[key] < 5:
+                return False
+        RECENT_MESSAGES[key] = current_time
+        
+        # Cleanup otomatis (hapus key lama agar memori tidak penuh)
+        keys_to_delete = [k for k, v in RECENT_MESSAGES.items() if current_time - v > 60]
+        for k in keys_to_delete:
+            del RECENT_MESSAGES[k]
+            
+        return True
 
 # Import dari file database & models
 from database import SessionLocal, engine
@@ -108,6 +131,19 @@ def analyze_message(
 
     last_message = data.context[-1].text
     last_message_lower = last_message.lower()
+
+    # Cegah Race Condition: Blokir request identik jika dikirim serentak dalam < 5 detik
+    if not check_and_set_recent(data.sender_id, last_message):
+        print(f"⚠️ [RACE CONDITION] Mengabaikan request duplikat dari {data.sender_name}")
+        # Kembalikan response sukses tapi anggap sebagai duplikat agar ekstensi tidak error
+        return {
+            "sentiment": "neutral",
+            "intent": "other",
+            "confidence": 1.0,
+            "health_score": 50,
+            "health_status": "Duplicate",
+            "suggestion": "Pesan ini diabaikan karena terdeteksi sebagai duplikat (race condition)."
+        }
 
     # 1. Rule-based override
     if any(word in last_message_lower for word in ["rusak", "kecewa", "jelek", "lambat", "penipuan", "beda", "paket", "belum", "sampai", "estimasi"]):

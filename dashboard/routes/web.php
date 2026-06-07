@@ -16,8 +16,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // BUG-01 FIXED: Melindungi endpoint ini dari eksploitasi tanpa login
+    Route::patch('/messages/{id}/resolve', [DashboardController::class, 'resolve'])->name('messages.resolve');
 });
-
-Route::patch('/messages/{id}/resolve', [DashboardController::class, 'resolve'])->name('messages.resolve');
 
 require __DIR__.'/auth.php';
