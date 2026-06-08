@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\ExtensionAuthController;
-use App\Http\Controllers\Api\MessageController;
 use App\Http\Middleware\ValidateExtensionToken;
 use Illuminate\Support\Facades\Route;
 
