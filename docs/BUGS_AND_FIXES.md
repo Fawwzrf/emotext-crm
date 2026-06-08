@@ -32,6 +32,7 @@ Selain perbaikan *bug*, dokumen ini juga melacak fitur fungsional utama yang tel
 | 3  | Dashboard (Blade) | **Perbaikan Bug Tombol Resolve** | Memperbaiki *syntax error* di mana penulisan `@patch` menyebabkan error 500 (Route not defined). Diganti dengan sintaks Laravel yang valid yaitu `@method('PATCH')`. |
 | 4  | Database (Laravel) | **Skema Langganan (SaaS Trial System)** | Membuat migrasi `add_trial_fields_to_users_table` untuk menambahkan kolom `trial_ends_at`, `subscription_status`, dan `company_name` di tabel `users` guna mendukung logika masa percobaan dan *billing*. |
 | 5  | Database (Laravel) | **Skema Isolasi Data Perusahaan** | Membuat migrasi `add_user_id_and_sender_name_to_messages_table` agar setiap pesan WA terikat pada `user_id` (ID Perusahaan), sehingga data pelanggan dari klien A tidak terekspos ke dasbor klien B. |
+| 6  | Website (Blade) | **Landing Page Produk SaaS Terintegrasi** | Membuat halaman utama modern (`/`) menggunakan Tailwind CSS dan Alpine.js yang memuat Hero Section (Mockup Dashboard), fitur unggulan (Bento Grid), dan Harga Langganan (Pricing). Menggantikan halaman welcome default Laravel. |
 
 ---
 
@@ -88,17 +89,13 @@ Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*
 - **Kondisi Saat Ini:** FastAPI menggunakan `create_engine` standar. Kita telah melihat bahwa koneksi ke *Supabase PostgreSQL* bisa mengalami *Timeout* (SQLSTATE 08006). Jika ekstensi mengirim 100 *request* serentak, koneksi DB bisa tersendat.
 - **Rekomendasi:** Aktifkan **IPv4 Connection Pooling (PgBouncer)** di pengaturan Dasbor Supabase. Selain itu, migrasi *SQLAlchemy* di `database.py` agar menggunakan *driver* asinkron (`asyncpg` alih-alih `psycopg2`). Ini akan membebaskan *Event Loop* FastAPI untuk menangani ribuan *request* tanpa menunggu antrean *database*.
 
-### 5. Website Produk Terintegrasi (Landing Page & Onboarding)
-- **Rencana Pengguna:** Daripada membuat *empty state* kompleks di Dasbor, visi utamanya adalah membangun *website* produk komersial di halaman depan (sebelum masuk `/dashboard`).
-- **Rekomendasi Implementasi:** Buat halaman utama (`/`) di Laravel yang berisi *Landing Page*, Harga (Pricing/Stripe), panduan Instalasi Ekstensi Chrome, dan penjelasan fitur. *Empty state* di Dashboard cukup dihubungkan dengan *link* "Lihat Panduan Instalasi" yang mengarah ke dokumentasi di *website* produk tersebut.
-
-### 6. Visualisasi Komparasi Tanggal & Word Cloud di Analytics
+### 5. Visualisasi Komparasi Tanggal & Word Cloud di Analytics
 - **Kondisi Saat Ini:** Data grafik (Tren & Distribusi Sentimen) bersifat statis pada "Hari Ini", dan tidak memuat alasan spesifik *mengapa* sentimen negatif terjadi.
 - **Rekomendasi:** 
   1. Tambahkan *Date Picker* global untuk memfilter data (Hari Ini, 7 Hari Terakhir, Bulan Ini) beserta persentase komparasinya (misal: "Naik 5% dari minggu lalu").
   2. Implementasikan ekstraksi kata kunci di *backend* FastAPI (NLP untuk mendeteksi subjek seperti "pengiriman", "rusak", "pelayanan") lalu visualisasikan dalam bentuk *Word Cloud* di Dashboard agar manajemen mengetahui akar masalah komplain secara instan.
 
-### 7. Integrasi Vector Database (pgvector) untuk Modul RAG
+### 6. Integrasi Vector Database (pgvector) untuk Modul RAG
 - **Kondisi Saat Ini:** Modul *Upload* Dokumen RAG belum terhubung ke mesin pengindeksan, dan kemampuan "Saran Balasan AI" saat ini murni menggunakan pencocokan *template JSON* yang statis.
 - **Rekomendasi:** Karena Anda sudah menggunakan infrastruktur Supabase, aktifkan modul **pgvector**. Ketika Admin mengunggah dokumen SOP/FAQ dalam bentuk PDF, sistem akan mengekstrak teksnya dan menyimpannya sebagai *Embeddings*. Ekstensi kemudian dapat menarik jawaban dinamis berbasis konteks korporat dari Vector Database tersebut, bukan lagi kalimat *template* statis.
 
