@@ -4,6 +4,9 @@ use App\Http\Controllers\Api\ExtensionAuthController;
 use App\Http\Middleware\ValidateExtensionToken;
 use Illuminate\Support\Facades\Route;
 
+// ─── Extension Config (Remote Config untuk ketahanan DOM) ────────────────────
+Route::get('/extension/config', [\App\Http\Controllers\Api\ExtensionConfigController::class, 'index']);
+
 // ─── Extension Auth (tanpa token, untuk login awal) ──────────────────────────
 Route::middleware('throttle:5,1')->post('/extension/login', [ExtensionAuthController::class, 'login']);
 

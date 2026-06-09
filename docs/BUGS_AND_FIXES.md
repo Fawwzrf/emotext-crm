@@ -25,6 +25,7 @@ Dokumen ini melacak riwayat *bug* yang ditemukan pada sistem Emotext-CRM beserta
 | 15 | Dashboard & FastAPI | Dasbor bersifat statis. Admin harus me-*refresh* halaman terus-menerus untuk melihat pesan terbaru dan peringatan komplain. | **HIGH** (UX) | Mengimplementasikan **WebSockets** (Laravel Reverb & Echo). FastAPI mengirim *Webhook* internal (`/api/internal/broadcast`), dan Laravel memancarkan event ke *Private Channel*, memicu Pop-up Visual (*Toast*) & Suara Audio ("Ting!") secara seketika (*Real-Time*). |
 | 16 | Keamanan (FastAPI & Laravel) | Tidak ada mekanisme pembatasan tingkat permintaan (*Rate Limiting*), memungkinkan penyerang melakukan *brute force* memori ML di FastAPI atau menebak kata sandi di Laravel. | **HIGH** (Security) | Mengimplementasikan `slowapi` limiter di FastAPI (30 req/min untuk `/analyze`, 20 req/min untuk `/feedback`), serta *throttle middleware* bawaan Laravel (5/min untuk Login, 60/min untuk API umum). |
 | 17 | Backend API (FastAPI) | Seluruh sistem *logging* masih menggunakan `print()` standar Python, yang membuat log hilang seketika saat *server* mati (*restart*). | **LOW** (DevOps) | Menambahkan modul `logging` bawaan Python. Semua output kini dialihkan ke file rekaman permanen (`app.log`) dengan format *timestamp* dan *log level* yang standar untuk memudahkan proses *debugging* tingkat produksi. |
+| 18 | Ekstensi & Dashboard | Selektor CSS (*classes*, `data-testid`) di dalam `content.js` bersifat *hardcoded*. Jika Meta mengubah antarmuka WA Web, ekstensi akan mati. | **MEDIUM** (Tech Debt) | Membangun sistem **Remote Config**. Mengekspos API publik di Laravel yang berisi *dictionary* selektor dari `config/extension.php`. Ekstensi akan mengunduh (*fetch*) selektor CSS secara dinamis setiap kali dimuat, sehingga kebal terhadap pembaruan UI WhatsApp tanpa perlu instal ulang. |
 ---
 
 ## ✨ Fitur Baru yang Diimplementasikan
@@ -87,11 +88,7 @@ Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*
 - **Kondisi Saat Ini:** Admin atau Manajer yang memantau Dasbor Laravel harus me-refresh halaman (atau mengandalkan Livewire polling) untuk melihat apakah ada komplain masuk yang butuh prioritas.
 - **Status:** ✅ **Telah Diimplementasikan** menggunakan Laravel Reverb. Dasbor kini mendukung pop-up visual dan audio notifikasi seketika tanpa refresh.
 
-### 3. Ketahanan DOM Selektor Ekstensi (Remote Config)
-- **Kondisi Saat Ini:** Selektor CSS (*classes*, `data-testid`) di dalam `content.js` bersifat *hardcoded*. Jika pihak Meta/WhatsApp mengubah antarmuka WhatsApp Web secara tiba-tiba, ekstensi ini bisa mati total (*broken*).
-- **Rekomendasi:** Buat endpoint API publik di Laravel (`/api/extension/config`). Ekstensi akan selalu *fetch* konfigurasi selektor CSS terbaru setiap kali Chrome dibuka. Jika Meta memperbarui WA Web, Anda hanya perlu mengubah *string* selektor di *database* server, dan ekstensi di seluruh komputer klien akan langsung sembuh tanpa perlu pembaruan ekstensi via Google Chrome Store.
-
-### 4. Beralih ke Async Database Driver & Connection Pooling di FastAPI
+### 3. Beralih ke Async Database Driver & Connection Pooling di FastAPI
 - **Kondisi Saat Ini:** FastAPI menggunakan `create_engine` standar. Kita telah melihat bahwa koneksi ke *Supabase PostgreSQL* bisa mengalami *Timeout* (SQLSTATE 08006). Jika ekstensi mengirim 100 *request* serentak, koneksi DB bisa tersendat.
 - **Rekomendasi:** Aktifkan **IPv4 Connection Pooling (PgBouncer)** di pengaturan Dasbor Supabase. Selain itu, migrasi *SQLAlchemy* di `database.py` agar menggunakan *driver* asinkron (`asyncpg` alih-alih `psycopg2`). Ini akan membebaskan *Event Loop* FastAPI untuk menangani ribuan *request* tanpa menunggu antrean *database*.
 

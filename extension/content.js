@@ -2,7 +2,7 @@
  * Emotext-CRM Extension - Content Script v3.2 (Click-to-Suggest RAG)
  */
 
-const SELECTORS = {
+let SELECTORS = {
     msgContainer: '[data-testid="msg-container"]',
     cellFrame: '[data-testid="cell-frame-container"]',
     textLtr: '.copyable-text [dir="ltr"], span[dir="ltr"]',
@@ -21,8 +21,24 @@ const SELECTORS = {
 };
 
 const API_BASE_URL = 'http://127.0.0.1:8000';
+const LARAVEL_BASE_URL = 'http://127.0.0.1:8001';
 let COMPANY_API_KEY = null;
 let TERMS_AGREED = false;
+
+async function fetchRemoteConfig() {
+    try {
+        const response = await fetch(`${LARAVEL_BASE_URL}/api/extension/config`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.selectors) {
+                SELECTORS = { ...SELECTORS, ...data.selectors };
+                console.log('[Emotext-CRM] Remote Config berhasil diunduh.', SELECTORS);
+            }
+        }
+    } catch (e) {
+        console.warn('[Emotext-CRM] Gagal mengunduh Remote Config, menggunakan fallback statis.', e);
+    }
+}
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'local' && changes.emotext_api_key) {
@@ -30,7 +46,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     }
 });
 
-chrome.storage.local.get(['emotext_terms_agreed', 'emotext_api_key'], (result) => {
+chrome.storage.local.get(['emotext_terms_agreed', 'emotext_api_key'], async (result) => {
     TERMS_AGREED = result.emotext_terms_agreed || false;
     COMPANY_API_KEY = result.emotext_api_key || null;
     
@@ -40,6 +56,9 @@ chrome.storage.local.get(['emotext_terms_agreed', 'emotext_api_key'], (result) =
         console.warn('[Emotext-CRM] ⚠️ Extension disabled. Buka popup untuk login.');
         return;
     }
+
+    // Ambil konfigurasi DOM terbaru dari Laravel sebelum memantau layar
+    await fetchRemoteConfig();
 
     console.log('[Emotext-CRM] 🚀 Monitoring dimulai...');
     initObservers();
