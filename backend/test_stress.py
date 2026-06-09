@@ -1,11 +1,13 @@
 import asyncio
 import httpx
 import time
+import pytest
 
 API_URL = "http://127.0.0.1:8000/analyze"
 TOKEN = "test_token_123"
 HEADERS = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
 
+@pytest.mark.anyio
 async def test_oom_long_text():
     print("\n--- 1. UJI OOM (OUT OF MEMORY) DENGAN KALIMAT PANJANG ---")
     # Generate a massive 10,000 word text without any rule-based keywords like "kecewa"
@@ -43,6 +45,7 @@ async def send_message(idx, client):
     except Exception as e:
         return f"Req {idx}: Error {e}"
 
+@pytest.mark.anyio
 async def test_race_condition():
     print("--- 2. UJI RACE CONDITION (5 REQUEST BERSAMAAN) ---")
     async with httpx.AsyncClient() as client:
@@ -50,10 +53,3 @@ async def test_race_condition():
         results = await asyncio.gather(*tasks)
         for res in results:
             print(res)
-
-async def main():
-    await test_oom_long_text()
-    await test_race_condition()
-
-if __name__ == "__main__":
-    asyncio.run(main())

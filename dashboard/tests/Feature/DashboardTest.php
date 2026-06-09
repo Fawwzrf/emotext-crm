@@ -50,35 +50,29 @@ class DashboardTest extends TestCase
         $this->assertLessThan(20, count($queries), "Terlalu banyak query dieksekusi! N+1 problem terdeteksi.");
     }
 
-    public function test_filter_marah_hanya_menampilkan_sentimen_negatif()
+    public function test_contact_crm_view_shows_correct_health_score()
     {
         $user = User::factory()->create([
             'subscription_status' => 'active',
             'company_name' => 'PT Testing'
         ]);
 
-        // Buat 1 pesan marah dan 1 pesan positif
+        // Buat 1 pesan marah
         $pesanMarah = Message::factory()->create([
             'user_id' => $user->id,
+            'sender_id' => 'Pelanggan 1',
             'sentiment' => 'negative',
             'message' => 'Pesan marah dummy 123'
         ]);
 
-        $pesanPositif = Message::factory()->create([
-            'user_id' => $user->id,
-            'sentiment' => 'positive',
-            'message' => 'Pesan positif dummy 456'
-        ]);
-
-        // Akses dashboard dengan filter negative
-        $response = $this->actingAs($user)->get('/dashboard?filter=negative');
+        $response = $this->actingAs($user)->get('/dashboard');
         
         $response->assertStatus(200);
         
-        // Assert pesan marah terlihat di layar
+        // Assert pesan marah terlihat di layar di bawah nama kontak
         $response->assertSee('Pesan marah dummy 123');
         
-        // Assert pesan positif TIDAK terlihat di layar
-        $response->assertDontSee('Pesan positif dummy 456');
+        // Assert health score dari contact ini muncul sebagai "At Risk" (di bawah 50%)
+        $response->assertSee('(At Risk)');
     }
 }
