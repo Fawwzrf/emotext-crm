@@ -161,7 +161,7 @@ class FeedbackRequest(BaseModel):
 from sqlalchemy import select
 
 @app.post("/analyze")
-@limiter.limit("30/minute")
+@limiter.limit("300/minute")
 async def analyze_message(
     request: Request,
     data: AnalyzeRequest,
@@ -313,7 +313,7 @@ async def get_health_score(
 
 
 @app.post("/feedback")
-@limiter.limit("20/minute")
+@limiter.limit("100/minute")
 async def save_feedback(
     request: Request,
     data: FeedbackRequest,

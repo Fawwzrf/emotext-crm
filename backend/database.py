@@ -17,6 +17,10 @@ if not SQLALCHEMY_DATABASE_URL:
 if SQLALCHEMY_DATABASE_URL.startswith("postgresql://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
+# Hapus parameter sslmode karena asyncpg tidak mendukungnya di format string
+if "?sslmode=" in SQLALCHEMY_DATABASE_URL:
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.split("?sslmode=")[0]
+
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL, future=True, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
 Base = declarative_base()

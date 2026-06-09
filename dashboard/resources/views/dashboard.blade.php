@@ -326,14 +326,32 @@
                 type: 'line',
                 data: {
                     labels: {!! json_encode($trendData->pluck('hour')->map(fn($h) => \Carbon\Carbon::parse($h)->format('H:i'))) !!},
-                    datasets: [{
-                        label: 'Messages',
-                        data: {!! json_encode($trendData->pluck('aggregate')) !!},
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
+                    datasets: [
+                        {
+                            label: 'Positive',
+                            data: {!! json_encode($trendData->pluck('positive_count')) !!},
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Negative',
+                            data: {!! json_encode($trendData->pluck('negative_count')) !!},
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Neutral',
+                            data: {!! json_encode($trendData->pluck('neutral_count')) !!},
+                            borderColor: '#64748b',
+                            backgroundColor: 'rgba(100, 116, 139, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
             });

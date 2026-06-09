@@ -55,8 +55,10 @@ class DashboardController extends Controller
         // ── 3. Line Chart (Tren per jam hari ini) ────────────────────────────
         $trendData = $user->messages()
             ->select(
-                DB::raw('count(*) as aggregate'),
-                DB::raw($dateTruncRaw)
+                DB::raw($dateTruncRaw),
+                DB::raw("SUM(CASE WHEN sentiment = 'positive' THEN 1 ELSE 0 END) as positive_count"),
+                DB::raw("SUM(CASE WHEN sentiment = 'negative' THEN 1 ELSE 0 END) as negative_count"),
+                DB::raw("SUM(CASE WHEN sentiment = 'neutral' THEN 1 ELSE 0 END) as neutral_count")
             )
             ->whereDate('created_at', today())
             ->groupBy('hour')
