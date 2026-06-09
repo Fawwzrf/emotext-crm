@@ -1,6 +1,6 @@
 # 🚀 Emotext-CRM
 
-Emotext-CRM adalah solusi cerdas untuk meningkatkan kualitas layanan pelanggan (Customer Service) di WhatsApp Web menggunakan AI (Artificial Intelligence). Sistem ini menganalisis sentimen pesan secara *real-time* (menggunakan model **IndoBERT**) dan memberikan saran balasan otomatis berdasarkan SOP perusahaan Anda (menggunakan RAG - *Retrieval-Augmented Generation*).
+Emotext-CRM adalah solusi cerdas untuk meningkatkan kualitas layanan pelanggan (Customer Service) di WhatsApp Web menggunakan AI (Artificial Intelligence). Sistem ini menganalisis sentimen pesan secara *real-time* (menggunakan model **IndoBERT yang dioptimasi dengan ONNX**) dan memberikan saran balasan otomatis berdasarkan SOP perusahaan Anda (menggunakan RAG - *Retrieval-Augmented Generation*).
 
 Semua keajaiban ini berjalan tanpa memerlukan akses API resmi WhatsApp yang berbayar (Official WhatsApp Business API), karena sistem diinjeksikan secara mulus melalui **Ekstensi Google Chrome**!
 
@@ -11,7 +11,8 @@ Semua keajaiban ini berjalan tanpa memerlukan akses API resmi WhatsApp yang berb
 2. **SOP Intelligence (RAG)**: AI membaca dokumen pedoman SOP Anda dan langsung menyarankan draf teks balasan yang akurat di atas kotak ketik WhatsApp.
 3. **Seamless Chrome Extension**: Menyatu langsung dengan antarmuka WhatsApp Web. Tidak perlu berpindah *tab* atau aplikasi.
 4. **Real-time Analytics Dashboard**: Pantau performa tim CS Anda, pantau "Health Score" pelanggan, dan visualisasikan data analitik operasional secara komprehensif.
-5. **Data Isolation (SaaS Ready)**: Arsitektur *multi-tenant* yang mengisolasi riwayat *chat* per akun pelanggan (*user_id*) dengan aman untuk komersialisasi *Software as a Service*.
+5. **Data Isolation & Security**: Arsitektur *multi-tenant* per pelanggan dengan lapisan keamanan *Hashing* SHA-256 untuk API Token ekstensi (SaaS Ready).
+6. **High Performance**: Backend FastAPI asinkron (*asyncpg*) dipadukan dengan komputasi model AI berformat ONNX untuk latensi di bawah 100 milidetik.
 
 ---
 
@@ -20,7 +21,7 @@ Semua keajaiban ini berjalan tanpa memerlukan akses API resmi WhatsApp yang berb
 Sistem ini terbagi menjadi 3 komponen repositori utama yang bekerja sama secara sinkron:
 
 1. **`backend/` (FastAPI + Python)**: Bertindak sebagai otak AI utama. Menjalankan model *Machine Learning* PyTorch dan *Knowledge Base* (RAG).
-2. **`dashboard/` (Laravel 11 + Tailwind + Alpine.js)**: Antarmuka Web untuk manajemen *marketing*, pembuatan akun pengguna (SaaS billing), dan dasbor analitik CRM perusahaan.
+2. **`dashboard/` (Laravel 11 + Tailwind + Alpine.js)**: Antarmuka Web terpusat untuk manajemen pengguna (SaaS), API Token *Security*, dan Dasbor analitik CRM.
 3. **`extension/` (JavaScript + Chrome API)**: Ekstensi *browser* yang ditempelkan ke DOM WhatsApp Web untuk memantau pesan masuk dan menampilkan UI panel AI.
 
 ---
@@ -78,6 +79,10 @@ cd dashboard
    npm run build
    php artisan serve --port=8001
    ```
+6. Buka terminal baru di folder `dashboard`, lalu jalankan server WebSocket (Reverb) agar fitur Real-Time aktif:
+   ```bash
+   php artisan reverb:start
+   ```
 > 💡 *Situs Landing Page & Dashboard sekarang bisa diakses di `http://127.0.0.1:8001`*
 
 ### Tahap 3: Menjalankan AI Backend (FastAPI)
@@ -105,7 +110,7 @@ cd backend
    ```
 4. Isi file `.env` dengan kredensial Supabase (Pastikan format koneksi SQLAlchemy benar):
    ```env
-   DATABASE_URL=postgresql://postgres.xxxx:password_anda@aws-0-....pooler.supabase.com:6543/postgres
+   DATABASE_URL=postgresql+asyncpg://postgres.xxxx:password_anda@aws-0-....pooler.supabase.com:6543/postgres
    ```
 5. Hidupkan *server* AI (Biarkan terminal ini terbuka):
    ```bash
