@@ -421,6 +421,11 @@
                     .listen('NewMessageAnalyzed', (e) => {
                         console.log('[WebSockets] New Message Arrived:', e);
                         window.dispatchEvent(new CustomEvent('new-message', { detail: e }));
+                        
+                        // Auto reload halaman setelah 3 detik agar grafik & tabel ter-update
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
                     });
             }
         });
