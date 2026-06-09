@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
@@ -9,6 +9,41 @@ import hashlib
 import secrets
 import time
 import threading
+import os
+import urllib.request
+import json
+from dotenv import load_dotenv
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+import logging
+
+# Konfigurasi Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("app.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("emotext")
+
+load_dotenv()
+LARAVEL_URL = os.getenv("LARAVEL_URL", "http://127.0.0.1:8001")
+INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "emotext_secret_internal_key_2026")
+
+def trigger_laravel_broadcast(message_id: int):
+    try:
+        url = f"{LARAVEL_URL.rstrip('/')}/api/internal/broadcast"
+        data = json.dumps({"message_id": message_id}).encode('utf-8')
+        req = urllib.request.Request(url, data=data, headers={
+            'Content-Type': 'application/json',
+            'X-Internal-Api-Key': INTERNAL_API_KEY
+        })
+        urllib.request.urlopen(req, timeout=3)
+    except Exception as e:
+        logger.error(f"[WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: {e}")
 
 # Cache untuk mencegah Race Condition / Spam request
 RECENT_MESSAGES = {}
@@ -49,6 +84,10 @@ def get_db():
 
 # ─── Inisialisasi FastAPI ────────────────────────────────────────────────────
 app = FastAPI(title="EmoText CRM API")
+
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -114,14 +153,16 @@ class FeedbackRequest(BaseModel):
     corrected_sentiment: Optional[str] = None
     original_intent: Optional[str] = None
     corrected_intent: Optional[str] = None
-    admin_id: str
 
 
 # ─── Endpoints ───────────────────────────────────────────────────────────────
 
 @app.post("/analyze")
+@limiter.limit("30/minute")
 def analyze_message(
+    request: Request,
     data: AnalyzeRequest,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     auth: dict = Depends(verify_api_key)
 ):
@@ -134,7 +175,7 @@ def analyze_message(
 
     # Cegah Race Condition: Blokir request identik jika dikirim serentak dalam < 5 detik
     if not check_and_set_recent(data.sender_id, last_message):
-        print(f"⚠️ [RACE CONDITION] Mengabaikan request duplikat dari {data.sender_name}")
+        logger.warning(f"[RACE CONDITION] Mengabaikan request duplikat dari {data.sender_name}")
         # Kembalikan response sukses tapi anggap sebagai duplikat agar ekstensi tidak error
         return {
             "sentiment": "neutral",
@@ -158,7 +199,7 @@ def analyze_message(
 
     # 2. RAG suggestion
     suggestion = get_smart_suggestion(intent, sentiment)
-    print(f"DEBUG: RAG suggestion untuk {intent} = {suggestion}")
+    logger.debug(f"RAG suggestion untuk {intent} = {suggestion}")
 
     # 3. Cek duplikasi & simpan ke tabel 'messages' (selaras dengan Laravel)
     existing_msg = db.query(Message).filter(
@@ -179,9 +220,12 @@ def analyze_message(
         db.add(new_log)
         db.commit()
         db.refresh(new_log)
-        print("-> Pesan BARU berhasil disimpan ke DB.")
+        logger.info(f"Pesan BARU dari {data.sender_name} berhasil disimpan ke DB.")
+        
+        # Trigger WebSockets di latar belakang
+        background_tasks.add_task(trigger_laravel_broadcast, new_log.id)
     else:
-        print("-> Pesan LAMA terdeteksi (efek reload), diabaikan.")
+        logger.info("Pesan LAMA terdeteksi (efek reload), diabaikan.")
 
     # 4. Hitung Health Score Kumulatif via SQL Aggregation
     from sqlalchemy import case, func
@@ -208,12 +252,7 @@ def analyze_message(
     elif cumulative_score >= 50: health_status = "Good"
     else:                        health_status = "At Risk"
 
-    print("=========================================")
-    print(f"Pesan dari: {data.sender_name} | Interaksi ke-{total_msgs}")
-    print(f"[CHAT]: {data.context[-1].text}")
-    print(f"[PREDICTION] Sentimen: {sentiment.upper()} | Intensi: {intent.upper()}")
-    print(f"[LOYALTY] Cumulative Score: {cumulative_score} ({health_status.upper()})")
-    print("=========================================\n")
+    logger.info(f"Pesan dari: {data.sender_name} | Interaksi ke-{total_msgs} | Sentimen: {sentiment.upper()} | Intensi: {intent.upper()} | Skor: {cumulative_score}")
 
     return {
         "sentiment":     sentiment,
@@ -261,7 +300,9 @@ def get_health_score(
 
 
 @app.post("/feedback")
+@limiter.limit("20/minute")
 def save_feedback(
+    request: Request,
     data: FeedbackRequest,
     db: Session = Depends(get_db),
     auth: dict = Depends(verify_api_key)

@@ -62,11 +62,11 @@
 
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center h-24">
                     <div class="p-2 bg-gray-50 rounded-xl mr-3">
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                     </div>
                     <div>
-                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Avg Confidence</p>
-                        <h3 class="text-xl font-bold text-gray-700">{{ $stats['avg_confidence'] }}%</h3>
+                        <p class="text-[12px] text-gray-400 font-medium leading-none mb-1">Neutral Contacts</p>
+                        <h3 class="text-xl font-bold text-gray-700">{{ number_format($stats['neutral_contacts']) }}</h3>
                     </div>
                 </div>
 
@@ -353,4 +353,58 @@
         });
     </script>
     <style>[x-cloak] { display: none !important; }</style>
+
+    {{-- ─── Real-Time Toast Notifications (WebSockets) ─── --}}
+    <div x-data="{ toasts: [] }" @new-message.window="
+        let msg = $event.detail;
+        let toast = { id: Date.now(), text: msg.message, sender: msg.sender_name, sentiment: msg.sentiment };
+        toasts.push(toast);
+        
+        // Audio Notifikasi jika Negatif
+        if(msg.sentiment === 'negative') {
+            let audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+            audio.play().catch(e => console.log('Audio autoplay blocked'));
+        }
+        
+        // Hapus toast setelah 6 detik
+        setTimeout(() => { toasts = toasts.filter(t => t.id !== toast.id) }, 6000);
+    " class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none">
+        <template x-for="toast in toasts" :key="toast.id">
+            <div x-show="true" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                class="pointer-events-auto px-5 py-4 rounded-2xl shadow-2xl border text-sm max-w-sm w-80 backdrop-blur-md"
+                :class="toast.sentiment === 'negative' ? 'bg-red-50/90 border-red-200 text-red-900' : (toast.sentiment === 'positive' ? 'bg-green-50/90 border-green-200 text-green-900' : 'bg-white/90 border-gray-200 text-gray-800')">
+                <div class="flex items-start gap-3">
+                    <div class="mt-0.5">
+                        <template x-if="toast.sentiment === 'negative'">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </template>
+                        <template x-if="toast.sentiment === 'positive'">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/></svg>
+                        </template>
+                        <template x-if="toast.sentiment === 'neutral'">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        </template>
+                    </div>
+                    <div>
+                        <div class="font-bold mb-1" x-text="toast.sentiment === 'negative' ? '🚨 Peringatan Komplain!' : (toast.sentiment === 'positive' ? '✨ Pujian Pelanggan' : '💬 Pesan Baru')"></div>
+                        <div class="font-semibold text-xs opacity-75 mb-1" x-text="toast.sender"></div>
+                        <div class="line-clamp-2 leading-relaxed" x-text="'&quot;' + toast.text + '&quot;'"></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    @vite(['resources/js/app.js'])
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.Echo) {
+                window.Echo.private(`company.{{ auth()->id() }}`)
+                    .listen('NewMessageAnalyzed', (e) => {
+                        console.log('[WebSockets] New Message Arrived:', e);
+                        window.dispatchEvent(new CustomEvent('new-message', { detail: e }));
+                    });
+            }
+        });
+    </script>
 </x-app-layout>

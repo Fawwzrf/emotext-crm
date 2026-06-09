@@ -118,8 +118,7 @@ function createBadges(sentiment, intent, confidence) {
                     body: JSON.stringify({
                         message_text: anonymizeText(messageText),
                         original_sentiment: sentiment,
-                        corrected_sentiment: corrected,
-                        admin_id: "admin_01"
+                        corrected_sentiment: corrected
                     })
                 });
             } catch (err) { /* silent */ }
@@ -154,8 +153,7 @@ function createBadges(sentiment, intent, confidence) {
                     body: JSON.stringify({
                         message_text: anonymizeText(messageText),
                         original_intent: intent,
-                        corrected_intent: corrected,
-                        admin_id: "admin_01"
+                        corrected_intent: corrected
                     })
                 });
             } catch (err) { /* silent */ }
@@ -337,8 +335,15 @@ function injectSuggestion(suggestionText) {
             const inputDiv = footer.querySelector('div[contenteditable="true"]') || document.querySelector(SELECTORS.inputEditable);
             if (inputDiv) {
                 inputDiv.focus();
-                document.execCommand('insertText', false, suggestionText);
-                inputDiv.dispatchEvent(new Event('input', { bubbles: true }));
+                
+                // Modern paste injection untuk menggantikan document.execCommand
+                const dataTransfer = new DataTransfer();
+                dataTransfer.setData('text/plain', suggestionText);
+                inputDiv.dispatchEvent(new ClipboardEvent('paste', {
+                    clipboardData: dataTransfer,
+                    bubbles: true,
+                    cancelable: true
+                }));
             }
             container.innerHTML = ''; 
         };

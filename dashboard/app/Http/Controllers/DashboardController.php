@@ -36,6 +36,7 @@ class DashboardController extends Controller
             'total_contacts'    => $totalContacts,
             'positive_contacts' => $positiveContacts,
             'negative_contacts' => $negativeContacts,
+            'neutral_contacts'  => $neutralContacts,
             'total_processed'   => $totalMessages,
             'avg_positive'      => $totalMessages > 0 ? round(($positiveCount / $totalMessages) * 100, 1) : 0,
             'avg_negative'      => $totalMessages > 0 ? round(($negativeCount / $totalMessages) * 100, 1) : 0,

@@ -19,6 +19,12 @@ Dokumen ini melacak riwayat *bug* yang ditemukan pada sistem Emotext-CRM beserta
 | 9  | Dashboard Analytics | *Pie Chart* hanya menampilkan warna abu-abu (Netral) karena logika terikat pada *Health Score* Kontak, bukan Pesan. Selain itu, *Chart.js* gagal memuat ukuran grafik (*blank/invisible*) karena diinisialisasi saat berada di dalam tab tersembunyi (`display: none`). | **MEDIUM** | Mengembalikan perhitungan `$pieData` di *Controller* menggunakan metrik Pesan (*positive/negative count*). Menambahkan fungsi *trigger* ukuran jendela (`window.dispatchEvent(new Event('resize'))`) pada tombol transisi *Alpine.js* agar Chart.js mencetak ulang dimensinya saat *tab* terlihat. |
 | 10 | Keamanan (Laravel) | Route `messages.resolve` (PATCH) berada di luar perlindungan middleware `auth`, memungkinkan penyerang menutup tiket pesan tanpa *login*. | **CRITICAL** | Memindahkan pendefinisian route `messages.resolve` ke dalam blok `Route::middleware('auth')` untuk mencegah eksploitasi URL terbuka. |
 | 11 | Backend API (FastAPI) | Terjadi *Race Condition* saat Ekstensi Chrome terpicu ganda (*double fetch*), sehingga membuat beberapa baris data kembar di Database PostgreSQL secara bersamaan. Algoritma dedup tidak sempat mencegah karena transaksi paralel. | **CRITICAL** | Membangun sistem "In-Memory Lock/Cache" di level Python menggunakan struktur `dict` dan `threading.Lock()` untuk membuang permintaan identik dari `sender_id` yang sama dalam jeda kurang dari 5 detik. |
+| 12 | Dashboard (Blade) | Kartu "Avg Confidence" dirender ganda (duplikat) di dua bagian, yaitu Contact Analytics dan Message Analytics. | **LOW** (Visual) | Menghapus kartu duplikat di "Contact Analytics" dan menggantinya dengan metrik baru "Neutral Contacts" agar statistik lebih komprehensif. |
+| 13 | Chrome Extension | Fungsi `injectSuggestion` menggunakan API lama `document.execCommand('insertText')` yang sudah didepresiasi oleh W3C dan bisa dihapus Chrome sewaktu-waktu. | **LOW** (Tech Debt) | Bermigrasi menggunakan `DataTransfer` dan `dispatchEvent(new ClipboardEvent('paste'))` modern yang meniru persis aksi *paste user*, sekaligus menjamin kompatibilitas dengan ekosistem DOM milik React. |
+| 14 | Ekstensi & FastAPI | Nilai `admin_id` di-hardcode ke "admin_01" oleh Ekstensi Chrome saat mengirim koreksi sentimen, dan backend mensyaratkannya. | **MEDIUM** | Menghapus persyaratan `admin_id` di Payload (`FeedbackRequest`) pydantic `main.py`, dan mengambil ID langsung secara dinamis dari `str(auth["user_id"])` JWT token, sehingga sistem lebih aman (bebas pemalsuan ID). |
+| 15 | Dashboard & FastAPI | Dasbor bersifat statis. Admin harus me-*refresh* halaman terus-menerus untuk melihat pesan terbaru dan peringatan komplain. | **HIGH** (UX) | Mengimplementasikan **WebSockets** (Laravel Reverb & Echo). FastAPI mengirim *Webhook* internal (`/api/internal/broadcast`), dan Laravel memancarkan event ke *Private Channel*, memicu Pop-up Visual (*Toast*) & Suara Audio ("Ting!") secara seketika (*Real-Time*). |
+| 16 | Keamanan (FastAPI & Laravel) | Tidak ada mekanisme pembatasan tingkat permintaan (*Rate Limiting*), memungkinkan penyerang melakukan *brute force* memori ML di FastAPI atau menebak kata sandi di Laravel. | **HIGH** (Security) | Mengimplementasikan `slowapi` limiter di FastAPI (30 req/min untuk `/analyze`, 20 req/min untuk `/feedback`), serta *throttle middleware* bawaan Laravel (5/min untuk Login, 60/min untuk API umum). |
+| 17 | Backend API (FastAPI) | Seluruh sistem *logging* masih menggunakan `print()` standar Python, yang membuat log hilang seketika saat *server* mati (*restart*). | **LOW** (DevOps) | Menambahkan modul `logging` bawaan Python. Semua output kini dialihkan ke file rekaman permanen (`app.log`) dengan format *timestamp* dan *log level* yang standar untuk memudahkan proses *debugging* tingkat produksi. |
 ---
 
 ## ✨ Fitur Baru yang Diimplementasikan
@@ -79,7 +85,7 @@ Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*
 
 ### 2. Koneksi Real-Time (WebSockets) untuk Dashboard
 - **Kondisi Saat Ini:** Admin atau Manajer yang memantau Dasbor Laravel harus me-refresh halaman (atau mengandalkan Livewire polling) untuk melihat apakah ada komplain masuk yang butuh prioritas.
-- **Rekomendasi:** Integrasikan **Laravel Reverb / Pusher WebSockets**. Ketika FastAPI mendeteksi pesan masuk bersentimen *"Negative"*, FastAPI akan menembak *webhook* ke Laravel, lalu Laravel memancarkan *event* ke *browser* admin. Notifikasi peringatan (Toast) dapat muncul secara *real-time* di layar manajer tanpa *refresh*.
+- **Status:** ✅ **Telah Diimplementasikan** menggunakan Laravel Reverb. Dasbor kini mendukung pop-up visual dan audio notifikasi seketika tanpa refresh.
 
 ### 3. Ketahanan DOM Selektor Ekstensi (Remote Config)
 - **Kondisi Saat Ini:** Selektor CSS (*classes*, `data-testid`) di dalam `content.js` bersifat *hardcoded*. Jika pihak Meta/WhatsApp mengubah antarmuka WhatsApp Web secara tiba-tiba, ekstensi ini bisa mati total (*broken*).
@@ -101,17 +107,7 @@ Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*
 
 ## 🚨 Bug & Kerentanan Keamanan Baru (Belum Terselesaikan)
 
-
-### 2. Tidak Ada Rate Limiting di FastAPI maupun Laravel
-- **Kondisi Saat Ini:** Baik di `main.py` maupun `api.php`, tidak ada mekanisme *rate limiting*.
-- **Dampak:** Penyerang bisa melakukan *brute-force* request ke endpoint `/analyze`, berpotensi membuat server AI crash karena model IndoBERT memakan memori berat per request.
-- **Rekomendasi:** Implementasikan rate limiter di FastAPI (misal `slowapi`) dan di Laravel (`throttle` middleware).
-
-
-### 4. Backend Logging Hanya Menggunakan `print()`
-- **Kondisi Saat Ini:** Seluruh logging di FastAPI menggunakan `print()` biasa tanpa file log persisten.
-- **Dampak:** Di lingkungan production, output akan hilang saat service di-restart, menyulitkan proses debugging.
-- **Rekomendasi:** Gunakan modul `logging` standar Python dan arahkan output ke file log (`app.log`).
+*(Saat ini semua bug kritis dan rekomendasi keamanan dasar telah ditangani. Lanjutkan fokus ke fitur pengembangan V2.0)*
 
 ## 💡 Rekomendasi Teknis untuk Level Produk SaaS
 
@@ -123,18 +119,6 @@ Sebagai sistem yang sudah stabil (*Production-Grade* dengan *100% Test Coverage*
 - **Kondisi Saat Ini:** Model `ManualCorrection` di SQLAlchemy tidak memiliki kolom `created_at` atau `updated_at`.
 - **Rekomendasi:** Tambahkan timestamps untuk mempermudah pemilahan data saat melakukan *fine-tuning* AI di masa mendatang.
 
-### 7. Kartu "Avg Confidence" Muncul Duplikat di Dashboard
-- **Kondisi Saat Ini:** Di file `dashboard.blade.php`, kartu "Avg Confidence" dirender di dua tempat (baris kontak dan baris metrik pesan).
-- **Rekomendasi:** Hapus salah satu kartu yang duplikat dan ganti dengan metrik yang lebih relevan (misal: Rata-rata waktu penyelesaian).
-
-### 8. Penggunaan `document.execCommand()` yang Sudah Deprecated
-- **Kondisi Saat Ini:** Di `content.js`, fungsi `injectSuggestion` menggunakan `document.execCommand('insertText')`.
-- **Rekomendasi:** Migrasikan ke API Clipboard modern atau *input injection* yang sesuai spesifikasi W3C karena API lama bisa dihapus sewaktu-waktu oleh Google Chrome.
-
-### 9. Hard-Coded `admin_id: "admin_01"` di Ekstensi
-- **Kondisi Saat Ini:** Saat koreksi sentimen dari ekstensi, payload yang dikirim men-set `admin_id` ke "admin_01" secara *hardcode*.
-- **Rekomendasi:** Gunakan data ID pengguna atau nama perusahaan riil yang didapat dari sesi login ekstensi.
-
-### 10. `getReplyTemplate()` Duplikasi Logika RAG
+### 7. `getReplyTemplate()` Duplikasi Logika RAG
 - **Kondisi Saat Ini:** Fungsi statis pencocokan niat (*intent*) ke pesan balasan terdapat ganda: di `DashboardController.php` (Laravel) dan di `rag_service.py` (FastAPI).
 - **Rekomendasi:** Pusatkan *source of truth* logika saran balasan di backend AI. Laravel cukup merender apa yang diterima dari API FastAPI.
