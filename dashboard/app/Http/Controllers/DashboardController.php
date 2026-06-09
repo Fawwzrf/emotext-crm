@@ -89,7 +89,7 @@ class DashboardController extends Controller
             $contact->messages = $messagesList->get($contact->sender_id, collect());
             
             foreach ($contact->messages as $msg) {
-                $msg->reply_suggestion = $this->getReplyTemplate($msg->intent);
+                $msg->reply_suggestion = $msg->suggestion ?? 'Belum ada saran balasan.';
                 $cleanPhone = preg_replace('/[^0-9]/', '', $msg->sender_id);
                 if (str_starts_with($cleanPhone, '0')) {
                     $cleanPhone = '62' . substr($cleanPhone, 1);
@@ -122,13 +122,4 @@ class DashboardController extends Controller
         return back()->with('success', 'Pesan berhasil ditandai sebagai selesai.');
     }
 
-    private function getReplyTemplate($intent)
-    {
-        return match($intent) {
-            'complaint' => "Mohon maaf atas ketidaknyamanannya. Keluhan Anda sedang kami proses oleh tim teknis. Mohon tunggu update selanjutnya.",
-            'order'     => "Terima kasih atas pesanannya! Mohon kirimkan format alamat lengkap untuk kami hitung total ongkos kirimnya.",
-            'inquiry'   => "Halo! Terima kasih sudah bertanya. Untuk informasi lebih lanjut mengenai layanan kami, Anda bisa cek di website resmi kami.",
-            default     => "Halo, terima kasih telah menghubungi kami. Ada yang bisa kami bantu?",
-        };
-    }
 }

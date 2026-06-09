@@ -27,8 +27,13 @@ class ExtensionAuthController extends Controller
             return response()->json(['message' => 'Email atau password salah.'], 401);
         }
 
+        // Generate token baru setiap kali login
+        $plain_token = User::generateApiToken();
+        $user->api_token = hash('sha256', $plain_token);
+        $user->save();
+
         return response()->json([
-            'api_token'           => $user->api_token,
+            'api_token'           => $plain_token,
             'subscription_status' => $user->subscription_status,
             'is_active'           => $user->isActive(),
             'trial_days_left'     => $user->trialDaysLeft(),

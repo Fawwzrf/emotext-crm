@@ -73,14 +73,11 @@ from models import Message, ManualCorrection
 from sqlalchemy import Column, Integer, String, text
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-
+from sqlalchemy.ext.asyncio import AsyncSession
 # ─── get_db dependency ──────────────────────────────────────────────────────
-def get_db():
-    db = SessionLocal()
-    try:
+async def get_db():
+    async with SessionLocal() as db:
         yield db
-    finally:
-        db.close()
 
 # ─── Inisialisasi FastAPI ────────────────────────────────────────────────────
 app = FastAPI(title="EmoText CRM API")
@@ -100,9 +97,9 @@ app.add_middleware(
 security_scheme = HTTPBearer()
 
 # ─── Auth: Validasi api_token ke tabel users (Laravel) ──────────────────────
-def verify_api_key(
+async def verify_api_key(
     credentials: HTTPAuthorizationCredentials = Depends(security_scheme),
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
     """
     BUG-01 FIXED: token divalidasi ke tabel users.api_token di database.
@@ -114,15 +111,19 @@ def verify_api_key(
         raise HTTPException(status_code=401, detail="Unauthorized: Missing API Key")
 
     # Cari user berdasarkan api_token
-    result = db.execute(
+    import hashlib
+    hashed_token = hashlib.sha256(token.encode('utf-8')).hexdigest()
+    
+    result = await db.execute(
         text("SELECT id, subscription_status FROM users WHERE api_token = :token LIMIT 1"),
-        {"token": token}
-    ).fetchone()
+        {"token": hashed_token}
+    )
+    row = result.fetchone()
 
-    if not result:
+    if not row:
         raise HTTPException(status_code=401, detail="Unauthorized: Invalid API Key")
 
-    user_id, subscription_status = result
+    user_id, subscription_status = row
 
     # Cek status langganan — jika expired, tolak analisis baru
     if subscription_status == "expired":
@@ -157,13 +158,15 @@ class FeedbackRequest(BaseModel):
 
 # ─── Endpoints ───────────────────────────────────────────────────────────────
 
+from sqlalchemy import select
+
 @app.post("/analyze")
 @limiter.limit("30/minute")
-def analyze_message(
+async def analyze_message(
     request: Request,
     data: AnalyzeRequest,
     background_tasks: BackgroundTasks,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     auth: dict = Depends(verify_api_key)
 ):
     # BUG-03 FIX: Validasi context tidak kosong
@@ -192,7 +195,7 @@ def analyze_message(
     elif data.message_type == "media" or "[media]" in last_message_lower:
         sentiment, intent, confidence = "neutral", "media", 1.0
     else:
-        ai_result = predict_sentiment_and_intent(last_message)
+        ai_result = await predict_sentiment_and_intent(last_message, db)
         sentiment  = ai_result["sentiment"]
         intent     = ai_result["intent"]
         confidence = ai_result["confidence"]
@@ -202,10 +205,13 @@ def analyze_message(
     logger.debug(f"RAG suggestion untuk {intent} = {suggestion}")
 
     # 3. Cek duplikasi & simpan ke tabel 'messages' (selaras dengan Laravel)
-    existing_msg = db.query(Message).filter(
-        Message.sender_id == data.sender_id,
-        Message.message == data.context[-1].text
-    ).first()
+    result = await db.execute(
+        select(Message).filter(
+            Message.sender_id == data.sender_id,
+            Message.message == data.context[-1].text
+        )
+    )
+    existing_msg = result.scalars().first()
 
     if not existing_msg:
         new_log = Message(
@@ -215,11 +221,12 @@ def analyze_message(
             message     = data.context[-1].text,  # field 'message', bukan 'message_text'
             sentiment   = sentiment,
             intent      = intent,
-            confidence  = confidence
+            confidence  = confidence,
+            suggestion  = suggestion
         )
         db.add(new_log)
-        db.commit()
-        db.refresh(new_log)
+        await db.commit()
+        await db.refresh(new_log)
         logger.info(f"Pesan BARU dari {data.sender_name} berhasil disimpan ke DB.")
         
         # Trigger WebSockets di latar belakang
@@ -229,19 +236,22 @@ def analyze_message(
 
     # 4. Hitung Health Score Kumulatif via SQL Aggregation
     from sqlalchemy import case, func
-    stats = db.query(
-        func.count(Message.id).label("total_msgs"),
-        func.sum(
-            case(
-                (Message.sentiment == "positive", 100),
-                (Message.sentiment == "negative", 30),
-                else_=70
-            )
-        ).label("total_score")
-    ).filter(
-        Message.user_id   == auth["user_id"],
-        Message.sender_id == data.sender_id
-    ).first()
+    stats_result = await db.execute(
+        select(
+            func.count(Message.id).label("total_msgs"),
+            func.sum(
+                case(
+                    (Message.sentiment == "positive", 100),
+                    (Message.sentiment == "negative", 30),
+                    else_=70
+                )
+            ).label("total_score")
+        ).filter(
+            Message.user_id   == auth["user_id"],
+            Message.sender_id == data.sender_id
+        )
+    )
+    stats = stats_result.first()
 
     total_msgs = stats.total_msgs or 0
     total_score = stats.total_score or 0
@@ -267,25 +277,28 @@ def analyze_message(
 
 
 @app.get("/health-score/{sender_id:path}")
-def get_health_score(
+async def get_health_score(
     sender_id: str,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     auth: dict = Depends(verify_api_key)
 ):
     from sqlalchemy import case, func
-    stats = db.query(
-        func.count(Message.id).label("total_msgs"),
-        func.sum(
-            case(
-                (Message.sentiment == "positive", 100),
-                (Message.sentiment == "negative", 30),
-                else_=70
-            )
-        ).label("total_score")
-    ).filter(
-        Message.user_id   == auth["user_id"],
-        Message.sender_id == sender_id
-    ).first()
+    stats_result = await db.execute(
+        select(
+            func.count(Message.id).label("total_msgs"),
+            func.sum(
+                case(
+                    (Message.sentiment == "positive", 100),
+                    (Message.sentiment == "negative", 30),
+                    else_=70
+                )
+            ).label("total_score")
+        ).filter(
+            Message.user_id   == auth["user_id"],
+            Message.sender_id == sender_id
+        )
+    )
+    stats = stats_result.first()
 
     total_msgs = stats.total_msgs or 0
     total_score = stats.total_score or 0
@@ -301,10 +314,10 @@ def get_health_score(
 
 @app.post("/feedback")
 @limiter.limit("20/minute")
-def save_feedback(
+async def save_feedback(
     request: Request,
     data: FeedbackRequest,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     auth: dict = Depends(verify_api_key)
 ):
     new_correction = ManualCorrection(
@@ -316,8 +329,8 @@ def save_feedback(
         admin_id            = str(auth["user_id"])
     )
     db.add(new_correction)
-    db.commit()
-    db.refresh(new_correction)
+    await db.commit()
+    await db.refresh(new_correction)
 
     print("=========================================")
     print(f"KOREKSI DITERIMA!")

@@ -28,6 +28,8 @@ class RegisteredUserController extends Controller
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $plain_token = User::generateApiToken();
+        
         $user = User::create([
             'name'                => $request->name,
             'company_name'        => $request->company_name,
@@ -38,7 +40,7 @@ class RegisteredUserController extends Controller
             'trial_ends_at'       => now()->addDays(7),
             'subscription_status' => 'trial',
             // Token unik untuk autentikasi extension
-            'api_token'           => User::generateApiToken(),
+            'api_token'           => hash('sha256', $plain_token),
         ]);
 
         event(new Registered($user));

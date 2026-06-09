@@ -7,7 +7,11 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from ai_service import predict_sentiment_and_intent
 from rag_service import get_smart_suggestion
 
-def test_indobert_accuracy():
+import pytest
+import pytest_asyncio
+
+@pytest.mark.asyncio
+async def test_indobert_accuracy():
     print("==================================================")
     print("🚀 MULAI TES AKURASI IndoBERT (10 Skenario Sulit)")
     print("==================================================\n")
@@ -42,7 +46,7 @@ def test_indobert_accuracy():
     
     for i, (text, gt_sentiment, gt_intent) in enumerate(dataset, 1):
         # Gunakan model IndoBERT
-        result = predict_sentiment_and_intent(text)
+        result = await predict_sentiment_and_intent(text)
         pred_sentiment = result["sentiment"]
         pred_intent = result["intent"]
         
@@ -77,7 +81,8 @@ def test_indobert_accuracy():
         
     print("==================================================\n")
 
-def test_rag_hallucination():
+@pytest.mark.asyncio
+async def test_rag_hallucination():
     print("==================================================")
     print("🤖 MULAI TES HALUSINASI RAG (Out of Context)")
     print("==================================================\n")
@@ -87,7 +92,7 @@ def test_rag_hallucination():
     
     # Step 1: AI (IndoBERT) menganalisis teks
     # Karena tidak mengandung komplain/order/tanya produk, intent-nya pasti "other" dan sentiment "neutral"
-    analysis = predict_sentiment_and_intent(out_of_context_question)
+    analysis = await predict_sentiment_and_intent(out_of_context_question)
     
     print(f"Tanya: '{out_of_context_question}'")
     print(f"Hasil AI -> Intent: {analysis['intent'].upper()} | Sentimen: {analysis['sentiment'].upper()}")

@@ -15,6 +15,7 @@ class Message(Base):
     sentiment   = Column(String)
     intent      = Column(String)
     confidence  = Column(Float, nullable=True)
+    suggestion  = Column(Text, nullable=True)
     status      = Column(String, default="pending")
     resolved_by = Column(Integer, nullable=True)
     created_at  = Column(DateTime(timezone=True), default=func.now())
@@ -29,3 +30,5 @@ class ManualCorrection(Base):
     original_intent     = Column(String, nullable=True)
     corrected_intent    = Column(String, nullable=True)
     admin_id            = Column(String)
+    created_at          = Column(DateTime(timezone=True), default=func.now())
+    updated_at          = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
