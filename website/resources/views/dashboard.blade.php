@@ -5,6 +5,23 @@
         </h2>
     </x-slot>
 
+    {{-- ── Flash Notifications (Upload RAG / Resolve dsb) ──────────────────── --}}
+    @if(session('success'))
+        <div id="flash-success" class="fixed top-4 right-4 z-[9999] flex items-center gap-3 bg-green-600 text-white text-sm font-semibold px-5 py-3 rounded-xl shadow-lg" style="animation: slideIn 0.3s ease;">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>{{ session('success') }}</span>
+        </div>
+        <script>setTimeout(() => document.getElementById('flash-success')?.remove(), 5000);</script>
+    @endif
+    @if(session('error'))
+        <div id="flash-error" class="fixed top-4 right-4 z-[9999] flex items-center gap-3 bg-red-600 text-white text-sm font-semibold px-5 py-3 rounded-xl shadow-lg" style="animation: slideIn 0.3s ease;">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>{{ session('error') }}</span>
+        </div>
+        <script>setTimeout(() => document.getElementById('flash-error')?.remove(), 7000);</script>
+    @endif
+    <style>@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }</style>
+
     <div class="py-12" x-data="{ tab: 'sample' }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
@@ -125,9 +142,9 @@
                 </div>
             </div>
 
-            <div class="bg-gray-200/50 p-1 rounded-xl inline-flex mb-8 w-full md:w-auto" x-data="{ showTextModal: false, showRagModal: false }">
+            <div class="bg-gray-200/50 p-1 rounded-xl inline-flex mb-8 w-full md:w-auto" x-data="{ showTextModal: false }">
                 <button @click="showTextModal = true" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Test AI Model</button>
-                <button @click="showRagModal = true" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Upload Dokumen RAG</button>
+                <a href="{{ route('dashboard.kb') }}" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Upload Dokumen RAG</a>
                 
                 <!-- Text Analyzer Modal -->
                 <div x-show="showTextModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -152,19 +169,23 @@
                     <div class="flex items-center justify-center min-h-screen p-4 text-center">
                         <div x-show="showRagModal" x-transition.opacity class="fixed inset-0 transition-opacity" style="background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" @click="showRagModal = false"></div>
                         <div x-show="showRagModal" x-transition class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full p-6 border border-gray-100">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Upload Dokumen Pengetahuan RAG</h3>
-                            <p class="text-sm text-gray-500 mb-6">Unggah file PDF atau DOCX berisi FAQ/SOP. AI akan menggunakan dokumen ini sebagai basis pengetahuan untuk meracik balasan.</p>
-                            
-                            <div class="border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-8 flex flex-col justify-center items-center mb-6 hover:bg-blue-50 transition cursor-pointer">
-                                <svg class="w-10 h-10 text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                                <span class="text-sm font-semibold text-blue-600">Klik untuk browse atau drag file kemari</span>
-                                <span class="text-xs text-gray-400 mt-1">Maks. 5MB per file (PDF, DOCX)</span>
-                            </div>
+                            <form method="POST" action="{{ route('dashboard.upload-kb') }}" enctype="multipart/form-data">
+                                @csrf
+                                <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Upload Dokumen Pengetahuan RAG</h3>
+                                <p class="text-sm text-gray-500 mb-6">Unggah file PDF atau TXT berisi FAQ/SOP. AI akan menggunakan dokumen ini sebagai basis pengetahuan untuk meracik balasan.</p>
+                                
+                                <div class="border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-8 flex flex-col justify-center items-center mb-6 hover:bg-blue-50 transition relative">
+                                    <input type="file" name="file" accept=".pdf,.txt" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                    <svg class="w-10 h-10 text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                    <span class="text-sm font-semibold text-blue-600">Klik untuk browse atau drag file kemari</span>
+                                    <span class="text-xs text-gray-400 mt-1">Maks. 5MB per file (PDF, TXT)</span>
+                                </div>
 
-                            <div class="flex justify-end gap-3 mt-4">
-                                <button @click="showRagModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200">Tutup</button>
-                                <button @click="alert('Modul VectorDB RAG akan segera diaktifkan.'); showRagModal = false;" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm" style="background-color: #2563eb; color: white;">Upload & Proses</button>
-                            </div>
+                                <div class="flex justify-end gap-3 mt-4">
+                                    <button type="button" @click="showRagModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200">Tutup</button>
+                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm" style="background-color: #2563eb; color: white;">Upload & Proses</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>                

@@ -12,3 +12,9 @@ onnx
 onnxruntime
 python-dotenv
 python-multipart
+peft
+accelerate
+bitsandbytes
+pgvector
+sentence-transformers
+pypdf

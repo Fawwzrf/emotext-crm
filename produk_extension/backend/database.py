@@ -24,3 +24,4 @@ if "?sslmode=" in SQLALCHEMY_DATABASE_URL:
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL, future=True, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
 Base = declarative_base()
+# touch

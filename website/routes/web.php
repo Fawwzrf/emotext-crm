@@ -19,6 +19,11 @@ Route::middleware('auth')->group(function () {
     
     // BUG-01 FIXED: Melindungi endpoint ini dari eksploitasi tanpa login
     Route::patch('/messages/{id}/resolve', [DashboardController::class, 'resolve'])->name('messages.resolve');
+    
+    // Feature RAG Upload & Management
+    Route::post('/dashboard/upload-kb', [DashboardController::class, 'uploadKb'])->name('dashboard.upload-kb');
+    Route::get('/dashboard/knowledge-base', [DashboardController::class, 'knowledgeBase'])->name('dashboard.kb');
+    Route::delete('/dashboard/knowledge-base/{id}', [DashboardController::class, 'deleteKb'])->name('dashboard.kb.delete');
 });
 
 require __DIR__.'/auth.php';

@@ -5,6 +5,7 @@ __pycache__/
 *.safetensors
 *.onnx
 *.onnx.data
+*.gguf
 config.json
 tokenizer_config.json
 tokenizer.json
@@ -13,15 +14,20 @@ tokenizer.json
 
 # Secrets – jangan pernah di-commit!
 .env
+website/.env
+produk_extension/backend/.env
 
-# Laravel (dashboard/)
-dashboard/vendor/
-dashboard/node_modules/
-dashboard/.env
-dashboard/storage/framework/cache/data/*
-!dashboard/storage/framework/cache/data/.gitignore
-dashboard/storage/logs/*.log
-dashboard/public/build/
-dashboard/public/hot
+# Laravel (website)
+website/vendor/
+website/node_modules/
+website/storage/framework/cache/data/*
+!website/storage/framework/cache/data/.gitignore
+website/storage/logs/*.log
+website/public/build/
+website/public/hot
 
-extension/node_modules/
+# Extension
+produk_extension/extension/node_modules/
+
+# Offline Model
+produk_extension/backend/offline_model/

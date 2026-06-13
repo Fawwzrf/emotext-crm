@@ -1,0 +1,1110 @@
+2026-06-10 00:04:35,648 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari Mengkalcerkan Jogjah
+2026-06-10 00:04:36,985 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:37,008 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:37,012 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:37,100 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:37,107 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-4 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 67
+2026-06-10 00:04:37,129 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-4 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 67
+2026-06-10 00:04:37,133 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-4 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 67
+2026-06-10 00:04:37,219 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-4 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 67
+2026-06-10 00:04:37,370 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari Mengkalcerkan Jogjah
+2026-06-10 00:04:38,126 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:38,294 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-6 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 68
+2026-06-10 00:04:38,526 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:38,761 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-6 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 68
+2026-06-10 00:04:39,430 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:39,748 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-10 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 68
+2026-06-10 00:04:39,758 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:39,864 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:39,885 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:40,007 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 64
+2026-06-10 00:04:40,099 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-11 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 64
+2026-06-10 00:04:40,113 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:40,123 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 64
+2026-06-10 00:04:40,153 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:40,153 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:40,231 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:40,418 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-11 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 64
+2026-06-10 00:04:41,231 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:41,309 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:41,349 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-13 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-10 00:04:41,476 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:41,716 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-13 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-10 00:04:41,780 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:42,652 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:42,692 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:42,772 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-16 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 63
+2026-06-10 00:04:42,777 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:42,812 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-16 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 63
+2026-06-10 00:04:42,961 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:43,027 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:43,119 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:43,135 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:43,196 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-16 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 63
+2026-06-10 00:04:43,432 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:44,366 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:44,742 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:45,789 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:45,822 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:46,210 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:52,347 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:04:52,684 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-20 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 61
+2026-06-10 00:04:52,797 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:52,802 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:52,804 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:52,913 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:52,919 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-20 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 61
+2026-06-10 00:04:52,922 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-20 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 61
+2026-06-10 00:04:52,931 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-20 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 61
+2026-06-10 00:04:53,153 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-20 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 61
+2026-06-10 00:04:54,043 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:54,164 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-22 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 61
+2026-06-10 00:04:54,389 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:54,626 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-22 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 61
+2026-06-10 00:04:55,261 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:55,474 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-10 00:04:55,495 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-24 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 63
+2026-06-10 00:04:55,710 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-24 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 63
+2026-06-10 00:04:55,932 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:55,948 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:55,949 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:56,167 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:57,193 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:57,633 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:58,510 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:04:58,730 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:05:04,597 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:04,599 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:04,746 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:04,838 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:04,863 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:04,866 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 59
+2026-06-10 00:05:04,959 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:04,983 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:04,995 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:04,997 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:05,274 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:05,405 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:05,414 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:05,622 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:05,732 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:06,272 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:06,391 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:05:46,746 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:46,865 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 59
+2026-06-10 00:05:48,891 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari Pelanggan Setia Tertanam (PST)
+2026-06-10 00:05:49,187 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:49,189 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:49,304 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 59
+2026-06-10 00:05:49,312 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:49,394 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:49,422 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:49,512 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:49,547 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:49,986 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:50,105 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:50,109 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:50,257 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:50,260 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:50,380 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 59
+2026-06-10 00:05:50,661 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:50,827 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:50,897 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEUTRAL | Intensi: ORDER | Skor: 59
+2026-06-10 00:05:51,063 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 59
+2026-06-10 00:05:51,241 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:05:51,478 [INFO] Pesan dari: Pelanggan Setia Tertanam (PST) | Interaksi ke-38 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 59
+2026-06-10 00:06:29,815 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:30,027 [INFO] Pesan dari: wildann | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 68
+2026-06-10 00:06:30,161 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:30,273 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:30,276 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:30,279 [INFO] Pesan dari: wildann | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 68
+2026-06-10 00:06:30,292 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:30,391 [INFO] Pesan dari: wildann | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 68
+2026-06-10 00:06:30,397 [INFO] Pesan dari: wildann | Interaksi ke-5 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 68
+2026-06-10 00:06:30,411 [INFO] Pesan dari: wildann | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 68
+2026-06-10 00:06:31,338 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari wildann
+2026-06-10 00:06:31,620 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari wildann
+2026-06-10 00:06:31,826 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:32,067 [INFO] Pesan dari: wildann | Interaksi ke-6 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 73
+2026-06-10 00:06:32,951 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:33,187 [INFO] Pesan dari: wildann | Interaksi ke-7 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-10 00:06:33,295 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:33,407 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:33,408 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:33,424 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:35,085 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:36,207 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:45,438 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:45,558 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:45,562 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:45,565 [INFO] Pesan dari: wildann | Interaksi ke-11 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 70
+2026-06-10 00:06:45,676 [INFO] Pesan dari: wildann | Interaksi ke-12 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 70
+2026-06-10 00:06:45,681 [INFO] Pesan dari: wildann | Interaksi ke-12 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 70
+2026-06-10 00:06:45,687 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:45,926 [INFO] Pesan dari: wildann | Interaksi ke-12 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:06:45,945 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:46,204 [INFO] Pesan dari: wildann | Interaksi ke-12 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:06:47,332 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:47,597 [INFO] Pesan dari: wildann | Interaksi ke-13 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:06:48,257 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:48,410 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:48,419 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:48,530 [INFO] Pesan dari: wildann | Interaksi ke-17 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-10 00:06:48,533 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:48,580 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:48,647 [INFO] Pesan dari: wildann | Interaksi ke-18 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:06:48,659 [INFO] Pesan dari: wildann | Interaksi ke-18 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-10 00:06:48,688 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:48,704 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:48,772 [INFO] Pesan dari: wildann | Interaksi ke-18 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:06:48,924 [INFO] Pesan BARU dari wildann berhasil disimpan ke DB.
+2026-06-10 00:06:48,938 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:49,120 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:06:49,162 [INFO] Pesan dari: wildann | Interaksi ke-18 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-10 00:06:49,218 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:49,358 [INFO] Pesan dari: wildann | Interaksi ke-18 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 65
+2026-06-10 00:06:50,612 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:51,576 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:51,653 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:51,669 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:51,792 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:52,181 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:06:56,361 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari CRMuah
+2026-06-10 00:06:57,088 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:57,264 [INFO] Pesan dari: CRMuah | Interaksi ke-4 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-10 00:06:57,266 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:57,270 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:57,276 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:57,387 [INFO] Pesan dari: CRMuah | Interaksi ke-4 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-10 00:06:57,392 [INFO] Pesan dari: CRMuah | Interaksi ke-4 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-10 00:06:57,402 [INFO] Pesan dari: CRMuah | Interaksi ke-4 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-10 00:06:58,413 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:58,533 [INFO] Pesan dari: CRMuah | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 82
+2026-06-10 00:06:58,889 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:59,114 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:06:59,153 [INFO] Pesan dari: CRMuah | Interaksi ke-7 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 82
+2026-06-10 00:06:59,401 [INFO] Pesan dari: CRMuah | Interaksi ke-7 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 82
+2026-06-10 00:06:59,868 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari CRMuah
+2026-06-10 00:06:59,982 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:00,083 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:00,115 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:00,281 [INFO] Pesan dari: CRMuah | Interaksi ke-10 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 82
+2026-06-10 00:07:00,292 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:00,317 [INFO] Pesan dari: CRMuah | Interaksi ke-10 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 82
+2026-06-10 00:07:00,399 [INFO] Pesan dari: CRMuah | Interaksi ke-10 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 82
+2026-06-10 00:07:00,402 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:00,402 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:00,417 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:01,545 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:01,686 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:01,725 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:01,806 [INFO] Pesan dari: CRMuah | Interaksi ke-13 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 81
+2026-06-10 00:07:01,844 [INFO] Pesan dari: CRMuah | Interaksi ke-13 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 81
+2026-06-10 00:07:01,855 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:01,977 [INFO] Pesan dari: CRMuah | Interaksi ke-13 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 81
+2026-06-10 00:07:02,171 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:02,423 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:02,434 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:02,553 [INFO] Pesan dari: CRMuah | Interaksi ke-14 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 82
+2026-06-10 00:07:03,297 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:03,328 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:03,419 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:04,825 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:04,857 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:04,982 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:05,587 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:11,488 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:11,574 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:11,603 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:11,608 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:11,693 [INFO] Pesan dari: CRMuah | Interaksi ke-19 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 75
+2026-06-10 00:07:11,696 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:11,723 [INFO] Pesan dari: CRMuah | Interaksi ke-19 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 75
+2026-06-10 00:07:11,729 [INFO] Pesan dari: CRMuah | Interaksi ke-19 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 75
+2026-06-10 00:07:11,844 [INFO] Pesan dari: CRMuah | Interaksi ke-19 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 75
+2026-06-10 00:07:11,939 [INFO] Pesan dari: CRMuah | Interaksi ke-19 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 75
+2026-06-10 00:07:13,135 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:13,250 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:13,319 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:13,445 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:13,521 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:13,557 [INFO] Pesan dari: CRMuah | Interaksi ke-20 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 76
+2026-06-10 00:07:13,653 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:13,811 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:13,890 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,012 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,111 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:14,170 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,248 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,377 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-10 00:07:14,380 [INFO] Pesan dari: CRMuah | Interaksi ke-22 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 74
+2026-06-10 00:07:14,388 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,613 [INFO] Pesan dari: CRMuah | Interaksi ke-22 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 74
+2026-06-10 00:07:14,632 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,703 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:14,735 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:14,751 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:14,847 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:14,860 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:14,953 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:16,560 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:17,393 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:17,625 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:07:27,230 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,506 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,510 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,513 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,515 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,590 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,866 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,868 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,880 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:27,884 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:28,593 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:34,719 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:34,723 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:34,725 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:34,727 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:34,730 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,078 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,089 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,092 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,100 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,117 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,448 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,457 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,551 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:07:35,790 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:08:42,021 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:42,140 [INFO] Pesan dari:  | Interaksi ke-1 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:45,190 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:45,310 [INFO] Pesan dari:  | Interaksi ke-3 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:45,426 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:45,545 [INFO] Pesan dari:  | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 70
+2026-06-10 00:08:45,666 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:45,784 [INFO] Pesan dari:  | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:45,829 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:45,948 [INFO] Pesan dari:  | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:46,430 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:46,619 [INFO] Pesan dari:  | Interaksi ke-8 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:46,741 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:46,861 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:46,974 [INFO] Pesan dari:  | Interaksi ke-8 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:47,098 [INFO] Pesan dari:  | Interaksi ke-8 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:08:48,258 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:48,320 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:48,373 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:08:48,512 [INFO] Pesan dari:  | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 69
+2026-06-10 00:08:48,517 [INFO] Pesan dari:  | Interaksi ke-11 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 69
+2026-06-10 00:08:48,564 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:48,573 [INFO] Pesan dari:  | Interaksi ke-11 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 69
+2026-06-10 00:08:48,800 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:48,971 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:49,630 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:49,988 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:50,145 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:51,537 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:51,537 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:08:51,585 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:25,000 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:25,013 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:25,078 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:25,090 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:25,094 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:25,134 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:25,242 [INFO] Pesan dari:  | Interaksi ke-17 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:25,264 [INFO] Pesan dari:  | Interaksi ke-17 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:25,317 [INFO] Pesan dari:  | Interaksi ke-17 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:25,327 [INFO] Pesan dari:  | Interaksi ke-17 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:25,335 [INFO] Pesan dari:  | Interaksi ke-17 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:25,386 [INFO] Pesan dari:  | Interaksi ke-17 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:28,285 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:28,285 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:28,332 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:28,348 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:28,349 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:28,394 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:28,747 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:28,937 [INFO] Pesan dari: test | Interaksi ke-9 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:28,977 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,064 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,095 [INFO] Pesan dari: test | Interaksi ke-9 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,296 [INFO] Pesan dari: test | Interaksi ke-14 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,480 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,554 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,562 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,575 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,601 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,610 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,616 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,627 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,652 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:29,656 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,662 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,668 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:29,678 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,687 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,714 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,722 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,772 [INFO] Pesan dari:  | Interaksi ke-23 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 72
+2026-06-10 00:09:29,816 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,848 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,860 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,870 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,912 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,916 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:29,921 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:32,032 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,142 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,315 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,386 [INFO] Pesan BARU dari test berhasil disimpan ke DB.
+2026-06-10 00:09:32,492 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:32,507 [INFO] Pesan dari: test | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:32,611 [INFO] Pesan dari:  | Interaksi ke-23 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 72
+2026-06-10 00:09:32,663 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:32,704 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,735 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,735 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,767 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,782 [INFO] Pesan dari:  | Interaksi ke-23 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 72
+2026-06-10 00:09:32,798 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,846 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,861 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,876 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,892 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,923 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,938 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:32,953 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:33,057 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:33,085 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:33,089 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:33,177 [INFO] Pesan dari:  | Interaksi ke-23 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 72
+2026-06-10 00:09:33,203 [INFO] Pesan dari:  | Interaksi ke-23 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 72
+2026-06-10 00:09:33,208 [INFO] Pesan dari:  | Interaksi ke-23 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 72
+2026-06-10 00:09:33,964 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:34,007 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:09:34,085 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:34,125 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:09:35,540 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:35,617 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:35,789 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:36,195 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:36,211 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:36,226 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:37,102 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:37,162 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:39,401 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:39,403 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:39,406 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:39,416 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:39,820 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:40,161 [INFO] Pesan BARU dari Grup Angkatan Informatika 23 berhasil disimpan ke DB.
+2026-06-10 00:09:40,279 [INFO] Pesan dari: Grup Angkatan Informatika 23 | Interaksi ke-1 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 70
+2026-06-10 00:09:40,459 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:42,678 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:42,681 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:42,691 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:42,695 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:42,733 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,051 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,058 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,061 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,105 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,144 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,319 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:09:43,495 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,497 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,504 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,611 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:43,850 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,289 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,292 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,295 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,297 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,299 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,650 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,653 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,661 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,671 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:48,674 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:49,369 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,344 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,348 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,350 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,354 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,358 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,702 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,706 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,712 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,727 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:52,729 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:53,116 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:53,119 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:53,233 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:53,235 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:53,495 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:57,844 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:57,847 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:57,849 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:57,853 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:57,855 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:58,209 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:58,214 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:58,239 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:58,881 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:59,557 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:59,560 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:59,565 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:09:59,569 [WARNING] ratelimit 30 per 1 minute (127.0.0.1) exceeded at endpoint: /analyze
+2026-06-10 00:10:30,797 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:30,811 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:30,838 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:30,860 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:30,883 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:30,920 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:31,034 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:31,046 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:31,073 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:31,095 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:31,121 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:31,162 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:31,659 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:31,779 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:32,631 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:32,749 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:33,047 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:33,072 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:33,122 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:33,280 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:33,287 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:33,307 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:33,357 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:33,361 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:33,524 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:33,594 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:58,267 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari 
+2026-06-10 00:10:58,431 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:10:58,550 [INFO] Pesan dari:  | Interaksi ke-25 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 71
+2026-06-10 00:10:58,791 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari 
+2026-06-10 00:10:59,348 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:10:59,352 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:10:59,466 [INFO] Pesan dari:  | Interaksi ke-28 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:59,485 [INFO] Pesan dari:  | Interaksi ke-28 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:10:59,491 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:10:59,610 [INFO] Pesan dari:  | Interaksi ke-28 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:00,112 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:11:00,344 [INFO] Pesan dari:  | Interaksi ke-28 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:00,929 [INFO] Pesan BARU dari  berhasil disimpan ke DB.
+2026-06-10 00:11:01,048 [INFO] Pesan dari:  | Interaksi ke-29 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:02,509 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:02,649 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:04,073 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:07,529 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:11:07,715 [INFO] Pesan dari:  | Interaksi ke-29 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:07,781 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:11:07,806 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:11:07,832 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-10 00:11:07,924 [INFO] Pesan dari:  | Interaksi ke-29 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:07,950 [INFO] Pesan dari:  | Interaksi ke-29 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:08,014 [INFO] Pesan dari:  | Interaksi ke-29 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 71
+2026-06-10 00:11:33,137 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:33,144 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:33,254 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 66
+2026-06-10 00:11:33,265 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:33,270 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:33,293 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-5 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 66
+2026-06-10 00:11:33,385 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 66
+2026-06-10 00:11:33,401 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 66
+2026-06-10 00:11:33,496 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:33,615 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-5 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 66
+2026-06-10 00:11:34,797 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:35,034 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-6 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 66
+2026-06-10 00:11:36,104 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:36,108 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:36,222 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-10 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:36,231 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:36,316 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:36,342 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:36,346 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-11 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:36,412 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:36,412 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:36,465 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-11 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:36,470 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari Satria Data Hitam
+2026-06-10 00:11:36,577 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:36,625 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:36,692 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:36,858 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:37,483 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:37,596 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:37,714 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-14 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:37,722 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-14 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 60
+2026-06-10 00:11:37,725 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:37,839 [WARNING] [RACE CONDITION] Mengabaikan request duplikat dari Satria Data Hitam
+2026-06-10 00:11:37,969 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-15 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:37,992 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:38,067 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:38,154 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 60
+2026-06-10 00:11:38,737 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:38,857 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-17 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 63
+2026-06-10 00:11:38,902 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:39,139 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-17 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 63
+2026-06-10 00:11:39,237 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:39,376 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:39,484 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:39,592 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:39,873 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:40,733 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:40,749 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:40,982 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:41,170 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:41,875 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:42,156 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:54,688 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:54,694 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:54,705 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:54,807 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-22 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:11:54,810 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:54,820 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-22 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:11:54,830 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-22 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:11:54,837 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:54,957 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-22 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:11:55,045 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-22 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 65
+2026-06-10 00:11:56,162 [INFO] Pesan BARU dari Satria Data Hitam berhasil disimpan ke DB.
+2026-06-10 00:11:56,398 [INFO] Pesan dari: Satria Data Hitam | Interaksi ke-23 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-10 00:11:57,818 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:57,849 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:57,849 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:57,973 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:58,082 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:11:59,410 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:31,071 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:31,197 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:31,201 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:31,203 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:31,318 [INFO] Pesan dari: 1390 | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 82
+2026-06-10 00:15:31,363 [INFO] Pesan dari: 1390 | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 82
+2026-06-10 00:15:31,370 [INFO] Pesan dari: 1390 | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 82
+2026-06-10 00:15:31,374 [INFO] Pesan dari: 1390 | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 82
+2026-06-10 00:15:31,482 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:31,612 [INFO] Pesan dari: 1390 | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 82
+2026-06-10 00:15:32,774 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:33,032 [INFO] Pesan dari: 1390 | Interaksi ke-6 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 80
+2026-06-10 00:15:34,375 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:34,389 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:34,390 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:34,390 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:34,658 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:36,051 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:41,266 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:41,275 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:41,292 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:41,394 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:41,429 [INFO] Pesan dari: 1390 | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 74
+2026-06-10 00:15:41,436 [INFO] Pesan dari: 1390 | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 74
+2026-06-10 00:15:41,446 [INFO] Pesan dari: 1390 | Interaksi ke-11 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 74
+2026-06-10 00:15:41,459 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:41,558 [INFO] Pesan dari: 1390 | Interaksi ke-11 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 74
+2026-06-10 00:15:41,600 [INFO] Pesan dari: 1390 | Interaksi ke-11 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 74
+2026-06-10 00:15:43,425 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:43,678 [INFO] Pesan dari: 1390 | Interaksi ke-12 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 70
+2026-06-10 00:15:44,240 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:44,401 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-10 00:15:44,450 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:44,451 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:44,483 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:44,492 [INFO] Pesan dari: 1390 | Interaksi ke-14 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 67
+2026-06-10 00:15:44,577 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:44,607 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:44,654 [INFO] Pesan dari: 1390 | Interaksi ke-14 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 67
+2026-06-10 00:15:46,696 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:47,506 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-10 00:15:47,662 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:13,390 [INFO] Pesan BARU dari PST KEL 8 berhasil disimpan ke DB.
+2026-06-13 20:58:13,514 [INFO] Pesan dari: PST KEL 8 | Interaksi ke-1 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 100
+2026-06-13 20:58:16,633 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:21,485 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:21,580 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:21,606 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-30 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:21,628 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:21,697 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:21,699 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-30 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:21,748 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-30 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:21,807 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:21,816 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-30 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:21,896 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:21,927 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-30 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 61
+2026-06-13 20:58:22,018 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-30 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:22,739 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:22,943 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-34 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 60
+2026-06-13 20:58:22,946 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:23,058 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:23,062 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:23,068 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-34 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 60
+2026-06-13 20:58:23,179 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-34 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 60
+2026-06-13 20:58:23,185 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-34 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 60
+2026-06-13 20:58:24,622 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:24,690 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:24,715 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:24,763 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:24,804 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:24,840 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:24,930 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-36 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:24,951 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:25,030 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:25,041 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-36 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 61
+2026-06-13 20:58:25,634 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 20:58:25,755 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 62
+2026-06-13 20:58:25,965 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:26,091 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:26,201 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:26,201 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:27,949 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:28,057 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 20:58:28,771 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:04,173 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:04,292 [INFO] Pesan dari: CRMuah | Interaksi ke-23 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 73
+2026-06-13 22:19:04,925 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:05,046 [INFO] Pesan dari: CRMuah | Interaksi ke-24 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 75
+2026-06-13 22:19:06,765 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:06,883 [INFO] Pesan dari: CRMuah | Interaksi ke-25 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 74
+2026-06-13 22:19:07,428 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:07,546 [INFO] Pesan dari: CRMuah | Interaksi ke-26 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 75
+2026-06-13 22:19:08,067 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:08,530 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:08,765 [INFO] Pesan dari: CRMuah | Interaksi ke-27 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 76
+2026-06-13 22:19:09,345 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:09,600 [INFO] Pesan dari: CRMuah | Interaksi ke-28 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 76
+2026-06-13 22:19:09,883 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:19:09,890 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:10,000 [INFO] Pesan dari: CRMuah | Interaksi ke-29 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 76
+2026-06-13 22:19:10,234 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:10,366 [INFO] Pesan dari: CRMuah | Interaksi ke-29 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 76
+2026-06-13 22:19:10,562 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:10,945 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:11,015 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:11,064 [INFO] Pesan dari: CRMuah | Interaksi ke-31 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 75
+2026-06-13 22:19:11,133 [INFO] Pesan dari: CRMuah | Interaksi ke-31 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 75
+2026-06-13 22:19:11,794 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:12,057 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:12,176 [INFO] Pesan dari: CRMuah | Interaksi ke-32 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 76
+2026-06-13 22:19:12,623 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:13,120 [INFO] Pesan BARU dari CRMuah berhasil disimpan ke DB.
+2026-06-13 22:19:13,237 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:19:13,382 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:14,070 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:14,148 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:15,207 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:19:16,249 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:21:37,106 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:37,225 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:37,323 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:37,444 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:37,555 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:37,674 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:38,437 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:38,535 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:38,556 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:38,678 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:40,212 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:40,256 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:40,373 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:40,450 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:40,565 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:40,684 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:41,618 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:41,677 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:41,796 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:41,849 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:41,881 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:41,969 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:42,174 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:21:42,294 [INFO] Pesan dari: CRMuah | Interaksi ke-33 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:55,577 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:55,697 [INFO] Pesan dari: PCD UHUY | Interaksi ke-1 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 100
+2026-06-13 22:21:56,690 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:56,805 [INFO] Pesan dari: PCD UHUY | Interaksi ke-5 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 80
+2026-06-13 22:21:56,832 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:56,924 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:56,950 [INFO] Pesan dari: PCD UHUY | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 80
+2026-06-13 22:21:56,986 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:57,042 [INFO] Pesan dari: PCD UHUY | Interaksi ke-5 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 80
+2026-06-13 22:21:57,108 [INFO] Pesan dari: PCD UHUY | Interaksi ke-5 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 80
+2026-06-13 22:21:58,313 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:58,548 [INFO] Pesan dari: PCD UHUY | Interaksi ke-6 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 78
+2026-06-13 22:21:59,184 [INFO] Pesan BARU dari PCD UHUY berhasil disimpan ke DB.
+2026-06-13 22:21:59,303 [INFO] Pesan dari: PCD UHUY | Interaksi ke-7 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 77
+2026-06-13 22:21:59,823 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:21:59,964 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:00,058 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:00,120 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:01,559 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:02,338 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:15,060 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:15,178 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 62
+2026-06-13 22:22:15,217 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:15,374 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:15,462 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 62
+2026-06-13 22:22:15,492 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 62
+2026-06-13 22:22:15,532 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:15,649 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 62
+2026-06-13 22:22:15,704 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:15,840 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 62
+2026-06-13 22:22:16,996 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:17,182 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:17,232 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 62
+2026-06-13 22:22:17,299 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-37 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 62
+2026-06-13 22:22:18,946 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 22:22:19,065 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-40 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 64
+2026-06-13 22:22:19,120 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 22:22:19,127 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 22:22:19,239 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-40 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 64
+2026-06-13 22:22:19,245 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-40 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 64
+2026-06-13 22:22:19,571 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:22:19,806 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-40 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 64
+2026-06-13 22:22:20,331 [INFO] Pesan BARU dari Mengkalcerkan Jogjah berhasil disimpan ke DB.
+2026-06-13 22:22:20,449 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 64
+2026-06-13 22:22:22,257 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:22,258 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:22:23,489 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:36:14,348 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:36:14,583 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 64
+2026-06-13 22:36:55,601 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:36:55,883 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 64
+2026-06-13 22:37:49,692 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:37:50,278 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 64
+2026-06-13 22:38:22,556 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:38:22,812 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEUTRAL | Intensi: MEDIA | Skor: 64
+2026-06-13 22:39:04,845 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:39:05,319 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEUTRAL | Intensi: INQUIRY | Skor: 64
+2026-06-13 22:40:56,044 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:42:30,602 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 64
+2026-06-13 22:42:31,103 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:42:31,576 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: POSITIVE | Intensi: OTHER | Skor: 64
+2026-06-13 22:44:02,656 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:44:02,890 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEGATIVE | Intensi: OTHER | Skor: 64
+2026-06-13 22:46:33,302 [INFO] Pesan LAMA terdeteksi (efek reload), diabaikan.
+2026-06-13 22:46:33,589 [INFO] Pesan dari: Mengkalcerkan Jogjah | Interaksi ke-41 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 64
+2026-06-13 22:49:55,861 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-13 22:49:56,163 [INFO] Pesan dari: 1390 | Interaksi ke-15 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 68
+2026-06-13 22:49:59,508 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:51:41,755 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-13 22:51:41,929 [INFO] Pesan dari: 1390 | Interaksi ke-16 | Sentimen: NEGATIVE | Intensi: COMPLAINT | Skor: 65
+2026-06-13 22:53:15,037 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-13 22:53:15,160 [INFO] Pesan dari: 1390 | Interaksi ke-17 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 65
+2026-06-13 22:54:32,351 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-13 22:54:32,475 [INFO] Pesan dari: 1390 | Interaksi ke-18 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 66
+2026-06-13 22:55:57,681 [INFO] Pesan BARU dari 1390 berhasil disimpan ke DB.
+2026-06-13 22:55:57,921 [INFO] Pesan dari: 1390 | Interaksi ke-19 | Sentimen: NEUTRAL | Intensi: OTHER | Skor: 66
+2026-06-13 22:56:00,993 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-13 22:59:21,346 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:21,408 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:21,984 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,100 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,213 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,382 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,416 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,494 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,577 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,579 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,812 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 22:59:22,970 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:07,964 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:07,966 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:08,583 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:08,585 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:08,863 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:08,900 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:08,986 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:09,053 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:09,169 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:09,233 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:09,447 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:09,484 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-13 23:36:33,219 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:33,221 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:33,223 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:33,224 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:33,227 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:34,310 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:34,474 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-13 23:36:34,703 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:34,737 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:34,779 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:34,832 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-13 23:36:34,920 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:35,068 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:36:35,206 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-13 23:36:35,287 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:10,578 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:10,580 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:10,582 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,180 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,181 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,184 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,487 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,535 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,654 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,658 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,661 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:44:11,840 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-13 23:47:59,149 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:47:59,334 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:47:59,772 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:48:00,245 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:48:00,290 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:48:00,318 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:48:00,361 [INFO] [CACHE HIT] Pesan lama dari PCD UHUY, return dari DB.
+2026-06-13 23:48:03,155 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=288
+2026-06-13 23:48:03,391 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion='Terima kasih telah menghubungi kami. Ada yang dapat kami bantu lebih lanjut?' untuk 288
+2026-06-13 23:48:07,465 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=294
+2026-06-13 23:48:07,698 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion='Terima kasih telah menghubungi kami. Ada yang dapat kami bantu lebih lanjut?' untuk 294
+2026-06-13 23:48:17,265 [INFO] [ONNX] : other/negative (0.85)
+2026-06-13 23:48:17,335 [INFO] [ONNX] : other/neutral (0.81)
+2026-06-13 23:48:17,360 [INFO] [ONNX] : other/neutral (0.99)
+2026-06-13 23:48:17,408 [INFO] [ONNX] : other/negative (0.98)
+2026-06-13 23:48:17,497 [INFO] [ONNX] : other/positive (0.84)
+2026-06-13 23:48:17,999 [INFO] [DB] Pesan BARU dari  disimpan (ID=304).
+2026-06-13 23:48:18,038 [INFO] [DB] Pesan BARU dari  disimpan (ID=305).
+2026-06-13 23:48:18,068 [INFO] [DB] Pesan BARU dari  disimpan (ID=306).
+2026-06-13 23:48:18,113 [INFO] [DB] Pesan BARU dari  disimpan (ID=307).
+2026-06-13 23:48:18,118 [INFO] [SCORE]  | Interaksi ke-34 | NEGATIVE | OTHER | Skor: 69
+2026-06-13 23:48:18,120 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=304, intent=other
+2026-06-13 23:48:18,130 [INFO] No device provided, using cpu
+2026-06-13 23:48:18,157 [INFO] [SCORE]  | Interaksi ke-34 | NEUTRAL | OTHER | Skor: 69
+2026-06-13 23:48:18,158 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=305, intent=other
+2026-06-13 23:48:18,185 [INFO] [SCORE]  | Interaksi ke-34 | NEUTRAL | OTHER | Skor: 69
+2026-06-13 23:48:18,187 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=306, intent=other
+2026-06-13 23:48:18,207 [INFO] [DB] Pesan BARU dari  disimpan (ID=308).
+2026-06-13 23:48:18,232 [INFO] [SCORE]  | Interaksi ke-34 | NEGATIVE | OTHER | Skor: 69
+2026-06-13 23:48:18,233 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=307, intent=other
+2026-06-13 23:48:18,263 [INFO] [ONNX] : other/positive (0.99)
+2026-06-13 23:48:18,326 [INFO] [SCORE]  | Interaksi ke-34 | POSITIVE | OTHER | Skor: 69
+2026-06-13 23:48:18,328 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=308, intent=other
+2026-06-13 23:48:18,967 [INFO] [DB] Pesan BARU dari  disimpan (ID=309).
+2026-06-13 23:48:19,200 [INFO] [SCORE]  | Interaksi ke-35 | POSITIVE | OTHER | Skor: 70
+2026-06-13 23:48:19,200 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=309, intent=other
+2026-06-13 23:48:19,743 [INFO] [ONNX] : other/neutral (0.98)
+2026-06-13 23:48:19,744 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-13 23:48:20,454 [INFO] [DB] Pesan BARU dari  disimpan (ID=310).
+2026-06-13 23:48:20,691 [INFO] [SCORE]  | Interaksi ke-36 | NEUTRAL | OTHER | Skor: 70
+2026-06-13 23:48:20,692 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=310, intent=other
+2026-06-13 23:48:24,845 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=309
+2026-06-13 23:48:26,329 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion=None untuk 309
+2026-06-13 23:52:09,065 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-13 23:52:09,078 [INFO] No device provided, using cpu
+2026-06-13 23:52:12,393 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=309
+2026-06-13 23:52:12,407 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=309
+2026-06-13 23:52:12,474 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-13 23:52:12,642 [WARNING] [FETCH SUGGESTION] Pesan 309 tidak ditemukan di DB.
+2026-06-13 23:52:12,645 [WARNING] [FETCH SUGGESTION] Pesan 309 tidak ditemukan di DB.
+2026-06-13 23:52:37,491 [INFO] [ONNX] CRMuah: other/neutral (0.99)
+2026-06-13 23:52:37,525 [INFO] [ONNX] CRMuah: other/positive (0.80)
+2026-06-13 23:52:38,205 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=1).
+2026-06-13 23:52:38,230 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=2).
+2026-06-13 23:52:38,323 [INFO] [SCORE] CRMuah | Interaksi ke-2 | NEUTRAL | OTHER | Skor: 85
+2026-06-13 23:52:38,324 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=1, intent=other
+2026-06-13 23:52:38,374 [INFO] [ONNX] CRMuah: other/positive (0.99)
+2026-06-13 23:52:38,377 [INFO] [SCORE] CRMuah | Interaksi ke-2 | POSITIVE | OTHER | Skor: 85
+2026-06-13 23:52:38,380 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=2, intent=other
+2026-06-13 23:52:38,432 [INFO] [ONNX] CRMuah: other/neutral (0.99)
+2026-06-13 23:52:38,520 [INFO] [ONNX] CRMuah: other/positive (0.99)
+2026-06-13 23:52:38,635 [INFO] [RAG BG END] Suggestion hasil AI: 'Terima kasih telah menghubungi kami.'
+2026-06-13 23:52:38,636 [INFO] [RAG BG END] Suggestion hasil AI: 'Terima kasih telah menghubungi kami.'
+2026-06-14 00:03:53,481 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:03:53,489 [INFO] No device provided, using cpu
+2026-06-14 00:03:54,619 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-14 00:03:57,436 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:03:57,682 [INFO] [RULE] Mengkalcerkan Jogjah: media/neutral
+2026-06-14 00:03:58,559 [INFO] [ONNX] Mengkalcerkan Jogjah: inquiry/neutral (0.98)
+2026-06-14 00:03:58,580 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (1.00)
+2026-06-14 00:03:58,607 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (0.98)
+2026-06-14 00:03:58,630 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (1.00)
+2026-06-14 00:03:58,651 [INFO] [ONNX] Mengkalcerkan Jogjah: other/neutral (0.97)
+2026-06-14 00:03:58,670 [INFO] [ONNX] Mengkalcerkan Jogjah: other/negative (0.93)
+2026-06-14 00:03:58,850 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (1.00)
+2026-06-14 00:03:58,871 [INFO] [ONNX] Mengkalcerkan Jogjah: other/negative (0.95)
+2026-06-14 00:03:58,890 [INFO] [ONNX] Mengkalcerkan Jogjah: other/negative (0.99)
+2026-06-14 00:03:58,909 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (0.98)
+2026-06-14 00:03:58,913 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:04:18,473 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (1.00)
+2026-06-14 00:04:18,520 [INFO] [ONNX] CRMuah: other/neutral (1.00)
+2026-06-14 00:04:22,275 [INFO] [ONNX] Mengkalcerkan Jogjah: other/negative (0.98)
+2026-06-14 00:04:22,390 [INFO] [ONNX] Mengkalcerkan Jogjah: other/neutral (0.99)
+2026-06-14 00:04:22,411 [INFO] [ONNX] Mengkalcerkan Jogjah: other/negative (0.95)
+2026-06-14 00:04:22,431 [INFO] [ONNX] Mengkalcerkan Jogjah: other/negative (0.99)
+2026-06-14 00:04:23,025 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=12).
+2026-06-14 00:04:23,096 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:04:23,145 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-9 | NEGATIVE | OTHER | Skor: 66
+2026-06-14 00:04:23,146 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=12, intent=other
+2026-06-14 00:04:23,219 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=13).
+2026-06-14 00:04:23,336 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-9 | NEUTRAL | OTHER | Skor: 66
+2026-06-14 00:04:23,365 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=13, intent=other
+2026-06-14 00:04:23,390 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (0.98)
+2026-06-14 00:04:23,570 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=14).
+2026-06-14 00:04:24,872 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-9 | NEGATIVE | OTHER | Skor: 66
+2026-06-14 00:04:24,874 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=14, intent=other
+2026-06-14 00:04:25,120 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=15).
+2026-06-14 00:04:25,243 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-10 | NEGATIVE | OTHER | Skor: 70
+2026-06-14 00:04:25,244 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=15, intent=other
+2026-06-14 00:08:49,827 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:08:49,843 [INFO] No device provided, using cpu
+2026-06-14 00:08:51,860 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2 0 2 6 - 0 6 - 1 4  
+ 0 0 : 1 0 : 0 0  
+ 0  
+ [ I N F O ]  
+ [ T E S T ]  
+ T h i s  
+ i s  
+ a  
+ t e s t  
+ l o g  
+ 2026-06-14 00:09:29,733 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:09:29,738 [INFO] No device provided, using cpu
+2026-06-14 00:09:30,500 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-14 00:10:21,513 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:10:21,519 [INFO] No device provided, using cpu
+2026-06-14 00:10:23,238 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-14 00:11:22,006 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:22,010 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:22,122 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:22,830 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:23,191 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:23,649 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:23,780 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:23,884 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:11:25,024 [INFO] [ONNX] Mengkalcerkan Jogjah: other/neutral (0.97)
+2026-06-14 00:11:25,301 [INFO] [ONNX] Mengkalcerkan Jogjah: inquiry/neutral (0.80)
+2026-06-14 00:11:25,576 [INFO] [ONNX] Mengkalcerkan Jogjah: other/positive (1.00)
+2026-06-14 00:11:25,580 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:11:25,688 [INFO] [ONNX] Mengkalcerkan Jogjah: other/neutral (0.98)
+2026-06-14 00:11:26,245 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=17).
+2026-06-14 00:11:26,279 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=18).
+2026-06-14 00:11:26,365 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-14 | NEUTRAL | OTHER | Skor: 72
+2026-06-14 00:11:26,366 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=17, intent=other
+2026-06-14 00:11:26,398 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-14 | NEUTRAL | INQUIRY | Skor: 72
+2026-06-14 00:11:26,399 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=18, intent=inquiry
+2026-06-14 00:11:26,414 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=19).
+2026-06-14 00:11:26,538 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-14 | POSITIVE | OTHER | Skor: 72
+2026-06-14 00:11:26,539 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=19, intent=other
+2026-06-14 00:11:26,934 [INFO] [DB] Pesan BARU dari Mengkalcerkan Jogjah disimpan (ID=20).
+2026-06-14 00:11:27,053 [INFO] [SCORE] Mengkalcerkan Jogjah | Interaksi ke-14 | NEUTRAL | OTHER | Skor: 72
+2026-06-14 00:11:27,076 [INFO] [RAG BG START] Memulai proses RAG untuk message_id=20, intent=other
+2026-06-14 00:11:36,294 [INFO] [RAG BG END] Suggestion hasil AI: 'Mohon maaf atas kesalahan tersebut. Kami akan memeriksa dan memperbaiki situasi ini secepat mungkin. Terima kasih atas komplain Anda.'
+2026-06-14 00:11:43,576 [INFO] [RAG BG END] Suggestion hasil AI: 'Terima kasih atas informasi tersebut. Jika ada hal lain yang perlu dibahas, silakan beri tahu.'
+2026-06-14 00:11:49,671 [INFO] [RAG BG END] Suggestion hasil AI: 'Mohon maaf atas ketidaknyamanan Anda. Bagaimana saya bisa membantu Anda hari ini?'
+2026-06-14 00:11:59,263 [INFO] [RAG BG END] Suggestion hasil AI: 'Mohon maaf atas kesalahan tersebut. Untuk informasi lebih lanjut, kami mohon Anda menyertakan video unboxing dari awal paket masih tersegel utuh tanpa jeda (no pause/cut) sebagai bukti valid. Tanpa video unboxing, klaim kerusakan atau kekurangan barang tidak akan dilayani. Terima kasih atas kejelasan Anda.'
+2026-06-14 00:12:13,597 [ERROR] [RAG BG ERROR] QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00 (Background on this error at: https://sqlalche.me/e/20/3o7r)
+2026-06-14 00:12:16,662 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:12:21,026 [INFO] [RAG BG UPDATE] DB diupdate dengan suggestion untuk message_id=17
+2026-06-14 00:12:21,959 [INFO] [RAG BG UPDATE] DB diupdate dengan suggestion untuk message_id=18
+2026-06-14 00:12:24,043 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:12:24,428 [INFO] [RAG BG UPDATE] DB diupdate dengan suggestion untuk message_id=20
+2026-06-14 00:12:24,994 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:12:27,463 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:14:40,153 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:14:40,160 [INFO] No device provided, using cpu
+2026-06-14 00:14:41,853 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-14 00:16:46,042 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:46,045 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:46,047 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:46,049 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:46,631 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:46,996 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:47,112 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:47,508 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:47,542 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:47,580 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:47,816 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:48,280 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:16:52,671 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=18
+2026-06-14 00:16:52,907 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion='Mohon maaf atas ketidaknyamanan Anda. Bagaimana saya bisa membantu Anda hari ini?' untuk 18
+2026-06-14 00:16:58,718 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=19
+2026-06-14 00:16:58,952 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion=None untuk 19
+2026-06-14 00:17:31,891 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=6
+2026-06-14 00:17:32,125 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion=None untuk 6
+2026-06-14 00:19:06,695 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=6
+2026-06-14 00:19:07,011 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion=None untuk 6
+2026-06-14 00:20:04,255 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:20:04,262 [INFO] No device provided, using cpu
+2026-06-14 00:20:07,360 [INFO] Loading SentenceTransformer model from sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2.
+2026-06-14 00:20:56,294 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:20:57,363 [INFO] [ONNX] CRMuah: other/positive (0.92)
+2026-06-14 00:20:57,399 [INFO] [ONNX] CRMuah: other/neutral (1.00)
+2026-06-14 00:20:57,425 [INFO] [ONNX] CRMuah: other/neutral (1.00)
+2026-06-14 00:20:57,442 [INFO] [ONNX] CRMuah: other/positive (0.99)
+2026-06-14 00:20:58,089 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=21).
+2026-06-14 00:20:58,101 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=22).
+2026-06-14 00:20:58,127 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=23).
+2026-06-14 00:20:58,177 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=24).
+2026-06-14 00:20:58,207 [INFO] [SCORE] CRMuah | Interaksi ke-6 | POSITIVE | OTHER | Skor: 85
+2026-06-14 00:20:58,297 [INFO] [ONNX] CRMuah: other/neutral (1.00)
+2026-06-14 00:20:58,298 [INFO] [SCORE] CRMuah | Interaksi ke-6 | NEUTRAL | OTHER | Skor: 85
+2026-06-14 00:20:58,303 [INFO] [SCORE] CRMuah | Interaksi ke-6 | POSITIVE | OTHER | Skor: 85
+2026-06-14 00:20:58,309 [INFO] [SCORE] CRMuah | Interaksi ke-6 | NEUTRAL | OTHER | Skor: 85
+2026-06-14 00:20:58,803 [INFO] [ONNX] CRMuah: other/positive (0.99)
+2026-06-14 00:20:59,034 [INFO] [ONNX] CRMuah: other/positive (0.99)
+2026-06-14 00:20:59,037 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=25).
+2026-06-14 00:20:59,270 [INFO] [SCORE] CRMuah | Interaksi ke-8 | NEUTRAL | OTHER | Skor: 85
+2026-06-14 00:20:59,628 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:20:59,947 [INFO] [ONNX] CRMuah: other/neutral (0.98)
+2026-06-14 00:21:00,114 [INFO] [ONNX] CRMuah: other/positive (0.99)
+2026-06-14 00:21:00,233 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=26).
+2026-06-14 00:21:00,352 [INFO] [SCORE] CRMuah | Interaksi ke-10 | POSITIVE | OTHER | Skor: 85
+2026-06-14 00:21:00,536 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=27).
+2026-06-14 00:21:00,773 [INFO] [SCORE] CRMuah | Interaksi ke-11 | POSITIVE | OTHER | Skor: 86
+2026-06-14 00:21:01,201 [INFO] [ONNX] CRMuah: other/neutral (0.99)
+2026-06-14 00:21:01,259 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:01,306 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:01,323 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:01,323 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:01,607 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=28).
+2026-06-14 00:21:01,658 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=29).
+2026-06-14 00:21:01,724 [INFO] [SCORE] CRMuah | Interaksi ke-12 | NEUTRAL | OTHER | Skor: 85
+2026-06-14 00:21:01,894 [INFO] [SCORE] CRMuah | Interaksi ke-12 | POSITIVE | OTHER | Skor: 85
+2026-06-14 00:21:02,015 [INFO] [DB] Pesan BARU dari CRMuah disimpan (ID=30).
+2026-06-14 00:21:02,249 [INFO] [SCORE] CRMuah | Interaksi ke-12 | NEUTRAL | OTHER | Skor: 85
+2026-06-14 00:21:02,288 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:03,379 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:03,583 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=26
+2026-06-14 00:21:03,782 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:03,816 [INFO] [RAG ON-DEMAND] Generate suggestion untuk 26...
+2026-06-14 00:21:04,734 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:04,905 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:05,264 [ERROR] [WEBHOOK ERROR] Gagal mengirim siaran ke Laravel: timed out
+2026-06-14 00:21:42,839 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=26
+2026-06-14 00:21:43,078 [INFO] [RAG ON-DEMAND] Generate suggestion untuk 26...
+2026-06-14 00:22:36,899 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:36,901 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:36,904 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:36,949 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:36,984 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:37,035 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:37,622 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:38,253 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:38,336 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:22:38,377 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:22:38,491 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:38,500 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:38,526 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:38,732 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:22:38,805 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:22:41,370 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=18
+2026-06-14 00:22:41,606 [INFO] [FETCH SUGGESTION] Ditemukan msg.suggestion='Mohon maaf atas ketidaknyamanan Anda. Bagaimana saya bisa membantu Anda hari ini?' untuk 18
+2026-06-14 00:22:49,552 [INFO] [FETCH SUGGESTION] Extension meminta suggestion untuk message_id=6
+2026-06-14 00:22:49,788 [INFO] [RAG ON-DEMAND] Generate suggestion untuk 6...
+2026-06-14 00:23:31,775 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:23:31,777 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:23:31,779 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:23:31,783 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:23:31,900 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:23:32,815 [INFO] [CACHE HIT] Pesan lama dari CRMuah, return dari DB.
+2026-06-14 00:24:25,678 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:24:25,794 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:24:25,800 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:24:25,802 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:24:25,805 [INFO] [CACHE HIT] Pesan lama dari Mengkalcerkan Jogjah, return dari DB.
+2026-06-14 00:24:26,581 [WARNING] [DEDUP] Mengabaikan duplikat dari Mengkalcerkan Jogjah
+2026-06-14 00:25:26,750 [INFO] [STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...
+2026-06-14 00:25:26,757 [INFO] No device provided, using cpu

@@ -32,3 +32,16 @@ class ManualCorrection(Base):
     admin_id            = Column(String)
     created_at          = Column(DateTime(timezone=True), default=func.now())
     updated_at          = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
+
+from pgvector.sqlalchemy import Vector
+from sqlalchemy.dialects.postgresql import JSONB
+
+class KnowledgeBase(Base):
+    __tablename__ = "knowledge_bases"
+    id          = Column(Integer, primary_key=True, index=True)
+    user_id     = Column(Integer, index=True)  # ID Perusahaan/User
+    content     = Column(Text)                 # Potongan teks dokumen
+    metadata_   = Column("metadata", JSONB, nullable=True) # Informasi meta seperti halaman/judul
+    embedding   = Column(Vector(384))          # Vector untuk MiniLM-L12-v2
+    created_at  = Column(DateTime(timezone=True), default=func.now())
+    updated_at  = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())

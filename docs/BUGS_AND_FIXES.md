@@ -25,6 +25,8 @@ Dokumen ini melacak riwayat pengembangan sistem Emotext-CRM beserta status penye
 | 15 | Ekstensi & Dashboard | Selektor CSS WA Web bersifat *hardcoded* di `content.js`, rawan mati jika WA Web di-update. | **MEDIUM** | Membangun sistem **Remote Config**. Ekstensi mengunduh selektor secara dinamis dari `config/extension.php` Laravel. |
 | 16 | Database | **Token API Tersimpan Polos:** Token API ekstensi saat ini tersimpan di `users` secara *plain text*. | **HIGH** | Menerapkan enkripsi Hashing Token (SHA-256) untuk keamanan skala *Enterprise*. |
 | 17 | Database | **ManualCorrection Tanpa Timestamps:** Model SQLAlchemy `ManualCorrection` tidak memiliki `created_at` / `updated_at`. | **LOW** | Menambahkan dan menyinkronkan kolom timestamps ke dalam skema basis data. |
+| 18 | Backend API (FastAPI) | **QueuePool Exhaustion (Timeout 500)** karena *background task* RAG saling mengunci koneksi DB saat menunggu giliran antrean Llama.cpp. | **CRITICAL** | Mengubah arsitektur RAG menjadi *On-Demand* murni (tanpa *background task*) & menjalankan inferensi LLM *sebelum* membuka koneksi Database. |
+| 19 | Ekstensi | **Badge Kesehatan (Kuning) Hilang:** Indikator *health bar* sulit terlihat karena tertutup atribut `overflow` dan kurang tebal. | **MEDIUM** | Menebalkan bar (6px) ditambah efek *glow*, serta menyuntikkan *Sidebar Badge* melingkar langsung ke avatar foto profil pengguna. |
 
 ---
 
@@ -43,6 +45,8 @@ Dokumen ini melacak riwayat pengembangan sistem Emotext-CRM beserta status penye
 | 9  | Backend API (FastAPI) | **Async Database Driver & Connection Pooling** | Migrasi fungsi SQLAlchemy ke arsitektur *async* dengan `asyncpg` untuk optimasi dan penanganan ribuan *request* bersamaan. |
 | 10 | Backend API (FastAPI) | **Sentralisasi Logika Smart Suggestion / RAG** | AI merekam saran langsung ke DB untuk Dasbor, sehingga sistem saran tidak terduplikasi. |
 | 11 | NLP Model (FastAPI) | **Optimasi Latensi IndoBERT (PyTorch ke ONNX)** | Melakukan kompilasi graf dan format bobot dari model PyTorch menjadi format `ONNX`, memangkas respon CPU dari ~2 detik ke ~100 ms. |
+| 12 | NLP Model (FastAPI) | **Offline RAG Murni (Llama.cpp + FAISS)** | Menghapus integrasi cloud, membaca basis pengetahuan murni dari folder lokal `doc/` dan menjalankan generasi RAG via GGUF secara luring demi kerahasiaan data tingkat militer. |
+| 13 | Ekstensi & API | **Real-Time Streaming Animation (SSE)** | Mengganti *loading* balasan RAG yang stagnan dengan mekanisme *Server-Sent Events (SSE)* agar agen melihat AI mengetik (Token-by-Token) secara seketika (*instant-feedback*). |
 
 ---
 

@@ -124,4 +124,84 @@ class DashboardController extends Controller
         return back()->with('success', 'Pesan berhasil ditandai sebagai selesai.');
     }
 
+    public function uploadKb(Request $request)
+    {
+        // BUG-FIX: gunakan mimetypes eksplisit agar file .txt tidak ditolak oleh sistem validasi
+        $request->validate([
+            'file' => 'required|file|max:5120|mimetypes:application/pdf,text/plain,text/x-plain',
+        ]);
+
+        $file = $request->file('file');
+        $filename = $file->getClientOriginalName();
+        
+        // BUG-FIX: format Http::attach yang benar — field name, content, filename, dan headers
+        // user_id dikirim sebagai form field terpisah (bukan sebagai body JSON)
+        $response = \Illuminate\Support\Facades\Http::timeout(60)
+            ->withHeaders([
+                'X-Internal-Api-Key' => env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026')
+            ])
+            ->asMultipart()
+            ->attach('file', file_get_contents($file->getRealPath()), $filename)
+            ->post(env('FASTAPI_URL', 'http://127.0.0.1:8000') . '/upload-kb?user_id=' . auth()->id());
+
+        if ($response->successful()) {
+            return back()->with('success', 'Dokumen RAG berhasil diproses: ' . $response->json('message', 'Sukses'));
+        }
+
+        $errorMsg = $response->json('detail', 'Status: ' . $response->status());
+        return back()->with('error', 'Gagal memproses dokumen: ' . $errorMsg);
+    }
+
+    public function knowledgeBase()
+    {
+        $fastapiUrl = env('FASTAPI_URL', 'http://127.0.0.1:8000');
+        $internalKey = env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026');
+
+        $documents = [];
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withHeaders(['X-Internal-Api-Key' => $internalKey])
+                ->get($fastapiUrl . '/list-kb?user_id=' . auth()->id());
+
+            if ($response->successful()) {
+                $documents = $response->json('documents', []);
+            } else {
+                session()->flash('error', 'Gagal memuat dokumen RAG (Status: ' . $response->status() . ')');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'API AI sedang offline atau masih memuat model (Loading). Harap tunggu beberapa saat.');
+        }
+
+        return view('knowledge_base', [
+            'documents' => $documents,
+        ]);
+    }
+
+    public function deleteKb(Request $request, $id)
+    {
+        // $id disini adalah filename yang di-encode (kita kirim via form field)
+        $filename = $request->input('filename');
+        $fastapiUrl = env('FASTAPI_URL', 'http://127.0.0.1:8000');
+        $internalKey = env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026');
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(10)
+                ->withHeaders([
+                    'X-Internal-Api-Key' => $internalKey,
+                    'Content-Type' => 'application/json',
+                ])
+                ->delete($fastapiUrl . '/delete-kb', [
+                    'user_id' => auth()->id(),
+                    'filename' => $filename,
+                ]);
+
+            if ($response->successful()) {
+                $deleted = $response->json('deleted_chunks', 0);
+                return back()->with('success', "Dokumen '{$filename}' ({$deleted} paragraf) berhasil dihapus.");
+            }
+            return back()->with('error', 'Gagal menghapus dokumen.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'API AI sedang offline atau memuat model.');
+        }
+    }
 }

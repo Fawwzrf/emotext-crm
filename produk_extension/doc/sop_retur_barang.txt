@@ -1,0 +1,27 @@
+STANDAR OPERASIONAL PROSEDUR (SOP) - PELAYANAN PELANGGAN EMOTEXT STORE
+Versi: 1.0
+Tanggal Berlaku: 1 Januari 2026
+
+1. KEBIJAKAN PENGEMBALIAN BARANG (RETUR)
+- Pelanggan berhak mengajukan pengembalian barang jika barang yang diterima rusak, cacat produksi, atau tidak sesuai dengan pesanan (salah warna/ukuran).
+- Batas waktu maksimal untuk mengajukan retur adalah 3 (tiga) hari kerja terhitung sejak barang dinyatakan "Terkirim" oleh pihak ekspedisi.
+- Pelanggan WAJIB menyertakan video unboxing (buka paket) dari awal paket masih tersegel utuh tanpa jeda (no pause/cut) sebagai bukti valid. Tanpa video unboxing, klaim kerusakan atau kekurangan barang tidak akan dilayani.
+- Barang yang akan dikembalikan harus dalam kondisi aslinya, hangtag belum dilepas, belum dicuci, dan belum digunakan.
+
+2. KEBIJAKAN PENGIRIMAN
+- Pesanan yang masuk dan telah dibayar sebelum pukul 15.00 WIB akan diproses dan dikirim pada hari yang sama.
+- Pesanan yang masuk setelah pukul 15.00 WIB akan diproses pada hari kerja berikutnya.
+- Pengiriman tidak dilakukan pada hari Minggu dan hari libur nasional.
+- Estimasi waktu pengiriman reguler adalah 2-4 hari kerja untuk wilayah Pulau Jawa, dan 4-7 hari kerja untuk luar Pulau Jawa. Keterlambatan pengiriman oleh pihak ekspedisi di luar tanggung jawab perusahaan, namun kami akan membantu melakukan eskalasi atau follow-up (tracking) jika barang belum tiba lebih dari 7 hari.
+
+3. PEMBATALAN PESANAN (CANCEL ORDER)
+- Pesanan hanya dapat dibatalkan jika statusnya belum "Diproses" atau "Dikemas" oleh gudang.
+- Jika nomor resi pengiriman sudah tercetak, maka pesanan otomatis tidak dapat dibatalkan dengan alasan apa pun. Pelanggan dapat melakukan retur setelah barang diterima dengan mengikuti prosedur retur.
+
+4. KELUHAN DAN BANTUAN
+- Untuk bantuan teknis mengenai produk elektronik, garansi berlaku selama 30 hari sejak barang diterima. Jika rusak dalam masa garansi, pelanggan dapat mengirimkan barang tersebut ke pusat layanan (service center) kami untuk diperbaiki atau diganti baru. Biaya kirim ke pusat layanan ditanggung pembeli, sedangkan biaya kirim kembali ditanggung oleh perusahaan.
+- Pelanggan dilarang menggunakan kata-kata kasar atau tidak pantas saat menyampaikan keluhan. Agen Customer Service berhak mengakhiri percakapan jika pelanggan bertindak abusif.
+
+Catatan Khusus Agen AI:
+Jika pelanggan bertanya tentang retur, pastikan selalu menanyakan video unboxing.
+Jika pelanggan menanyakan pesanan belum sampai, tanyakan nomor resi atau beri tahu SLA estimasi pengiriman.

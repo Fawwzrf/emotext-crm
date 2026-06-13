@@ -25,6 +25,16 @@ const LARAVEL_BASE_URL = 'http://127.0.0.1:8001';
 let COMPANY_API_KEY = null;
 let TERMS_AGREED = false;
 
+// BUG-FIX: Cegah fetch menggantung selamanya jika backend mati/pause di Windows
+async function fetchWithTimeout(resource, options = {}) {
+    const { timeout = 5000 } = options;
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    const response = await fetch(resource, { ...options, signal: controller.signal });
+    clearTimeout(id);
+    return response;
+}
+
 async function fetchRemoteConfig() {
     try {
         const response = await fetch(`${LARAVEL_BASE_URL}/api/extension/config`);
@@ -225,8 +235,9 @@ async function analyzeMessageAPI(text, senderId, senderName, context = []) {
         const maskedCtx = context.map(c => ({ text: anonymizeText(c.text), role: c.role }));
         const fullContext = [...maskedCtx, { text: maskedText, role: 'user' }];
 
-        const response = await fetch(`${API_BASE_URL}/analyze`, {
+        const response = await fetchWithTimeout(`${API_BASE_URL}/analyze`, {
             method: 'POST',
+            timeout: 8000, // Fast path <500ms setelah perbaikan arsitektur
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${COMPANY_API_KEY}` },
             body: JSON.stringify({
                 sender_id: senderId,
@@ -241,6 +252,27 @@ async function analyzeMessageAPI(text, senderId, senderName, context = []) {
     } catch (error) {
         console.warn('[Emotext-CRM] API error:', error.message);
         return { sentiment: 'neutral', intent: 'other', confidence: 0, health_score: 50, suggestion: null };
+    }
+}
+
+// BUG-FIX: Antrean request untuk sidebar badge — cegah 30+ request bersamaan yang memblokir browser
+const sidebarQueue = [];
+let sidebarRunning = 0;
+const SIDEBAR_CONCURRENCY = 3; // Maks. 3 request berjalan bersamaan
+
+function enqueueSidebarRequest(fn) {
+    sidebarQueue.push(fn);
+    drainSidebarQueue();
+}
+
+async function drainSidebarQueue() {
+    while (sidebarQueue.length > 0 && sidebarRunning < SIDEBAR_CONCURRENCY) {
+        const fn = sidebarQueue.shift();
+        sidebarRunning++;
+        fn().finally(() => {
+            sidebarRunning--;
+            drainSidebarQueue();
+        });
     }
 }
 
@@ -260,43 +292,47 @@ async function processSidebarChat(chatCell) {
 
     const uniqueId = encodeURIComponent(contactName.replace(/\s+/g, '_').toLowerCase());
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/health-score/${uniqueId}`, {
-            headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
-        });
-        if (!response.ok) return;
-        const data = await response.json();
-        const score = data.health_score;
+    // BUG-FIX: Gunakan antrean agar request tidak serentak memblokir browser
+    enqueueSidebarRequest(async () => {
+        try {
+            const response = await fetchWithTimeout(`${API_BASE_URL}/health-score/${uniqueId}`, {
+                timeout: 5000,
+                headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
+            });
+            if (!response.ok) return;
+            const data = await response.json();
+            const score = data.health_score;
 
-        let avatarContainer = chatCell.querySelector(SELECTORS.avatarContainer) || chatCell.children[0];
-        if (!avatarContainer) return;
+            let avatarContainer = chatCell.querySelector(SELECTORS.avatarContainer) || chatCell.children[0];
+            if (!avatarContainer) return;
 
-        avatarContainer.style.position = 'relative';
-        const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
-        if (existing) existing.remove();
+            avatarContainer.style.position = 'relative';
+            const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
+            if (existing) existing.remove();
 
-        const badge = document.createElement('div');
-        badge.className = 'emotext-sidebar-health-badge';
-        badge.innerText = score;
+            const badge = document.createElement('div');
+            badge.className = 'emotext-sidebar-health-badge';
+            badge.innerText = score;
 
-        if (score < 50) {
-            badge.style.backgroundColor = '#FF4B4B';
-            badge.style.color = '#ffffff';
-            badge.style.boxShadow = '0 0 10px #FF4B4B';
-            badge.title = `Urgensi Tinggi (${score})`;
-        } else if (score < 80) {
-            badge.style.backgroundColor = '#FFC107';
-            badge.style.color = '#0f172a';
-            badge.style.boxShadow = '0 0 6px #FFC107';
-            badge.title = `Urgensi Sedang (${score})`;
-        } else {
-            badge.style.backgroundColor = '#25D366';
-            badge.style.color = '#ffffff';
-            badge.title = `Urgensi Rendah (${score})`;
-        }
+            if (score < 50) {
+                badge.style.backgroundColor = '#FF4B4B';
+                badge.style.color = '#ffffff';
+                badge.style.boxShadow = '0 0 10px #FF4B4B';
+                badge.title = `Urgensi Tinggi (${score})`;
+            } else if (score < 80) {
+                badge.style.backgroundColor = '#FFC107';
+                badge.style.color = '#0f172a';
+                badge.style.boxShadow = '0 0 6px #FFC107';
+                badge.title = `Urgensi Sedang (${score})`;
+            } else {
+                badge.style.backgroundColor = '#25D366';
+                badge.style.color = '#ffffff';
+                badge.title = `Urgensi Rendah (${score})`;
+            }
 
-        avatarContainer.appendChild(badge);
-    } catch (err) { /* silent */ }
+            avatarContainer.appendChild(badge);
+        } catch (err) { /* silent */ }
+    });
 }
 
 function injectSuggestion(suggestionText) {
@@ -375,32 +411,58 @@ function injectSuggestion(suggestionText) {
 
 function updateHealthBar(score) {
     const header = document.querySelector(SELECTORS.conversationHeader) || document.querySelector('header');
-    if (!header) return;
-    
-    let healthContainer = header.querySelector('.emotext-health-container');
-    if (!healthContainer) {
-        healthContainer = document.createElement('div');
-        healthContainer.className = 'emotext-health-container';
-        healthContainer.style.width = '100%';
-        healthContainer.style.height = '4px';
-        healthContainer.style.position = 'absolute';
-        healthContainer.style.bottom = '0';
-        healthContainer.style.left = '0';
-        healthContainer.style.zIndex = '1000';
-        
-        const healthBar = document.createElement('div');
-        healthBar.className = 'emotext-health-bar';
-        healthBar.style.height = '100%';
-        healthBar.style.transition = 'width 0.3s ease, background 0.3s ease';
-        
-        healthContainer.appendChild(healthBar);
-        header.style.position = 'relative';
-        header.appendChild(healthContainer);
+    if (header) {
+        let healthContainer = header.querySelector('.emotext-health-container');
+        if (!healthContainer) {
+            healthContainer = document.createElement('div');
+            healthContainer.className = 'emotext-health-container';
+            healthContainer.style.width = '100%';
+            healthContainer.style.height = '6px';
+            healthContainer.style.position = 'absolute';
+            healthContainer.style.bottom = '0';
+            healthContainer.style.left = '0';
+            healthContainer.style.zIndex = '9999';
+            
+            const healthBar = document.createElement('div');
+            healthBar.className = 'emotext-health-bar';
+            healthBar.style.height = '100%';
+            healthBar.style.transition = 'width 0.3s ease, background 0.3s ease';
+            
+            healthContainer.appendChild(healthBar);
+            header.style.position = 'relative';
+            header.appendChild(healthContainer);
+        }
+        const healthBar = healthContainer.querySelector('.emotext-health-bar');
+        if (healthBar) {
+            healthBar.style.width = `${score}%`;
+            healthBar.style.background = score < 50 ? '#FF4B4B' : (score < 80 ? '#FFC107' : '#25D366');
+            healthBar.style.boxShadow = score < 50 ? '0 0 5px #FF4B4B' : (score < 80 ? '0 0 5px #FFC107' : '0 0 5px #25D366');
+        }
     }
-    const healthBar = healthContainer.querySelector('.emotext-health-bar');
-    if (healthBar) {
-        healthBar.style.width = `${score}%`;
-        healthBar.style.background = score < 50 ? '#FF4B4B' : (score < 80 ? '#FFC107' : '#25D366');
+
+    // Badge Skor di Sidebar Chat List (Kiri)
+    const activeChat = document.querySelector('[data-testid="cell-frame-container"][aria-selected="true"]') || document.querySelector('[aria-selected="true"]');
+    if (activeChat) {
+        let sidebarBadge = activeChat.querySelector('.emotext-sidebar-health-badge');
+        if (!sidebarBadge) {
+            sidebarBadge = document.createElement('div');
+            sidebarBadge.className = 'emotext-sidebar-health-badge';
+            
+            const avatarBox = activeChat.querySelector(SELECTORS.avatarContainer) || activeChat.querySelector('div[style*="width: 49px"]') || activeChat.querySelector('img')?.parentElement;
+            if (avatarBox) {
+                avatarBox.style.position = 'relative';
+                avatarBox.appendChild(sidebarBadge);
+            }
+        }
+        
+        let status = score >= 80 ? 'Loyal' : (score >= 50 ? 'Good' : 'Risk');
+        sidebarBadge.innerText = status;
+        
+        let color = score >= 80 ? '#25D366' : (score >= 50 ? '#FFC107' : '#FF4B4B');
+        sidebarBadge.style.backgroundColor = color;
+        sidebarBadge.style.color = score >= 50 ? '#000' : '#fff';
+        sidebarBadge.style.padding = '0 6px';
+        sidebarBadge.style.borderRadius = '10px';
     }
 }
 
@@ -441,34 +503,73 @@ async function processMessageNode(msgContainer) {
     bubble.appendChild(createBadges(analysis.sentiment, analysis.intent, analysis.confidence));
     updateHealthBar(analysis.health_score);
 
-    // ========================================================
-    // PERUBAHAN: Munculkan RAG Suggestion HANYA saat pesan di-klik
-    // ========================================================
-    if (analysis.suggestion) {
-        // Berikan penanda bahwa balon pesan ini bisa diklik
-        bubble.title = "💡 Klik pesan ini untuk memunculkan saran balasan AI (RAG)";
-        bubble.style.cursor = "pointer";
+    // ── LAZY-LOAD RAG SUGGESTION ────────────────────────────────────────────
+    // Suggestion tidak ikut di response /analyze (agar <500ms).
+    // Ia di-fetch terpisah hanya saat pesan diklik oleh CS Admin.
+    const messageId = analysis.message_id;
 
-        bubble.addEventListener('click', (e) => {
-            // Cegah agar klik tidak bentrok jika admin mengklik tombol/link/badge bawaan WA
-            if (e.target.closest('a, button, .emotext-badges-container, [role="button"]')) return;
-            
-            // 1. Munculkan tombol RAG ke kotak input
+    bubble.title = "💡 Klik pesan ini untuk memunculkan saran balasan AI";
+    bubble.style.cursor = "pointer";
+
+    bubble.addEventListener('click', async (e) => {
+        if (e.target.closest('a, button, .emotext-badges-container, [role="button"]')) return;
+
+        // Animasi highlight
+        bubble.style.transition = 'background-color 0.3s ease';
+        bubble.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+        setTimeout(() => {
+            bubble.style.backgroundColor = '';
+            setTimeout(() => { bubble.style.transition = ''; }, 300);
+        }, 400);
+
+        // Jika suggestion sudah ada di suggestion cache, tampilkan langsung
+        if (bubble.dataset.cachedSuggestion) {
+            injectSuggestion(bubble.dataset.cachedSuggestion);
+            return;
+        }
+
+        // Jika message_id ada, fetch suggestion stream dari server
+        if (messageId) {
+            try {
+                injectSuggestion("⏳ Menyambung ke AI...");
+                const resp = await fetchWithTimeout(`${API_BASE_URL}/suggestion/stream/${messageId}`, {
+                    timeout: 90000, // Qwen bisa lambat di CPU, beri waktu penuh
+                    headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
+                });
+                
+                if (resp.ok) {
+                    const reader = resp.body.getReader();
+                    const decoder = new TextDecoder("utf-8");
+                    let fullText = "";
+                    
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        
+                        const chunk = decoder.decode(value, { stream: true });
+                        fullText += chunk;
+                        // Animasi typing kursor blok
+                        injectSuggestion(fullText + " █");
+                    }
+                    
+                    // Final text tanpa kursor
+                    bubble.dataset.cachedSuggestion = fullText;
+                    injectSuggestion(fullText);
+                } else {
+                    const errText = await resp.text();
+                    console.warn('[Emotext-CRM] Stream error:', errText);
+                    injectSuggestion("⚠️ Gagal memuat saran balasan.");
+                }
+            } catch (err) {
+                console.warn('[Emotext-CRM] Gagal fetch stream:', err.message);
+                injectSuggestion("⚠️ Terjadi kesalahan koneksi.");
+            }
+        } else if (analysis.suggestion) {
+            // Fallback: jika ada suggestion bawaan (pesan lama dari cache DB)
+            bubble.dataset.cachedSuggestion = analysis.suggestion;
             injectSuggestion(analysis.suggestion);
-            
-            // 2. Berikan animasi kilat (highlight) pada pesan yang sedang dipilih
-            const originalTransition = bubble.style.transition;
-            const originalBg = bubble.style.backgroundColor;
-            
-            bubble.style.transition = 'background-color 0.3s ease';
-            bubble.style.backgroundColor = 'rgba(16, 185, 129, 0.2)'; // Warna hijau tipis
-            
-            setTimeout(() => {
-                bubble.style.backgroundColor = originalBg;
-                setTimeout(() => { bubble.style.transition = originalTransition; }, 300);
-            }, 400);
-        });
-    }
+        }
+    });
 }
 
 function initObservers() {
