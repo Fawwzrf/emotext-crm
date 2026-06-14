@@ -106,7 +106,7 @@ Karena model AI (*IndoBERT* dan *FAISS*) membutuhkan RAM yang cukup besar, kami 
 
 ### Langkah-langkah Deploy ke Hugging Face Spaces (Gratis):
 1. Buat akun di [Hugging Face](https://huggingface.co/).
-2. Buat **Space** baru, berikan nama (misal: `emotext-backend`), lalu pilih **Docker** sebagai SDK.
+2. Buat **Space** baru, berikan nama (misal: `emotext-backend`). Pada bagian SDK, pilih **Docker**, lalu pilih *template* **Blank**. Pastikan *Space hardware* yang terpilih adalah **CPU Basic (Free)**.
 3. Unggah seluruh isi folder `produk_extension/backend/` beserta folder `models/` ke dalam Space tersebut.
 4. Buat file `Dockerfile` di *root* direktori Space Anda dengan konfigurasi standar FastAPI Uvicorn:
    ```dockerfile
