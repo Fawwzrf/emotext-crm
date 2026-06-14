@@ -1,25 +1,108 @@
 # 🚀 Emotext-CRM (WA-CRM Intelligence)
-**Emotext-CRM** adalah platform *Customer Relationship Management* (CRM) inovatif yang mengintegrasikan kecerdasan buatan (AI) secara langsung ke dalam antarmuka WhatsApp Web. Dirancang khusus untuk tim *Customer Service* guna menganalisis sentimen, mendeteksi intensi, dan memberikan balasan otomatis berdasarkan SOP perusahaan (*Offline RAG*).
 
-Sistem ini beroperasi dengan model **SaaS (Software as a Service)**, memisahkan ekstensi klien yang ringan dari mesin AI (*Backend*) yang kuat.
+![Version](https://img.shields.io/badge/version-1.0.0_Stable-blue.svg)
+![React](https://img.shields.io/badge/Frontend-React.js-61DAFB?logo=react)
+![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)
+![AI](https://img.shields.io/badge/AI_Engine-IndoBERT_%7C_Llama.cpp-FF9900?logo=huggingface)
+![Database](https://img.shields.io/badge/Database-SQLite-003B57?logo=sqlite)
+
+**Emotext-CRM** adalah platform *Customer Relationship Management* (CRM) inovatif berskala *Enterprise* yang mengintegrasikan kecerdasan buatan (AI) secara langsung ke dalam antarmuka WhatsApp Web. 
+
+Dirancang khusus untuk tim *Customer Service*, sistem ini secara instan menganalisis sentimen, mendeteksi intensi pelanggan, dan memberikan balasan otomatis berlandaskan *Standard Operating Procedure* (SOP) perusahaan menggunakan arsitektur mutakhir **Offline Retrieval-Augmented Generation (RAG)**.
+
+Sistem beroperasi dengan model bisnis **SaaS (Software as a Service)**, memisahkan ekstensi klien yang super ringan (< 5MB) dari mesin AI (*Backend*) raksasa yang aman di server cloud.
 
 ---
 
-## 🏗️ Arsitektur Sistem (Client-Server)
+## ✨ Fitur Unggulan (Core Features)
+- **🧠 Localized NLP Engine (IndoBERT v2.0):** Dilatih khusus (Fine-Tuned) dengan >4.000 data sintesis bahasa jalanan, singkatan ekstrem, dan sarkasme. Akurasi klasifikasi Sentimen dan Intensi mencapai tingkat manusia.
+- **📚 Offline RAG Knowledge Base:** Tidak menggunakan OpenAI. Menjalankan model Llama GGUF dan FAISS secara *offline* di *Backend* untuk membaca dokumen SOP perusahaan, menjamin **100% Data Privacy** (kerahasiaan data tingkat militer).
+- **⚡ Real-Time Streaming (SSE):** Generasi jawaban AI ditampilkan secara *real-time* (token-by-token) kepada agen *Customer Service* di layar WhatsApp Web.
+- **🛠️ Self-Learning Memory (Manual Correction):** Admin dapat memperbaiki klasifikasi yang salah. AI akan mengingat koreksi ini selamanya menggunakan lapisan *Memory Cache* SQLite.
 
-Untuk melindungi kerahasiaan (*Intellectual Property*) model AI dan menjaga performa perangkat pelanggan, Emotext-CRM dipisah menjadi dua komponen utama:
+---
 
-1. **Front-End (Chrome Extension):**
-   Aplikasi ringan berukuran <5 MB yang diunduh dan dipasang oleh pelanggan (*user*) di Google Chrome. Bertugas membaca pesan WhatsApp Web, mengirimkannya ke server, dan merender antarmuka *dashboard* CRM di layar pengguna.
-2. **Back-End (Cloud AI Engine):**
-   Server FastAPI yang men-hosting model NLP (IndoBERT ONNX) berukuran besar dan *Knowledge Base* (FAISS Llama.cpp). Bertugas melakukan komputasi kecerdasan buatan kelas berat dan mengembalikan hasilnya ke *Extension*.
+## 🏗️ Arsitektur Sistem (Client-Server Architecture)
+
+Untuk melindungi *Intellectual Property* model AI dan menjaga performa perangkat pelanggan (agar tidak membebani RAM laptop), Emotext-CRM memisahkan komputasi berat ke *Cloud*.
+
+```mermaid
+graph TD
+    subgraph Client [💻 Client Side (User)]
+        WA[WhatsApp Web]
+        Ext[Emotext Chrome Extension]
+        WA <-->|DOM Scraping & UI Inject| Ext
+    end
+
+    subgraph Internet [🌐 Cloud Network]
+        Auth[Email & Password Auth]
+        API[REST API / SSE Streams]
+    end
+
+    subgraph Server [☁️ Cloud AI Backend (Hugging Face Spaces)]
+        FastAPI[FastAPI Server]
+        
+        subgraph NLP [NLP Classification]
+            IndoBERT[(IndoBERT ONNX)]
+        end
+        
+        subgraph RAG [Response Generation]
+            FAISS[(FAISS Vector DB)]
+            Llama[(Llama.cpp GGUF)]
+        end
+        
+        DB[(SQLite/Postgres DB)]
+    end
+
+    Ext -->|Login| Auth
+    Auth --> FastAPI
+    Ext <-->|Send Chat & Receive Analysis| API
+    API <--> FastAPI
+    FastAPI --> IndoBERT
+    FastAPI --> FAISS
+    FAISS --> Llama
+    Llama --> FastAPI
+    FastAPI <--> DB
+```
+
+---
+
+## 🔀 Alur Pipeline Kecerdasan Buatan (AI Flow)
+
+Proses yang terjadi di dalam *Backend* dalam satuan milidetik ketika ada pesan masuk:
+
+```mermaid
+sequenceDiagram
+    participant User as Pelanggan (WhatsApp)
+    participant CS as Agen (Chrome Ext)
+    participant API as FastAPI Backend
+    participant NLP as IndoBERT (ONNX)
+    participant DB as SQLite Memory
+    participant RAG as FAISS + Llama
+
+    User->>CS: "Woy kpn brg dikirim, nipu lu ya!"
+    CS->>API: POST /api/v1/analyze
+    
+    API->>DB: Cek Manual Correction?
+    DB-->>API: Tidak Ditemukan
+    
+    API->>NLP: Prediksi Teks
+    NLP-->>API: {Intent: COMPLAINT, Sentiment: NEGATIVE}
+    
+    API->>CS: Return Klasifikasi (Muncul Badge Merah di UI)
+    
+    CS->>API: Generate Balasan Cerdas (RAG)
+    API->>RAG: Cari SOP Pengiriman & Generate Text
+    RAG-->>API: "Mohon maaf atas keterlambatan... (Streaming)"
+    API-->>CS: SSE Real-Time Typing...
+```
 
 ---
 
 ## 🌐 Panduan Deployment Backend (Bagi Developer)
-*Agar ekstensi berfungsi, Backend ini wajib di-deploy (di-hosting) di server *cloud*.*
+*Agar ekstensi berfungsi, Backend ini wajib di-deploy (di-hosting) di server cloud.*
 
-Karena model AI (*IndoBERT* dan *FAISS*) membutuhkan RAM yang cukup besar, platform *serverless* biasa (seperti Vercel atau Netlify) **tidak bisa digunakan**. Kami merekomendasikan **Hugging Face Spaces** sebagai solusi *hosting* gratis terbaik (16GB RAM, 2 vCPU).
+Karena model AI (*IndoBERT* dan *FAISS*) membutuhkan RAM yang cukup besar, kami merekomendasikan **Hugging Face Spaces** sebagai solusi *hosting* gratis terbaik (16GB RAM, 2 vCPU).
 
 ### Langkah-langkah Deploy ke Hugging Face Spaces (Gratis):
 1. Buat akun di [Hugging Face](https://huggingface.co/).
@@ -41,10 +124,10 @@ Karena model AI (*IndoBERT* dan *FAISS*) membutuhkan RAM yang cukup besar, platf
 
 ## 💻 Panduan Instalasi (Bagi Pelanggan/User)
 
-Pelanggan dapat menikmati layanan Emotext-CRM dengan langkah instalasi yang sangat mudah. Panduan visual lengkap tersedia di halaman pendaftaran *Website* resmi.
+Pelanggan dapat menikmati layanan Emotext-CRM dengan langkah instalasi yang sangat mudah tanpa memerlukan keahlian teknis.
 
 **Cara Memasang Emotext-Extension:**
-1. Unduh file `Emotext-Extension.zip` dari halaman *Dashboard Website* setelah Anda berlangganan.
+1. Unduh file `Emotext-Extension.zip` dari halaman *Dashboard Website* setelah berlangganan.
 2. Ekstrak (Unzip) file tersebut ke sebuah folder di laptop Anda.
 3. Buka browser **Google Chrome** dan ketik `chrome://extensions/` di kolom URL.
 4. Aktifkan **Developer mode** (Mode Pengembang) di pojok kanan atas layar.
@@ -53,21 +136,15 @@ Pelanggan dapat menikmati layanan Emotext-CRM dengan langkah instalasi yang sang
 
 ---
 
-## 🔑 Panduan Pengaktifan & Login (User)
+## 🔑 Panduan Pengaktifan & Login
 
-Sistem ini diamankan dengan kredensial berlangganan untuk mencegah akses tidak sah.
+Sistem diamankan dengan kredensial berlangganan untuk mencegah penggunaan pihak ketiga yang tidak sah.
 
 1. Buka [WhatsApp Web (web.whatsapp.com)](https://web.whatsapp.com) di Google Chrome Anda.
 2. Saat pertama kali dibuka, layar *pop-up* Emotext-CRM akan muncul meminta otentikasi.
-3. Masukkan **Alamat Email** dan **Password** yang Anda gunakan saat membeli paket langganan di *website* kami.
-4. Setelah berhasil *Login*, sistem akan aktif secara permanen dan otomatis menganalisis setiap pesan WhatsApp yang masuk!
+3. Masukkan **Alamat Email** dan **Password** langganan Anda.
+4. Setelah berhasil *Login*, sistem akan aktif secara permanen dan secara ajaib menyulap tampilan WhatsApp Web Anda menjadi dasbor CRM kelas atas!
 
 ---
-
-## 🛠️ Tech Stack
-- **AI / NLP Engine:** IndoBERT (ONNX Runtime), Llama.cpp (GGUF), FAISS (Offline RAG)
-- **Backend API:** FastAPI (Python), SQLite/PostgreSQL
-- **Frontend / Extension:** React.js, Vanilla CSS, Manifest V3
-- **Infrastructure:** Docker, Uvicorn, Hugging Face Spaces
 
 *Emotext-CRM v1.0 - Stable Release. Developed by Fawwaz.*
