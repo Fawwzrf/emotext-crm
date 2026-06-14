@@ -71,9 +71,11 @@ Dokumen ini melacak riwayat pengembangan sistem Emotext-CRM beserta status penye
 
 Fitur-fitur ekspansi masif yang mengubah nilai jual (*selling point*) aplikasi di mata pelanggan korporat.
 
-1. **Integrasi Vector Database (pgvector) untuk Modul RAG 🧠**
-   - **Tujuan:** Membuat AI menjadi cerdas membaca SOP Perusahaan. Admin dapat mengunggah file PDF (Kebijakan Toko, FAQ), lalu FastAPI akan mengekstraknya menjadi *Embeddings* numerik ke VectorDB PostgreSQL. AI tidak lagi menggunakan *template statis* dari `kb.json`, namun bisa mencarikan kutipan paragraf PDF secara kontekstual untuk pelanggan.
-2. **Ekstraksi Histori Chat Awal (Initial Sync) 🔄**
+1. **Dashboard Analytics Lanjutan 📊**
+   - **Tujuan:** Menambahkan analitik prediktif dan laporan konversi.
+2. **Multi-Channel Integration 🌐**
+   - **Tujuan:** Mendukung platform selain WhatsApp, seperti Instagram DM atau Telegram.
+3. **Ekstraksi Histori Chat Awal (Initial Sync) 🔄**
    - **Tujuan:** Menambahkan fungsionalitas di Ekstensi untuk me-*load* 50 obrolan terakhir pelanggan (tarik mundur) ke backend AI `/api/v1/analyze-batch`, sehingga metrik *Health Score* pelanggan bisa langsung terbaca sejak hari pertama mendaftar.
-3. **Visualisasi Komparasi Tanggal & Word Cloud di Analytics 📊**
+4. **Visualisasi Komparasi Tanggal & Word Cloud di Analytics 📊**
    - **Tujuan:** Menambahkan kemampuan filter tanggal lanjutan (*Date Picker*: Hari Ini, Minggu Lalu, Bulan Lalu) serta melatih *Backend* NLP untuk mengekstrak Subjek Komplain (misal: pengiriman, pelayanan, produk rusak) menjadi grafik kata *Word Cloud*.
