@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Float, func
 from database import Base
 
+
 class Message(Base):
     """
     Diselaraskan dengan tabel 'messages' milik Laravel dashboard.
@@ -21,6 +22,7 @@ class Message(Base):
     created_at  = Column(DateTime(timezone=True), default=func.now())
     updated_at  = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
 
+
 class ManualCorrection(Base):
     __tablename__ = "manual_corrections"
     id                  = Column(Integer, primary_key=True, index=True)
@@ -32,24 +34,3 @@ class ManualCorrection(Base):
     admin_id            = Column(String)
     created_at          = Column(DateTime(timezone=True), default=func.now())
     updated_at          = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
-
-
-# ─── KnowledgeBase (PostgreSQL + pgvector only) ────────────────────────────
-# Tipe JSONB dan Vector hanya tersedia di PostgreSQL.
-# Di-import secara conditional agar test dengan SQLite in-memory tidak crash.
-try:
-    from pgvector.sqlalchemy import Vector
-    from sqlalchemy.dialects.postgresql import JSONB
-
-    class KnowledgeBase(Base):
-        __tablename__ = "knowledge_bases"
-        id          = Column(Integer, primary_key=True, index=True)
-        user_id     = Column(Integer, index=True)
-        content     = Column(Text)
-        metadata_   = Column("metadata", JSONB, nullable=True)
-        embedding   = Column(Vector(384))
-        created_at  = Column(DateTime(timezone=True), default=func.now())
-        updated_at  = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
-except ImportError:
-    # pgvector tidak tersedia (misalnya di lingkungan test) — skip model ini
-    pass

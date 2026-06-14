@@ -1,62 +1,109 @@
-# 🚀 Fitur Pengguna Emotext-CRM
+# 🚀 Emotext-CRM — Fitur Pengguna (v1.0 Release)
 
-Dokumen ini berisi rangkuman seluruh fitur yang tersedia bagi pengguna (Admin / Customer Service) di sistem **Emotext-CRM**. Sistem dirancang menjadi dua ekosistem utama: Ekstensi WhatsApp Web dan Dasbor Analitik.
+> Dokumen ini adalah panduan resmi fitur yang tersedia bagi pengguna (Admin / Customer Service) di sistem **Emotext-CRM**. Sistem terdiri dari dua ekosistem utama yang bekerja bersama: **Ekstensi WhatsApp Web** dan **Dasbor Analitik Web**.
 
 ---
 
 ## 🟢 1. Ekstensi Chrome (WhatsApp Web)
-Fitur ini beroperasi langsung di dalam layar WhatsApp Web, menyatu dengan antarmuka yang sudah familiar bagi tim Customer Service.
+Berjalan langsung di dalam layar WhatsApp Web — tanpa perlu berpindah tab.
 
-### 🏷️ Real-Time Badges (Klasifikasi Otomatis)
-Setiap pesan masuk akan dianalisis oleh model AI (IndoBERT ONNX) dalam hitungan milidetik.
-*   **Badge Sentimen**: Lencana berwarna pada balon pesan yang mendeteksi emosi pelanggan (Positif/Hijau, Negatif/Merah, Netral/Abu-abu).
-*   **Badge Intensi**: AI mengklasifikasikan tujuan pesan, seperti *Order* (Pemesanan), *Complaint* (Keluhan), *Inquiry* (Tanya-tanya), atau *Other*.
+### 🏷️ Real-Time Badges — Klasifikasi Pesan Otomatis
+Setiap pesan masuk dari pelanggan dianalisis secara otomatis oleh AI (IndoBERT ONNX) dalam **< 200 milidetik** — bahkan tanpa koneksi internet setelah dimuat.
 
-### 💡 Click-to-Suggest (RAG AI)
-Sistem tidak akan mengganggu antarmuka dengan *pop-up* yang tiba-tiba. Balon pesan yang memiliki saran balasan akan ditandai.
-*   **Cara kerja**: Anda cukup **mengklik balon pesan WhatsApp** dari pelanggan. Sebuah panel hijau elegan akan muncul.
-*   **Saran Balasan Cerdas**: Panel ini berisi kalimat balasan (*draft*) yang diracik AI berdasarkan pedoman SOP/Pengetahuan Perusahaan Anda (RAG).
-*   **Satu Klik Sisipkan**: Klik panel saran tersebut, dan teksnya otomatis masuk ke kolom pengetikan WhatsApp Anda.
+- **Badge Sentimen** 🟢🔴⚫ — Terdeteksi di balon pesan: Positif (hijau), Negatif (merah), Netral (abu-abu).
+- **Badge Intensi** — AI mengklasifikasikan *tujuan* pesan: **Order** (Pemesanan), **Complaint** (Keluhan), **Inquiry** (Pertanyaan), atau **Other**.
+- **Confidence Score** — Persentase keyakinan AI ditampilkan di dalam badge.
 
-### 💖 Customer Health Score
-Di daftar obrolan sebelah kiri (*sidebar* chat list), AI menampilkan lencana angka bulat di atas foto profil pelanggan.
-*   **Warna Merah (< 50)**: Pelanggan berisiko tinggi / marah / komplain berturut-turut. Harus segera dilayani!
-*   **Warna Kuning (50 - 79)**: Pelanggan dalam tahap waspada atau netral.
-*   **Warna Hijau (≥ 80)**: Pelanggan loyal dengan sentimen yang sangat baik.
+### 💡 Click-to-Suggest — Saran Balasan AI (RAG Offline)
+Panel saran muncul **hanya saat Anda mengklik** balon pesan — tidak ada notifikasi atau pop-up yang mengganggu.
 
-### 🔧 Manual Correction (Koreksi Admin)
-Jika prediksi klasifikasi AI dirasa kurang pas, klik saja badge klasifikasi tersebut.
-*   Pilih opsi sentimen/intensi yang benar dari *dropdown*.
-*   Data ini dikirim ke *Memory Layer*. AI akan langsung mengingat koreksi tersebut untuk percakapan yang sama ke depannya.
+- **Cara kerja**: Klik balon pesan WhatsApp dari pelanggan → panel hijau muncul di atas kolom ketik.
+- **Streaming AI** ✨ — Teks saran muncul *kata per kata* secara langsung (seperti ChatGPT), bukan sekadar loading bar.
+- **Berbasis SOP Perusahaan** — AI membaca dokumen SOP/FAQ Anda (`doc/`) dan memberikan balasan yang kontekstual, bukan sekadar template.
+- **Satu Klik Sisipkan** — Klik panel saran → teks otomatis masuk ke kolom ketik WhatsApp.
+- **Cache Cerdas** — Saran yang pernah di-generate disimpan di DB. Klik kedua kalinya langsung instan.
+
+### 💖 Customer Health Score — Indikator Loyalitas
+Badge angka bulat muncul di atas foto profil setiap kontak di sidebar daftar chat.
+
+| Warna | Rentang | Artinya |
+|---|---|---|
+| 🔴 Merah | < 50 | Pelanggan **berisiko tinggi** — komplain berturut-turut. Prioritaskan! |
+| 🟡 Kuning | 50 – 79 | Pelanggan **netral** — perlu perhatian. |
+| 🟢 Hijau | ≥ 80 | Pelanggan **loyal** — sentimen sangat baik. |
+
+- Bar visual juga ditampilkan di bagian atas jendela obrolan dengan efek warna yang menyala.
+
+### 🔧 Memory Layer — Koreksi Manual Admin
+Jika prediksi AI dirasa kurang tepat:
+1. Klik badge klasifikasi di balon pesan.
+2. Pilih sentimen/intensi yang benar dari dropdown.
+3. AI **langsung mengingat** koreksi ini. Pesan serupa berikutnya akan otomatis diklasifikasikan dengan benar.
 
 ---
 
 ## 📊 2. Dasbor Analitik (Web Portal)
-Pusat kontrol bagi tim *Marketing* atau Manajer CRM untuk memantau performa layanan pelanggan secara keseluruhan.
+Pusat kontrol bagi manajer atau tim *marketing* untuk memantau performa layanan pelanggan secara keseluruhan.
 
-### 🔔 Real-Time WebSockets & Auto Reload
-*   **Live Toast Notifications**: Muncul notifikasi pop-up seketika (tanpa me-refresh halaman) setiap kali ada pelanggan yang mengirim pesan baru di WhatsApp.
-*   **Audio Alert**: Jika pesan yang masuk terdeteksi sebagai **Keluhan (Negatif)**, dasbor akan membunyikan alarm *beep* agar admin segera merespons.
-*   **Auto-Reload**: Setelah notifikasi muncul, tabel dan grafik dasbor akan diperbarui secara otomatis.
+### 🔔 Real-Time WebSockets & Notifikasi Langsung
+- **Toast Notification** — Pop-up seketika setiap ada pesan baru masuk tanpa perlu refresh halaman.
+- **Audio Alert** 🔊 — Alarm berbunyi otomatis jika pesan yang masuk terdeteksi sebagai **Keluhan (Negatif)**.
+- **Auto-Reload Data** — Tabel dan grafik diperbarui otomatis setelah notifikasi masuk.
 
-### 📈 Visualisasi Data Sentimen
-*   **Sentiment Trend (Line Chart)**: Grafik garis yang memantau pergerakan jumlah pesan Positif, Negatif, dan Netral jam demi jam. Sangat berguna untuk melihat di jam berapa komplain memuncak.
-*   **Distribution (Pie Chart)**: Grafik donat persentase keseluruhan sentimen hari ini.
+### 📈 Visualisasi & Analitik Sentimen
+- **Sentiment Trend (Line Chart)** — Grafik garis yang memantau pergerakan Positif, Negatif, dan Netral per jam.
+- **Distribution (Pie Chart)** — Persentase keseluruhan sentimen hari ini.
+- **Contact Analytics & Message Analytics** — Dua kartu statistik terpisah: jumlah kontak unik dan jumlah pesan masuk.
 
 ### 📇 CRM Table & Customer Tracking
-*   Menampilkan daftar seluruh nomor kontak yang berinteraksi.
-*   Melihat skor metrik *Health Score* keseluruhan per pengguna.
-*   **View Details**: Tombol untuk melihat histori pesan yang masuk, lengkap dengan persentase *Confidence* AI.
+- Daftar seluruh kontak yang pernah berinteraksi, dikelompokkan berdasarkan nomor WhatsApp.
+- *Health Score* keseluruhan per kontak.
+- **View Details** — Histori lengkap pesan per kontak, termasuk confidence AI dan saran balasan.
 
-### 🛠️ Fitur Resolusi Pesan (Mark as Resolved)
-*   Manajer/Admin dapat menyalin *draft* balasan AI langsung dari dasbor web.
-*   Manajer dapat menekan tombol **"Tandai Selesai"** (`Resolved`). Fitur ini mengubah status pesan agar tim internal tahu bahwa komplain/masalah pelanggan terkait sudah ditangani.
+### 🛠️ Resolusi Pesan (Mark as Resolved)
+- Admin dapat menekan **"Tandai Selesai"** pada setiap pesan untuk menandai bahwa komplain/pertanyaan sudah ditangani.
+- Status ini sinkron antara Dasbor Web dan Ekstensi.
+
+### 📚 Knowledge Base Manager (SOP Uploader)
+- Unggah file `.txt` atau `.pdf` SOP/FAQ perusahaan langsung dari Dasbor.
+- AI RAG otomatis memuat ulang dokumen baru dan mulai menggunakannya sebagai referensi balasan.
+- Tampilkan dan hapus dokumen yang sudah tidak relevan.
 
 ---
 
-## 🔒 3. Keamanan & Performa Infrastruktur (SaaS Ready)
-Fitur tidak kasat mata namun krusial yang memastikan keamanan dan kelancaran bisnis Anda:
+## 🔒 3. Keamanan & Infrastruktur (SaaS-Ready)
 
-*   **Isolasi Data Penuh**: Akun Anda dan akun perusahaan lain (SaaS) dipisahkan secara total. Ekstensi Anda tidak akan bisa mengakses riwayat pesan perusahaan lain.
-*   **API Token Security (SHA-256)**: Kunci koneksi ekstensi (Token API) telah dienkripsi secara asimetris sehingga terlindungi dari pencurian *hacker*.
-*   **Infrastruktur Ultra Cepat**: Penggunaan basis data asinkron (*asyncpg*) dan model *Machine Learning* yang terkompresi (ONNX) memungkinkan AI membalas dalam waktu di bawah 100 milidetik dan memproses riwayat panjang percakapan secara kilat tanpa *error*.
+| Fitur | Detail |
+|---|---|
+| **Isolasi Data Penuh** | Setiap akun perusahaan terisolasi total — data tidak bisa diakses oleh tenant lain. |
+| **API Token SHA-256** | Token koneksi ekstensi dienkripsi dengan SHA-256; tidak tersimpan polos di database. |
+| **Rate Limiting** | Endpoint AI dilindungi dari *brute-force* dan serangan DDoS via SlowAPI. |
+| **Inference < 200ms** | IndoBERT ONNX mengklasifikasikan pesan dalam waktu di bawah 200ms di CPU biasa. |
+| **RAG Offline Penuh** | Model Qwen GGUF berjalan sepenuhnya luring — data percakapan **tidak pernah keluar dari server Anda**. |
+| **Duplikasi Cerdas** | Sistem in-memory lock mencegah pemrosesan ganda (*race condition*) jika ekstensi mengirim request berulang. |
+
+---
+
+## 🗺️ Arsitektur Sistem (Ringkas)
+
+```
+[WhatsApp Web]
+    │
+    ▼
+[Chrome Extension — content.js]
+    ├─ POST /analyze → [FastAPI Backend]
+    │       ├─ Rule-based classify (< 1ms)
+    │       ├─ IndoBERT ONNX classify (< 200ms)
+    │       ├─ Simpan ke PostgreSQL (Supabase)
+    │       └─ Response: Sentiment + Intent + Health Score + message_id
+    │
+    └─ GET /suggestion/stream/{id}  ← saat pesan diklik
+            ├─ FAISS search (doc/ folder)
+            ├─ Qwen GGUF generate (Llama.cpp, streaming)
+            └─ Token-by-token ke UI via SSE
+
+[Laravel Dashboard]
+    ├─ Real-time via WebSocket (Laravel Reverb)
+    ├─ GET /api/messages → tampilkan CRM table
+    └─ POST /api/internal/broadcast ← dari FastAPI webhook
+```

@@ -5,7 +5,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from typing import List, Optional
 from ai_service import predict_sentiment_and_intent
-from rag_service import get_smart_suggestion, chunk_text, get_embedding
 import hashlib
 import time
 import threading
@@ -68,7 +67,7 @@ def check_and_set_recent(sender_id: str, message_text: str) -> bool:
 
 # ─── Import DB & Models ───────────────────────────────────────────────────────
 from database import SessionLocal, engine
-from models import Message, ManualCorrection, KnowledgeBase
+from models import Message, ManualCorrection
 from sqlalchemy import Column, Integer, String, text, func, select, case
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -222,7 +221,6 @@ import shutil
 async def upload_knowledge_base(
     request: Request,
     file: UploadFile = File(...),
-    db: AsyncSession = Depends(get_db),
     _: bool = Depends(verify_internal),
     user_id: Optional[int] = None,
 ):
@@ -261,7 +259,6 @@ async def upload_knowledge_base(
 @app.get("/list-kb")
 async def list_knowledge_base(
     request: Request,
-    db: AsyncSession = Depends(get_db),
     _: bool = Depends(verify_internal),
 ):
     from rag_service import DOC_DIR
@@ -281,7 +278,6 @@ async def list_knowledge_base(
 @app.delete("/delete-kb")
 async def delete_knowledge_base(
     request: Request,
-    db: AsyncSession = Depends(get_db),
     _: bool = Depends(verify_internal),
 ):
     from rag_service import _load_local_rag_index, DOC_DIR

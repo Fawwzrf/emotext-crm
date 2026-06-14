@@ -27,6 +27,8 @@ Dokumen ini melacak riwayat pengembangan sistem Emotext-CRM beserta status penye
 | 17 | Database | **ManualCorrection Tanpa Timestamps:** Model SQLAlchemy `ManualCorrection` tidak memiliki `created_at` / `updated_at`. | **LOW** | Menambahkan dan menyinkronkan kolom timestamps ke dalam skema basis data. |
 | 18 | Backend API (FastAPI) | **QueuePool Exhaustion (Timeout 500)** karena *background task* RAG saling mengunci koneksi DB saat menunggu giliran antrean Llama.cpp. | **CRITICAL** | Mengubah arsitektur RAG menjadi *On-Demand* murni (tanpa *background task*) & menjalankan inferensi LLM *sebelum* membuka koneksi Database. |
 | 19 | Ekstensi | **Badge Kesehatan (Kuning) Hilang:** Indikator *health bar* sulit terlihat karena tertutup atribut `overflow` dan kurang tebal. | **MEDIUM** | Menebalkan bar (6px) ditambah efek *glow*, serta menyuntikkan *Sidebar Badge* melingkar langsung ke avatar foto profil pengguna. |
+| 20 | Backend API (FastAPI) | **Dead Code pgvector & KnowledgeBase:** Model `KnowledgeBase` dan dependency `pgvector` tetap ada meski sistem sudah beralih ke RAG offline FAISS. Menyebabkan test SQLite crash karena tipe `JSONB`. | **HIGH** | Menghapus `KnowledgeBase`, `pgvector`, dan semua referensinya. Sistem RAG kini 100% berbasis file lokal + FAISS. |
+| 21 | Backend AI (FastAPI) | **PyTorch Fallback Dead Code:** Blok `MultiTaskIndoBERT` PyTorch di `ai_service.py` tidak pernah dieksekusi karena file ONNX selalu tersedia, namun tetap dimuat dan memboroskan import. | **MEDIUM** | Menghapus seluruh blok PyTorch dan menyederhanakan ke ONNX Runtime murni. Mengurangi ukuran dependensi signifikan (tidak perlu `torch`). |
 
 ---
 
@@ -47,6 +49,7 @@ Dokumen ini melacak riwayat pengembangan sistem Emotext-CRM beserta status penye
 | 11 | NLP Model (FastAPI) | **Optimasi Latensi IndoBERT (PyTorch ke ONNX)** | Melakukan kompilasi graf dan format bobot dari model PyTorch menjadi format `ONNX`, memangkas respon CPU dari ~2 detik ke ~100 ms. |
 | 12 | NLP Model (FastAPI) | **Offline RAG Murni (Llama.cpp + FAISS)** | Menghapus integrasi cloud, membaca basis pengetahuan murni dari folder lokal `doc/` dan menjalankan generasi RAG via GGUF secara luring demi kerahasiaan data tingkat militer. |
 | 13 | Ekstensi & API | **Real-Time Streaming Animation (SSE)** | Mengganti *loading* balasan RAG yang stagnan dengan mekanisme *Server-Sent Events (SSE)* agar agen melihat AI mengetik (Token-by-Token) secara seketika (*instant-feedback*). |
+| 14 | Seluruh Sistem | **Restrukturisasi Monorepo (Professional Grade)** | Memisahkan kode produksi dari tes (`tests/`), memusatkan semua model AI ke `models/`, menghapus *dead code* pgvector dan PyTorch, membersihkan `requirements.txt` dari 6 dependensi yang tidak terpakai di runtime. |
 
 ---
 
