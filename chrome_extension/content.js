@@ -20,7 +20,7 @@ let SELECTORS = {
     mediaUrlLink: '[data-testid="media-url-link"]'
 };
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = 'https://fawwzrf-emotext-backend.hf.space';
 const LARAVEL_BASE_URL = 'http://127.0.0.1:8001';
 let COMPANY_API_KEY = null;
 let TERMS_AGREED = false;
@@ -290,48 +290,65 @@ async function processSidebarChat(chatCell) {
     const contactName = titleEl ? (titleEl.title || titleEl.innerText) : null;
     if (!contactName) return;
 
-    const uniqueId = encodeURIComponent(contactName.replace(/\s+/g, '_').toLowerCase());
+    // BUG-FIX 4: uniqueId = sender_id di DB (tanpa encode), urlSafeId = untuk URL path
+    const uniqueId = contactName.replace(/\s+/g, '_').toLowerCase();
+    const urlSafeId = encodeURIComponent(uniqueId);
 
     // BUG-FIX: Gunakan antrean agar request tidak serentak memblokir browser
+    // Tambahkan retry logic untuk HF Space cold-start (~20 detik setelah idle)
     enqueueSidebarRequest(async () => {
-        try {
-            const response = await fetchWithTimeout(`${API_BASE_URL}/health-score/${uniqueId}`, {
-                timeout: 5000,
-                headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
-            });
-            if (!response.ok) return;
-            const data = await response.json();
-            const score = data.health_score;
+        let retries = 3;
+        let delay = 3000; // mulai 3 detik
+        while (retries > 0) {
+            try {
+                const response = await fetchWithTimeout(`${API_BASE_URL}/health-score/${urlSafeId}`, {
+                    timeout: 25000, // HF cold-start bisa 20+ detik
+                    headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
+                });
+                if (!response.ok) return;
+                const data = await response.json();
+                const score = data.health_score;
 
-            let avatarContainer = chatCell.querySelector(SELECTORS.avatarContainer) || chatCell.children[0];
-            if (!avatarContainer) return;
+                let avatarContainer = chatCell.querySelector(SELECTORS.avatarContainer) || chatCell.children[0];
+                if (!avatarContainer) return;
 
-            avatarContainer.style.position = 'relative';
-            const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
-            if (existing) existing.remove();
+                avatarContainer.style.position = 'relative';
+                const existing = avatarContainer.querySelector('.emotext-sidebar-health-badge');
+                if (existing) existing.remove();
 
-            const badge = document.createElement('div');
-            badge.className = 'emotext-sidebar-health-badge';
-            badge.innerText = score;
+                const badge = document.createElement('div');
+                badge.className = 'emotext-sidebar-health-badge';
+                badge.innerText = score;
 
-            if (score < 50) {
-                badge.style.backgroundColor = '#FF4B4B';
-                badge.style.color = '#ffffff';
-                badge.style.boxShadow = '0 0 10px #FF4B4B';
-                badge.title = `Urgensi Tinggi (${score})`;
-            } else if (score < 80) {
-                badge.style.backgroundColor = '#FFC107';
-                badge.style.color = '#0f172a';
-                badge.style.boxShadow = '0 0 6px #FFC107';
-                badge.title = `Urgensi Sedang (${score})`;
-            } else {
-                badge.style.backgroundColor = '#25D366';
-                badge.style.color = '#ffffff';
-                badge.title = `Urgensi Rendah (${score})`;
+                badge.style.padding = '2px 6px';
+                badge.style.borderRadius = '50%';
+                badge.style.fontSize = '12px';
+                badge.style.fontWeight = 'bold';
+
+                if (score < 50) {
+                    badge.style.backgroundColor = '#FF4B4B';
+                    badge.style.color = '#ffffff';
+                    badge.title = `Urgensi Tinggi (${score})`;
+                } else if (score < 80) {
+                    badge.style.backgroundColor = '#FFC107';
+                    badge.style.color = '#000000';
+                    badge.title = `Urgensi Sedang (${score})`;
+                } else {
+                    badge.style.backgroundColor = '#25D366';
+                    badge.style.color = '#ffffff';
+                    badge.title = `Urgensi Rendah (${score})`;
+                }
+
+                avatarContainer.appendChild(badge);
+                return; // sukses, keluar dari loop retry
+            } catch (err) {
+                retries--;
+                if (retries > 0) {
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2; // exponential backoff
+                }
             }
-
-            avatarContainer.appendChild(badge);
-        } catch (err) { /* silent */ }
+        }
     });
 }
 
@@ -455,14 +472,15 @@ function updateHealthBar(score) {
             }
         }
         
-        let status = score >= 80 ? 'Loyal' : (score >= 50 ? 'Good' : 'Risk');
-        sidebarBadge.innerText = status;
+        sidebarBadge.innerText = score;
         
         let color = score >= 80 ? '#25D366' : (score >= 50 ? '#FFC107' : '#FF4B4B');
         sidebarBadge.style.backgroundColor = color;
         sidebarBadge.style.color = score >= 50 ? '#000' : '#fff';
-        sidebarBadge.style.padding = '0 6px';
-        sidebarBadge.style.borderRadius = '10px';
+        sidebarBadge.style.padding = '2px 6px';
+        sidebarBadge.style.borderRadius = '50%';
+        sidebarBadge.style.fontSize = '12px';
+        sidebarBadge.style.fontWeight = 'bold';
     }
 }
 

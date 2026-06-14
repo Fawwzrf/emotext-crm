@@ -114,7 +114,7 @@ Karena model AI (*IndoBERT* dan *FAISS*) membutuhkan RAM yang cukup besar, kami 
    WORKDIR /app
    COPY ./requirements.txt /app/requirements.txt
    RUN pip install --no-cache-dir -r /app/requirements.txt
-   COPY . /app
+   COPY . /app 
    CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
    ```
 5. Hugging Face akan otomatis membangun kontainer dan men-*deploy* API Anda. Anda akan mendapatkan URL publik (contoh: `https://username-emotext-backend.hf.space`).

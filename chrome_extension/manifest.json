@@ -12,8 +12,7 @@
   },
   "host_permissions": [
     "https://web.whatsapp.com/*",
-    "https://api.emotext-crm.com/*",
-    "http://127.0.0.1:8000/*",
+    "https://fawwzrf-emotext-backend.hf.space/*",
     "http://127.0.0.1:8001/*"
   ],
   "content_scripts": [

@@ -24,6 +24,11 @@ class ValidateExtensionToken
             return response()->json(['message' => 'API token tidak valid.'], 401);
         }
 
+        // Cek status langganan — user expired tidak bisa pakai extension
+        if (!$user->isActive()) {
+            return response()->json(['message' => 'Langganan Anda telah berakhir. Silakan upgrade.'], 403);
+        }
+
         // Attach user ke request agar bisa diakses di controller
         $request->user_from_token = $user;
 

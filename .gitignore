@@ -31,6 +31,7 @@ produk_extension/extension/node_modules/
 produk_extension/tests/extension/node_modules/
 
 # Model files (large binaries — download separately)
+models/
 produk_extension/models/
 produk_extension/backend/offline_model/
 

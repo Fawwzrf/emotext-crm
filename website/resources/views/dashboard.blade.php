@@ -22,7 +22,7 @@
     @endif
     <style>@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }</style>
 
-    <div class="py-12" x-data="{ tab: 'sample' }">
+    <div class="py-12" x-data="{ tab: 'sample', showRagModal: false }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             {{-- ── Banner Status Trial / Langganan ──────────────────────────── --}}
@@ -291,8 +291,8 @@
                                                     </div>
                                                     <p class="text-xs text-gray-700 mb-4 leading-relaxed bg-white p-3 rounded-lg border border-gray-200 shadow-sm">"{{ $msg->reply_suggestion }}"</p>
                                                     
-                                                    <div class="flex flex-col sm:flex-row gap-2">
-                                                        <button @click="navigator.clipboard.writeText('{{ $msg->reply_suggestion }}'); alert('Disalin ke clipboard!');" 
+                                                    <div class="flex flex-col sm:flex-row gap-2" data-suggestion="{{ e($msg->reply_suggestion) }}">
+                                                        <button @click="navigator.clipboard.writeText($el.closest('[data-suggestion]').dataset.suggestion); alert('Disalin ke clipboard!');" 
                                                             class="flex-1 bg-green-50 text-green-700 py-2 rounded-lg text-xs font-bold hover:bg-green-100 transition border border-green-200">
                                                             📋 Salin Teks
                                                         </button>
@@ -443,10 +443,11 @@
                         console.log('[WebSockets] New Message Arrived:', e);
                         window.dispatchEvent(new CustomEvent('new-message', { detail: e }));
                         
-                        // Auto reload halaman setelah 3 detik agar grafik & tabel ter-update
-                        setTimeout(() => {
+                        // Debounced reload: hanya reload sekali meski ada burst pesan
+                        if (window._emotextReloadTimer) clearTimeout(window._emotextReloadTimer);
+                        window._emotextReloadTimer = setTimeout(() => {
                             window.location.reload();
-                        }, 3000);
+                        }, 4000);
                     });
             }
         });
