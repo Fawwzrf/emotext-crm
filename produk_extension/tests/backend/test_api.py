@@ -7,7 +7,7 @@ import uuid
 
 from main import app, verify_api_key, get_db
 from database import Base
-from models import Message
+from models import Message, ManualCorrection
 from sqlalchemy import text, select
 
 # Setup In-Memory SQLite untuk testing
@@ -25,7 +25,9 @@ def override_verify_api_key():
 @pytest_asyncio.fixture(autouse=True)
 async def setup_db_for_test():
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        # Buat HANYA tabel yang dibutuhkan test (bukan knowledge_bases yang pakai JSONB PostgreSQL)
+        await conn.run_sync(lambda c: Message.__table__.create(c, checkfirst=True))
+        await conn.run_sync(lambda c: ManualCorrection.__table__.create(c, checkfirst=True))
         await conn.execute(text('''
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
@@ -44,7 +46,8 @@ async def setup_db_for_test():
     yield
     app.dependency_overrides.clear()
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(lambda c: ManualCorrection.__table__.drop(c, checkfirst=True))
+        await conn.run_sync(lambda c: Message.__table__.drop(c, checkfirst=True))
 
 @pytest_asyncio.fixture
 async def client():

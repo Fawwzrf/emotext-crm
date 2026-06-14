@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Evaluasi script asli di scope global JSDOM
-const contentJsCode = fs.readFileSync(path.resolve(__dirname, 'content.js'), 'utf-8');
+const contentJsCode = fs.readFileSync(path.resolve(__dirname, '../../extension/content.js'), 'utf-8');
 // Mock minimal untuk API Chrome jika diperlukan
 global.chrome = {
     runtime: {

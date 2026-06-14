@@ -79,15 +79,20 @@ async def get_db():
 
 
 # ─── FastAPI App ───────────────────────────────────────────────────────────────
-app = FastAPI(title="EmoText CRM API")
+from contextlib import asynccontextmanager
+import threading
 
-@app.on_event("startup")
-async def startup_event():
-    import threading
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan handler: pra-muat LLM dan FAISS di background saat server start."""
     from rag_service import _load_llm, _load_local_rag_index
     logger.info("[STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...")
     threading.Thread(target=_load_local_rag_index, daemon=True).start()
     threading.Thread(target=_load_llm, daemon=True).start()
+    yield  # ── server berjalan ──
+    logger.info("[SHUTDOWN] Server berhenti.")
+
+app = FastAPI(title="EmoText CRM API", lifespan=lifespan)
 
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter

@@ -14,7 +14,7 @@ import faiss
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOC_DIR = os.path.join(BASE_DIR, "doc")
-MODEL_PATH = os.path.join(BASE_DIR, "backend", "offline_model", "qwen2.5-1.5b-instruct-q4_k_m.gguf")
+MODEL_PATH = os.path.join(BASE_DIR, "models", "qwen_gguf", "qwen2.5-1.5b-instruct-q4_k_m.gguf")
 
 # ─── State lazy-load ──────────────────────────────────────────────────────────
 _embedding_model = None
@@ -176,14 +176,13 @@ async def get_smart_suggestion(intent: str, sentiment: str, message: str, db=Non
     if not _llm:
         return templates.get(intent.lower(), "Terima kasih telah menghubungi kami. Ada yang dapat kami bantu lebih lanjut?")
 
-    prompt = f"""Kamu adalah agen Customer Service profesional. Tugasmu merespons pesan pelanggan dengan bahasa Indonesia yang baku, sopan, dan formal.
-Analisis:
-- Tujuan pelanggan (Intent): {intent}
-- Sentimen: {sentiment}{context_text}
+    prompt = f"""Kamu adalah agen Customer Service profesional. Tugas utamamu adalah merespons pertanyaan dan keluhan pelanggan dengan merujuk pada Panduan (SOP) Perusahaan.
+JIKA Panduan Terkait menyediakan informasi (seperti estimasi waktu, syarat retur, dll), JAWAB BERDASARKAN PANDUAN TERSEBUT.{context_text}
 
-Pesan: "{message}"
-Berikan balasan singkat (maks 2-3 kalimat) yang menjawab langsung. Jangan tambahkan catatan lain.
-Balasan:"""
+Pesan Pelanggan: "{message}"
+
+Instruksi: Berikan balasan informatif, langsung, dan sopan (maks 2-3 kalimat). Jangan sekadar meminta maaf; berikan jawaban konkret sesuai panduan di atas jika ada.
+Balasan CS:"""
 
     def _generate():
         try:
@@ -238,14 +237,13 @@ def stream_smart_suggestion(intent: str, sentiment: str, message: str, user_id=N
         yield templates.get(intent.lower(), "Terima kasih telah menghubungi kami. Ada yang dapat kami bantu lebih lanjut?")
         return
 
-    prompt = f"""Kamu adalah agen Customer Service profesional. Tugasmu merespons pesan pelanggan dengan bahasa Indonesia yang baku, sopan, dan formal.
-Analisis:
-- Tujuan pelanggan (Intent): {intent}
-- Sentimen: {sentiment}{context_text}
+    prompt = f"""Kamu adalah agen Customer Service profesional. Tugas utamamu adalah merespons pertanyaan dan keluhan pelanggan dengan merujuk pada Panduan (SOP) Perusahaan.
+JIKA Panduan Terkait menyediakan informasi (seperti estimasi waktu, syarat retur, dll), JAWAB BERDASARKAN PANDUAN TERSEBUT.{context_text}
 
-Pesan: "{message}"
-Berikan balasan singkat (maks 2-3 kalimat) yang menjawab langsung. Jangan tambahkan catatan lain.
-Balasan:"""
+Pesan Pelanggan: "{message}"
+
+Instruksi: Berikan balasan informatif, langsung, dan sopan (maks 2-3 kalimat). Jangan sekadar meminta maaf; berikan jawaban konkret sesuai panduan di atas jika ada.
+Balasan CS:"""
 
     try:
         with _generation_lock:

@@ -1,9 +1,6 @@
 import sys
 import os
 
-# Memastikan bisa meng-import modul dari backend
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 from ai_service import predict_sentiment_and_intent
 from rag_service import get_smart_suggestion
 
@@ -97,16 +94,22 @@ async def test_rag_hallucination():
     print(f"Tanya: '{out_of_context_question}'")
     print(f"Hasil AI -> Intent: {analysis['intent'].upper()} | Sentimen: {analysis['sentiment'].upper()}")
     
-    # Step 2: RAG mencari balasan berdasarkan intent "other" dan sentiment "neutral"
-    rag_reply = get_smart_suggestion(analysis['intent'], analysis['sentiment'])
+    # Step 2: RAG mencari balasan — FIX: await + parameter message yang benar
+    rag_reply = await get_smart_suggestion(
+        intent=analysis['intent'],
+        sentiment=analysis['sentiment'],
+        message=out_of_context_question
+    )
     
     print(f"Balasan RAG: '{rag_reply}'\n")
     
     # Asersi (Check)
     if "puisi" in rag_reply.lower() or "seblak" in rag_reply.lower():
         print("❌ GAGAL: RAG berhalusinasi dan mencoba menjawab di luar konteks bisnis!")
+        assert False, "RAG hallucinated content."
     else:
         print("✅ BERHASIL: RAG menolak berhalusinasi. RAG dengan cerdas memberikan default response/redirection (Tidak menjawab hal di luar Knowledge Base).")
+        assert True
 
 if __name__ == "__main__":
     test_indobert_accuracy()

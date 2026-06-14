@@ -28,6 +28,17 @@ website/public/hot
 
 # Extension
 produk_extension/extension/node_modules/
+produk_extension/tests/extension/node_modules/
 
-# Offline Model
+# Model files (large binaries — download separately)
+produk_extension/models/
 produk_extension/backend/offline_model/
+
+# Python test caches
+produk_extension/tests/.pytest_cache/
+produk_extension/backend/.pytest_cache/
+produk_extension/**/__pycache__/
+
+# Log files — never commit runtime logs
+produk_extension/backend/*.log
+produk_extension/backend/uvicorn_err.log

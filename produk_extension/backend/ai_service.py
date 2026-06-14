@@ -12,10 +12,10 @@ from sqlalchemy.future import select
 
 # 1. Path Konfigurasi
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TOKENIZER_PATH = os.path.join(BASE_DIR, "../ml-engine/tokenizer_indobert")
-MODEL_PATH = os.path.join(BASE_DIR, "../ml-engine/indobert_model")
-PT_FILE_PATH = os.path.join(BASE_DIR, "../ml-engine/multitask_indobert.pt")
-ONNX_FILE_PATH = os.path.join(BASE_DIR, "../ml-engine/multitask_indobert.onnx")
+TOKENIZER_PATH = os.path.join(BASE_DIR, "../models/indobert_onnx/tokenizer")
+MODEL_PATH = os.path.join(BASE_DIR, "../models/indobert_base")
+PT_FILE_PATH = os.path.join(BASE_DIR, "../models/indobert_base/multitask_indobert.pt")
+ONNX_FILE_PATH = os.path.join(BASE_DIR, "../models/indobert_onnx/multitask_indobert.onnx")
 
 SENTIMENT_LABELS = ["positive", "neutral", "negative"] 
 INTENT_LABELS = ["inquiry", "order", "complaint", "other"]
