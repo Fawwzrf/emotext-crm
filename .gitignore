@@ -42,3 +42,10 @@ produk_extension/**/__pycache__/
 # Log files — never commit runtime logs
 produk_extension/backend/*.log
 produk_extension/backend/uvicorn_err.log
+
+docs/dataset_finetuning
+docs/dataset_finetuning/*.ipynb
+docs/dataset_finetuning/*.csv
+docs/dataset_finetuning/*.docx
+docs/dataset_finetuning/*.txt
+docs/dataset_finetuning/*.py

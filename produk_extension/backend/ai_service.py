@@ -36,9 +36,9 @@ try:
     print(f"Memuat model ONNX dari {ONNX_FILE_PATH}...")
     ort_session = ort.InferenceSession(ONNX_FILE_PATH)
     use_onnx = True
-    print("✅ Sistem AI (ONNX Runtime) Siap Digunakan!")
+    print("[OK] Sistem AI (ONNX Runtime) Siap Digunakan!")
 except Exception as e:
-    print(f"⚠️  Peringatan: Gagal memuat model ONNX ({e}). Sistem akan fallback ke rule-based.")
+    print(f"[WARN] Peringatan: Gagal memuat model ONNX ({e}). Sistem akan fallback ke rule-based.")
 
 
 # ─── Memory Layer: Koreksi Manual dari Admin ─────────────────────────────────
@@ -80,7 +80,7 @@ async def predict_sentiment_and_intent(text: str, db=None):
         try:
             inputs = tokenizer(
                 text, return_tensors="np",
-                truncation=True, padding=True, max_length=128
+                truncation=True, padding='max_length', max_length=128
             )
             ort_inputs = {
                 "input_ids":      inputs["input_ids"],
