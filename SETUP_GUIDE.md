@@ -45,11 +45,12 @@ cd Emotext-CRM
    INTERNAL_API_KEY=emotext_secret_internal_key_2026
    ```
    *(Catatan: `FASTAPI_URL` ku menunjuk ke cloud Hugging Face sehingga Anda tidak perlu repot menjalankan AI secara lokal).*
-5. Generate *App Key* dan jalankan migrasi database:
+5. Generate *App Key* untuk mengenkripsi *session* lokal Anda:
    ```bash
    php artisan key:generate
-   php artisan migrate --seed
    ```
+   > ⚠️ **PENTING:** Jika tim Anda menggunakan **Database Supabase yang sama/bersama**, Anda **TIDAK PERLU** menjalankan `php artisan migrate --seed` karena tabel dan data contoh sudah dibuat oleh anggota tim pertama. Anda bisa melewati langkah migrasi. Namun jika Anda menggunakan *database* SQLite lokal masing-masing, jalankan:
+   > `php artisan migrate --seed`
 6. Jalankan server Laravel:
    ```bash
    php artisan serve --port=8001
