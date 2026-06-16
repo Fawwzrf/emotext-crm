@@ -28,35 +28,35 @@ Untuk melindungi *Intellectual Property* model AI dan menjaga performa perangkat
 
 ```mermaid
 graph TD
-    subgraph Client [💻 Client Side (User)]
-        WA[WhatsApp Web]
-        Ext[Emotext Chrome Extension]
-        WA <-->|DOM Scraping & UI Inject| Ext
+    subgraph Client ["Client Side (User)"]
+        WA["WhatsApp Web"]
+        Ext["Emotext Chrome Extension"]
+        WA <-->|"DOM Scraping & UI Inject"| Ext
     end
 
-    subgraph Internet [🌐 Cloud Network]
-        Auth[Email & Password Auth]
-        API[REST API / SSE Streams]
+    subgraph Internet ["Cloud Network"]
+        Auth["Email & Password Auth"]
+        API["REST API / SSE Streams"]
     end
 
-    subgraph Server [☁️ Cloud AI Backend (Hugging Face Spaces)]
-        FastAPI[FastAPI Server]
+    subgraph Server ["Cloud AI Backend (Hugging Face Spaces)"]
+        FastAPI["FastAPI Server"]
         
-        subgraph NLP [NLP Classification]
-            IndoBERT[(IndoBERT ONNX)]
+        subgraph NLP ["NLP Classification"]
+            IndoBERT[("IndoBERT ONNX")]
         end
         
-        subgraph RAG [Response Generation]
-            FAISS[(FAISS Vector DB)]
-            Llama[(Llama.cpp GGUF)]
+        subgraph RAG ["Response Generation"]
+            FAISS[("FAISS Vector DB")]
+            Llama[("Llama.cpp GGUF")]
         end
         
-        DB[(SQLite/Postgres DB)]
+        DB[("SQLite/Postgres DB")]
     end
 
-    Ext -->|Login| Auth
+    Ext -->|"Login"| Auth
     Auth --> FastAPI
-    Ext <-->|Send Chat & Receive Analysis| API
+    Ext <-->|"Send Chat & Receive Analysis"| API
     API <--> FastAPI
     FastAPI --> IndoBERT
     FastAPI --> FAISS
