@@ -65,9 +65,9 @@ cd Emotext-CRM
 
 ## 🐍 3. Setup Backend AI (Opsional)
 
-**Kabar Baik:** Anda sebenarnya **tidak perlu** menjalankan *Backend* AI ini di komputer Anda karena *Backend* Emotext sudah di-*hosting* secara *live* di Hugging Face Spaces (`https://fawwzrf-emotext-backend.hf.space`). 
+**Kabar Baik:** Anda sebenarnya **tidak perlu** menjalankan *Backend* AI ini di komputer Anda karena *Backend* Emotext sudah di-*hosting* secara *live* di Hugging Face Spaces.
 
-Namun, jika Anda bertugas sebagai AI *Engineer* yang ingin merubah *source code* Python, ini cara menjalankannya secara lokal:
+Namun, jika Anda **ingin menggunakan model AI secara lokal sepenuhnya** (misalnya karena koneksi internet lambat, Hugging Face sedang *down/sleep*, atau Anda AI *Engineer* yang merubah *source code*), ikuti langkah ini:
 
 1. Buka terminal baru dan masuk ke folder `backend`:
    ```bash
@@ -104,9 +104,14 @@ Namun, jika Anda bertugas sebagai AI *Engineer* yang ingin merubah *source code*
 3. Nyalakan **Developer mode** (Mode Pengembang) di pojok kanan atas.
 4. Klik tombol **Load unpacked** di pojok kiri atas.
 5. Arahkan dan pilih folder `ekstensi` yang ada di dalam proyek Anda (pastikan folder tersebut berisi file `manifest.json`).
-6. Buka file `content.js` pada folder `ekstensi` dan pastikan URL API mengarah ke Cloud atau Lokal:
-   - Jika ingin memakai AI *Cloud*: `https://fawwzrf-emotext-backend.hf.space/api/v1`
-   - URL Laravel tetap lokal: `http://127.0.0.1:8001`
+6. Ekstensi ini menggunakan file konfigurasi khusus. Buka file `env.js` pada folder `chrome_extension` dan sesuaikan variabel URL jika perlu:
+   - Jika memakai AI *Cloud* (Hugging Face): `API_BASE_URL: 'https://<your-hf-username>-emotext-backend.hf.space'`
+   - Jika memakai AI *Lokal*: `API_BASE_URL: 'http://127.0.0.1:8000'`
+7. Buka file `manifest.json` pada folder `chrome_extension`, pastikan di dalam `host_permissions` URL yang sama juga terdaftar (baik URL Hugging Face maupun URL Localhost).
+   
+> ⚠️ **TROUBLESHOOTING RAG HUGGING FACE:** Jika tim Anda mencoba RAG di Hugging Face dan muncul "Koneksi Gagal", kemungkinan besar karena 2 hal: 
+> 1. Tim Anda hanya mengatur `.env` di Laravel, tapi **lupa mengubah `API_BASE_URL`** di dalam file ekstensi `env.js` dan izin domain di `manifest.json`. 
+> 2. *Server Hugging Face Free Tier* tertidur (*sleep*). Jika ruang kerja (*space*) tertidur, *request* pertama akan gagal (Time-out). Anda perlu menekan/membangunkan Space-nya terlebih dahulu, lalu tunggu 2 menit sebelum RAG aktif lagi.
 
 ---
 
