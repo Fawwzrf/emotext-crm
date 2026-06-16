@@ -329,7 +329,7 @@ JIKA Panduan Terkait menyediakan informasi (seperti estimasi waktu, syarat retur
 
 Pesan Pelanggan: "{message}"
 
-Instruksi: Berikan balasan informatif, langsung, dan sopan (maks 2-3 kalimat). Jangan sekadar meminta maaf; berikan jawaban konkret sesuai panduan di atas jika ada.
+Instruksi: Berikan balasan informatif, langsung, dan sopan (maks 2-3 kalimat). Jangan sekadar meminta maaf; berikan jawaban konkret sesuai panduan di atas jika ada, pastikan output dalam bahasa indonesia.
 Balasan CS:"""
 
     try:

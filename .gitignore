@@ -10,7 +10,7 @@ config.json
 tokenizer_config.json
 tokenizer.json
 
-.venv/
+backend/venv/
 
 # Secrets – jangan pernah di-commit!
 .env
