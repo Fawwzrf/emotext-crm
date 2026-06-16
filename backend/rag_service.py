@@ -83,88 +83,89 @@ def _load_embedding_model():
             _embedding_loaded = True
 
 
-def _load_local_rag_index():
-    """Membaca semua file .txt di folder doc/, chunking, dan membuat FAISS index."""
+def _build_faiss_from_docs(kb_docs):
     global _faiss_indices, _user_doc_chunks, _rag_loaded
-    
-    if not _embedding_loaded:
-        _load_embedding_model()
+    from collections import defaultdict
+    import faiss
+    import numpy as np
+
+    user_docs = defaultdict(list)
+    for kb in kb_docs:
+        user_docs[kb.user_id].append(kb)
+
+    # Build index per user
+    for uid, docs in user_docs.items():
+        chunks_for_user = []
+        for kb in docs:
+            if not kb.content:
+                continue
+            lines = kb.content.split('\n')
+            current_chunk = ""
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    if current_chunk:
+                        chunks_for_user.append(current_chunk)
+                        current_chunk = ""
+                    continue
+                current_chunk += line + " "
+            if current_chunk:
+                chunks_for_user.append(current_chunk)
         
-    with _rag_lock:
+        _user_doc_chunks[uid] = chunks_for_user
+
+        if chunks_for_user:
+            emb_matrix = _embedding_model.encode(chunks_for_user, show_progress_bar=False)
+            emb_matrix = np.array(emb_matrix).astype("float32")
+            d = emb_matrix.shape[1]
+            idx = faiss.IndexFlatL2(d)
+            idx.add(emb_matrix)
+            _faiss_indices[uid] = idx
+            print(f"[RAG] FAISS Index siap untuk user_id={uid} ({len(chunks_for_user)} chunks).")
+        else:
+            print(f"[RAG] Tidak ada chunk valid untuk user_id={uid}.")
+
+    _rag_loaded = True
+
+async def _load_local_rag_index():
+    """Membaca semua file .txt di folder doc/, chunking, dan membuat FAISS index."""
+    global _faiss_indices, _user_doc_chunks, _rag_loaded, _rag_lock
+    
+    if getattr(_load_local_rag_index, '_async_lock', None) is None:
+        import asyncio
+        _load_local_rag_index._async_lock = asyncio.Lock()
+        
+    if not _embedding_loaded:
+        import asyncio
+        await asyncio.to_thread(_load_embedding_model)
+        
+    async with _load_local_rag_index._async_lock:
         if _rag_loaded:
             return
             
         print(f"[RAG] Menyinkronkan dokumen dari Database Supabase...")
         
         try:
-            import asyncio
             from database import SessionLocal
             from sqlalchemy import select
             from models import KnowledgeBase
-            import json
+            import asyncio
             
-            async def _fetch_all():
-                async with SessionLocal() as db:
-                    res = await db.execute(select(KnowledgeBase))
-                    return res.scalars().all()
-                    
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                kb_docs = loop.run_until_complete(_fetch_all())
-            finally:
-                loop.close()
-                asyncio.set_event_loop(None)
+            async with SessionLocal() as db:
+                res = await db.execute(select(KnowledgeBase))
+                kb_docs = res.scalars().all()
         
-            _faiss_indices = {}
-            _user_doc_chunks = {}
+            _faiss_indices.clear()
+            _user_doc_chunks.clear()
 
             if not kb_docs:
                 print("[RAG] Tidak ada dokumen di database.")
                 _rag_loaded = True
                 return
 
-            # Kelompokkan dokumen berdasarkan user_id
-            from collections import defaultdict
-            user_docs = defaultdict(list)
-            for kb in kb_docs:
-                user_docs[kb.user_id].append(kb)
+            loop = asyncio.get_running_loop()
+            await loop.run_in_executor(None, _build_faiss_from_docs, kb_docs)
 
-            # Build index per user
-            for uid, docs in user_docs.items():
-                chunks_for_user = []
-                for kb in docs:
-                    if not kb.content:
-                        continue
-                    # Split content into sentences/chunks (simple split by newline for now, or paragraphs)
-                    # We skip writing to physical files (DOC_DIR) for better security & multi-tenant isolation.
-                    lines = kb.content.split('\n')
-                    current_chunk = ""
-                    for line in lines:
-                        line = line.strip()
-                        if not line:
-                            if current_chunk:
-                                chunks_for_user.append(current_chunk)
-                                current_chunk = ""
-                            continue
-                        current_chunk += line + " "
-                    if current_chunk:
-                        chunks_for_user.append(current_chunk)
-                
-                _user_doc_chunks[uid] = chunks_for_user
-
-                if chunks_for_user:
-                    emb_matrix = _embedding_model.encode(chunks_for_user, show_progress_bar=False)
-                    emb_matrix = np.array(emb_matrix).astype("float32")
-                    d = emb_matrix.shape[1]
-                    idx = faiss.IndexFlatL2(d)
-                    idx.add(emb_matrix)
-                    _faiss_indices[uid] = idx
-                    print(f"[RAG] FAISS Index siap untuk user_id={uid} ({len(chunks_for_user)} chunks).")
-                else:
-                    print(f"[RAG] Tidak ada chunk valid untuk user_id={uid}.")
-
-            _rag_loaded = True
         except Exception as e:
             print(f"[RAG ERROR] Gagal menyinkronkan dari Database: {e}")
             _rag_loaded = False
@@ -215,11 +216,11 @@ def get_embedding(text: str) -> list:
     return _embedding_model.encode(text).tolist()
 
 
-def force_reload_rag():
+async def force_reload_rag():
     """Fungsi dipanggil dari endpoint /sync-rag untuk memuat ulang data dari DB."""
     global _rag_loaded
     _rag_loaded = False
-    _load_local_rag_index()
+    await _load_local_rag_index()
 
 async def get_smart_suggestion(intent: str, sentiment: str, message: str, db=None, user_id=None) -> str:
     """
@@ -229,7 +230,7 @@ async def get_smart_suggestion(intent: str, sentiment: str, message: str, db=Non
     """
     
     if not _rag_loaded:
-        await asyncio.to_thread(_load_local_rag_index)
+        await _load_local_rag_index()
         
     if not _llm_loaded:
         await asyncio.to_thread(_load_llm)
@@ -292,7 +293,7 @@ def stream_smart_suggestion(intent: str, sentiment: str, message: str, user_id=N
     Akan dikonsumsi oleh FastAPI StreamingResponse.
     """
     if not _rag_loaded:
-        _load_local_rag_index()
+        print("[RAG WARNING] Index belum dimuat sebelum stream! Memanggil tanpa index...")
         
     if not _llm_loaded:
         _load_llm()

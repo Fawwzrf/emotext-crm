@@ -90,7 +90,10 @@ async def lifespan(app: FastAPI):
     """Lifespan handler: pra-muat LLM dan FAISS di background saat server start."""
     from rag_service import _load_llm, _load_local_rag_index
     logger.info("[STARTUP] Memuat LLM dan FAISS di background agar generasi pertama lebih cepat...")
-    threading.Thread(target=_load_local_rag_index, daemon=True).start()
+    # Jalankan _load_local_rag_index sebagai task asyncio agar tidak terjadi issue event loop dengan SQLAlchemy
+    import asyncio
+    asyncio.create_task(_load_local_rag_index())
+    
     threading.Thread(target=_load_llm, daemon=True).start()
     yield  # ── server berjalan ──
     logger.info("[SHUTDOWN] Server berhenti.")
@@ -409,6 +412,10 @@ async def stream_suggestion(
         # Tapi karena llama_cpp memblokir thread saat menghasilkan setiap token,
         # kita harus iterasi lewat run_in_threadpool.
         from starlette.concurrency import run_in_threadpool
+        
+        from rag_service import _rag_loaded, _load_local_rag_index
+        if not _rag_loaded:
+            await _load_local_rag_index()
         
         gen = stream_smart_suggestion(msg.intent, msg.sentiment, msg.message, auth["user_id"])
         while True:
