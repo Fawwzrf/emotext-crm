@@ -1,0 +1,8 @@
+models/
+app.log
+uvicorn_err.log
+__pycache__/
+.env
+.pytest_cache/
+.cache/
+doc/
