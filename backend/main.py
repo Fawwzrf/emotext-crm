@@ -30,8 +30,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger("emotext")
-
-load_dotenv()
 LARAVEL_URL = os.getenv("LARAVEL_URL", "http://127.0.0.1:8001")
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "")
 
@@ -413,11 +411,17 @@ async def stream_suggestion(
         
         gen = stream_smart_suggestion(msg.intent, msg.sentiment, msg.message, auth["user_id"])
         while True:
-            chunk = await run_in_threadpool(next, gen, None)
-            if chunk is None:
+            try:
+                chunk = await run_in_threadpool(next, gen, None)
+                if chunk is None:
+                    break
+                full_text += chunk
+                yield chunk
+            except StopIteration:
                 break
-            full_text += chunk
-            yield chunk
+            except Exception as e:
+                logger.error(f"[STREAM] Exception saat streaming: {e}")
+                break
             
         # Simpan ke DB setelah stream selesai menggunakan sesi baru
         # karena sesi 'db' dari Depends sudah ditutup oleh FastAPI

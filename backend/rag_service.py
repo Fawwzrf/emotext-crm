@@ -26,7 +26,6 @@ def _get_llama_class():
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DOC_DIR = os.path.join(BASE_DIR, "doc")
 
 if os.environ.get("SPACE_ID"):
     MODEL_ROOT = os.path.join(BASE_DIR, "models")
@@ -168,7 +167,7 @@ def _load_local_rag_index():
             _rag_loaded = True
         except Exception as e:
             print(f"[RAG ERROR] Gagal menyinkronkan dari Database: {e}")
-            _rag_loaded = True
+            _rag_loaded = False
 
 
 def _load_llm():
