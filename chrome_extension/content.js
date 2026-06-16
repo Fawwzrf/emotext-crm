@@ -211,8 +211,8 @@ function getContextMessages(currentNode, limit = 3) {
 }
 
 function detectMedia(msgContainer) {
+    if (msgContainer.querySelector('img, canvas, video, audio, object, embed, iframe')) return true;
     const selectors = [
-        'img[src*="blob"]', 'video', 'audio',
         '[data-testid="audio-download"]',
         '[data-testid="ptt-status-icon"]',
         '[data-testid="media-url-link"]',
@@ -221,6 +221,8 @@ function detectMedia(msgContainer) {
         '[data-testid="doc-document"]',
         '[data-testid="sticker"]',
         '[data-testid="gif"]',
+        '[data-testid="msg-image"]',
+        '[data-testid="media-image"]'
     ];
     for (const sel of selectors) {
         if (msgContainer.querySelector(sel)) return true;
@@ -228,30 +230,52 @@ function detectMedia(msgContainer) {
     return false;
 }
 
-async function analyzeMessageAPI(text, senderId, senderName, context = []) {
-    try {
-        const maskedText = anonymizeText(text);
-        const maskedName = anonymizeText(senderName);
-        const maskedCtx = context.map(c => ({ text: anonymizeText(c.text), role: c.role }));
-        const fullContext = [...maskedCtx, { text: maskedText, role: 'user' }];
+// BUG-FIX: Antrean request untuk API analyze agar HF tidak timeout saat merender banyak pesan
+const analyzeQueue = [];
+let analyzeRunning = 0;
+const ANALYZE_CONCURRENCY = 2; // Hanya 2 request ke HF di saat bersamaan
 
-        const response = await fetchWithTimeout(`${API_BASE_URL}/analyze`, {
-            method: 'POST',
-            timeout: 8000, // Fast path <500ms setelah perbaikan arsitektur
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${COMPANY_API_KEY}` },
-            body: JSON.stringify({
-                sender_id: senderId,
-                sender_name: maskedName,
-                context: fullContext,
-                timestamp: new Date().toISOString(),
-                message_type: text === "[MEDIA]" ? "media" : "text"
-            })
+async function analyzeMessageAPI(text, senderId, senderName, context = []) {
+    return new Promise((resolve) => {
+        analyzeQueue.push(async () => {
+            try {
+                const maskedText = anonymizeText(text);
+                const maskedName = anonymizeText(senderName);
+                const maskedCtx = context.map(c => ({ text: anonymizeText(c.text), role: c.role }));
+                const fullContext = [...maskedCtx, { text: maskedText, role: 'user' }];
+
+                const response = await fetchWithTimeout(`${API_BASE_URL}/analyze`, {
+                    method: 'POST',
+                    timeout: 25000, // Tambah timeout ke 25s karena HF bisa lambat kalau banyak request
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${COMPANY_API_KEY}` },
+                    body: JSON.stringify({
+                        sender_id: senderId,
+                        sender_name: maskedName,
+                        context: fullContext,
+                        timestamp: new Date().toISOString(),
+                        message_type: text === "[MEDIA]" ? "media" : "text"
+                    })
+                });
+                if (!response.ok) throw new Error(`Status ${response.status}`);
+                const data = await response.json();
+                resolve(data);
+            } catch (error) {
+                console.warn('[Emotext-CRM] API error:', error.message);
+                resolve({ sentiment: 'neutral', intent: 'other', confidence: 0, health_score: 50, suggestion: null });
+            }
         });
-        if (!response.ok) throw new Error(`Status ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.warn('[Emotext-CRM] API error:', error.message);
-        return { sentiment: 'neutral', intent: 'other', confidence: 0, health_score: 50, suggestion: null };
+        drainAnalyzeQueue();
+    });
+}
+
+async function drainAnalyzeQueue() {
+    while (analyzeQueue.length > 0 && analyzeRunning < ANALYZE_CONCURRENCY) {
+        const fn = analyzeQueue.shift();
+        analyzeRunning++;
+        fn().finally(() => {
+            analyzeRunning--;
+            drainAnalyzeQueue();
+        });
     }
 }
 
@@ -386,14 +410,18 @@ function injectSuggestion(suggestionText) {
             pointer-events: auto; 
             background: #ffffff; 
             border: 1.5px solid #10b981; 
-            border-radius: 20px; 
-            padding: 8px 16px; 
+            border-radius: 12px; 
+            padding: 10px 16px; 
             font-size: 14px; 
-            color: #10b981; 
+            color: #064e3b; 
             cursor: pointer; 
-            white-space: nowrap; 
+            white-space: pre-wrap; 
+            word-break: break-word;
+            max-height: 150px;
+            overflow-y: auto;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
-            font-weight: 600; 
+            font-weight: 500; 
+            line-height: 1.4;
             transition: all 0.2s ease;
         `;
         
@@ -494,6 +522,16 @@ async function processMessageNode(msgContainer) {
 
     if (isOutgoing(msgContainer)) {
         msgContainer.dataset.emotextProcessed = "true";
+        
+        // Auto-resolve pending complaints when CS replies
+        const headerTitle = document.querySelector(SELECTORS.conversationInfoChatTitle) || document.querySelector(SELECTORS.conversationHeaderSpan);
+        if (headerTitle) {
+            const uniqueId = headerTitle.innerText.replace(/\s+/g, '_').toLowerCase();
+            fetch(`${LARAVEL_BASE_URL}/api/extension/contact/${encodeURIComponent(uniqueId)}/resolve`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${COMPANY_API_KEY}` }
+            }).catch(() => {});
+        }
         return;
     }
 

@@ -8,10 +8,23 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $period = $request->query('period', 'today');
+        
         $baseQuery = $user->messages(); // Base isolasi data per perusahaan
+        
+        // Filter by Period
+        if ($period === '7days') {
+            $baseQuery->where('created_at', '>=', now()->subDays(7));
+        } elseif ($period === 'month') {
+            $baseQuery->where('created_at', '>=', now()->startOfMonth());
+        } elseif ($period === 'all') {
+            // no filter
+        } else {
+            $baseQuery->whereDate('created_at', today());
+        }
 
         // ── 1. Stat Cards (Berbasis Kontak & Pesan) ───────────────────────────
         $caseSql = "SUM(CASE WHEN sentiment='positive' THEN 100 WHEN sentiment='negative' THEN 30 ELSE 70 END) / COUNT(id) as health_score";
@@ -26,11 +39,24 @@ class DashboardController extends Controller
         $negativeContacts = $allContacts->where('health_score', '<', 50)->count();
         $neutralContacts = $totalContacts - $positiveContacts - $negativeContacts;
         
-        // Original Message Stats
-        $totalMessages  = (clone $baseQuery)->count();
-        $positiveCount  = (clone $baseQuery)->where('sentiment', 'positive')->count();
-        $negativeCount  = (clone $baseQuery)->where('sentiment', 'negative')->count();
-        $avgConfidence  = (clone $baseQuery)->avg('confidence') ?? 0;
+        // Optimasi: Konsolidasi 9 Query menjadi 1 Query (Mencegah Lemot)
+        $statsObj = (clone $baseQuery)
+            ->selectRaw("
+                COUNT(id) as total_messages,
+                SUM(CASE WHEN sentiment='positive' THEN 1 ELSE 0 END) as positive_count,
+                SUM(CASE WHEN sentiment='negative' THEN 1 ELSE 0 END) as negative_count,
+                AVG(confidence) as avg_confidence,
+                SUM(CASE WHEN intent='complaint' THEN 1 ELSE 0 END) as intent_complaint,
+                SUM(CASE WHEN intent='order' THEN 1 ELSE 0 END) as intent_order,
+                SUM(CASE WHEN intent='inquiry' THEN 1 ELSE 0 END) as intent_inquiry,
+                SUM(CASE WHEN intent='media' THEN 1 ELSE 0 END) as intent_media,
+                SUM(CASE WHEN intent='other' THEN 1 ELSE 0 END) as intent_other
+            ")->first();
+
+        $totalMessages  = $statsObj->total_messages ?? 0;
+        $positiveCount  = $statsObj->positive_count ?? 0;
+        $negativeCount  = $statsObj->negative_count ?? 0;
+        $avgConfidence  = $statsObj->avg_confidence ?? 0;
 
         $stats = [
             'total_contacts'    => $totalContacts,
@@ -47,22 +73,44 @@ class DashboardController extends Controller
         $neutralCount = $totalMessages - $positiveCount - $negativeCount;
         $pieData = [$positiveCount, $negativeCount, $neutralCount];
 
-        $driver = DB::connection()->getDriverName();
-        $dateTruncRaw = $driver === 'sqlite' 
-            ? "strftime('%Y-%m-%d %H:00:00', created_at) as hour"
-            : "DATE_TRUNC('hour', created_at) as hour";
+        // ── 2b. Intent Distribution ────────────────────────────────────────────────
+        $intentData = [
+            $statsObj->intent_complaint ?? 0,
+            $statsObj->intent_order ?? 0,
+            $statsObj->intent_inquiry ?? 0,
+            $statsObj->intent_media ?? 0,
+            $statsObj->intent_other ?? 0,
+        ];
 
-        // ── 3. Line Chart (Tren per jam hari ini) ────────────────────────────
-        $trendData = $user->messages()
+        // ── 2c. Top Urgent Complaints ──────────────────────────────────────────────
+        $urgentContactsQuery = (clone $baseQuery)
+            ->where('status', 'pending')
+            ->select('sender_id', DB::raw('MAX(sender_name) as sender_name'), DB::raw($caseSql), DB::raw('COUNT(id) as pending_msgs'))
+            ->groupBy('sender_id')
+            ->get();
+        $urgentContacts = $urgentContactsQuery->where('health_score', '<', 50)->sortBy('health_score')->take(5);
+
+        $driver = DB::connection()->getDriverName();
+        if ($period === 'today') {
+            $dateTruncRaw = $driver === 'sqlite' 
+                ? "strftime('%Y-%m-%d %H:00:00', created_at) as time_label"
+                : "DATE_TRUNC('hour', created_at) as time_label";
+        } else {
+            $dateTruncRaw = $driver === 'sqlite' 
+                ? "strftime('%Y-%m-%d 00:00:00', created_at) as time_label"
+                : "DATE_TRUNC('day', created_at) as time_label";
+        }
+
+        // ── 3. Line Chart (Tren waktu) ────────────────────────────
+        $trendData = (clone $baseQuery)
             ->select(
                 DB::raw($dateTruncRaw),
                 DB::raw("SUM(CASE WHEN sentiment = 'positive' THEN 1 ELSE 0 END) as positive_count"),
                 DB::raw("SUM(CASE WHEN sentiment = 'negative' THEN 1 ELSE 0 END) as negative_count"),
                 DB::raw("SUM(CASE WHEN sentiment = 'neutral' THEN 1 ELSE 0 END) as neutral_count")
             )
-            ->whereDate('created_at', today())
-            ->groupBy('hour')
-            ->orderBy('hour')
+            ->groupBy('time_label')
+            ->orderBy('time_label')
             ->get();
 
         // ── 4. Daftar Kontak (CRM View) & Pesannya ───────────────────────────
@@ -110,16 +158,36 @@ class DashboardController extends Controller
             'company_name' => $user->company_name,
         ];
 
-        return view('dashboard', compact('stats', 'contactsPaginator', 'pieData', 'trendData', 'trialStatus'));
+        // ── 6. Data Knowledge Base (RAG) ─────────────────────────────────────
+        $documents = DB::table('knowledge_bases')
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($doc) {
+                $meta = json_decode($doc->metadata, true) ?? [];
+                return [
+                    'id' => $doc->id,
+                    'filename' => $meta['filename'] ?? 'document.txt',
+                    'created_at' => strtotime($doc->created_at),
+                    'chunks' => 1,
+                    'uploaded_at' => $doc->created_at,
+                ];
+            });
+
+        return view('dashboard', compact('stats', 'contactsPaginator', 'pieData', 'trendData', 'trialStatus', 'intentData', 'urgentContacts', 'period', 'documents'));
     }
 
-    public function resolve($id)
+    public function resolve(Request $request, $id)
     {
         $message = auth()->user()->messages()->findOrFail($id); // Pastikan hanya resolve milik sendiri
         $message->update([
             'status'      => 'resolved',
             'resolved_by' => auth()->id(),
         ]);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json(['status' => 'success', 'message' => 'Pesan berhasil ditandai sebagai selesai.']);
+        }
 
         return back()->with('success', 'Pesan berhasil ditandai sebagai selesai.');
     }
@@ -163,39 +231,20 @@ class DashboardController extends Controller
 
         // Trigger FastAPI to rebuild FAISS index from DB
         try {
-            \Illuminate\Support\Facades\Http::timeout(5)
+            // BUGFIX: Ubah timeout menjadi 1 detik agar tidak blocking UI Laravel. FastAPI akan terus jalan di background.
+            \Illuminate\Support\Facades\Http::timeout(1)
                 ->withHeaders([
                     'X-Internal-Api-Key' => env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026')
                 ])
                 ->post(env('FASTAPI_URL', 'http://127.0.0.1:8000') . '/sync-kb');
         } catch (\Exception $e) {
-            // It's okay if FastAPI is offline, it will sync on next startup
+            // It's okay if FastAPI is offline or times out, it will sync on next startup or run in background
         }
 
         return back()->with('success', "Dokumen '{$filename}' berhasil disimpan secara permanen di Database.");
     }
 
-    public function knowledgeBase()
-    {
-        $documents = DB::table('knowledge_bases')
-            ->where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($doc) {
-                $meta = json_decode($doc->metadata, true) ?? [];
-                return [
-                    'id' => $doc->id,
-                    'filename' => $meta['filename'] ?? 'document.txt',
-                    'created_at' => strtotime($doc->created_at),
-                    'chunks' => 1,
-                    'uploaded_at' => $doc->created_at,
-                ];
-            });
-
-        return view('knowledge_base', [
-            'documents' => $documents,
-        ]);
-    }
+    // Method knowledgeBase() telah dihapus dan digabungkan ke index()
 
     public function deleteKb(Request $request, $id)
     {
@@ -207,7 +256,8 @@ class DashboardController extends Controller
             
             // Beri sinyal ke FastAPI
             try {
-                \Illuminate\Support\Facades\Http::timeout(5)
+                // BUGFIX: Ubah timeout menjadi 1 detik agar tidak blocking UI Laravel
+                \Illuminate\Support\Facades\Http::timeout(1)
                     ->withHeaders([
                         'X-Internal-Api-Key' => env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026')
                     ])
@@ -220,5 +270,58 @@ class DashboardController extends Controller
         }
 
         return back()->with('error', 'Gagal menghapus dokumen atau dokumen tidak ditemukan.');
+    }
+
+    public function exportCsv(Request $request)
+    {
+        $user = auth()->user();
+        $period = $request->query('period', 'today');
+
+        $query = $user->messages();
+        if ($period === '7days') {
+            $query->where('created_at', '>=', now()->subDays(7));
+        } elseif ($period === 'month') {
+            $query->where('created_at', '>=', now()->startOfMonth());
+        } elseif ($period === 'all') {
+            // no filter
+        } else {
+            $query->whereDate('created_at', today());
+        }
+
+        $messages = $query->orderBy('created_at', 'desc')->get();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=Laporan_EmoText_{$period}.csv",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['ID', 'Waktu', 'Pengirim', 'Pesan', 'Sentimen', 'Confidence', 'Intensi', 'Status'];
+
+        $callback = function() use($messages, $columns) {
+            $file = fopen('php://output', 'w');
+            // Menambahkan BOM untuk kompatibilitas Excel pada UTF-8
+            fputs($file, "\xEF\xBB\xBF");
+            fputcsv($file, $columns);
+
+            foreach ($messages as $msg) {
+                fputcsv($file, [
+                    $msg->id,
+                    $msg->created_at->format('Y-m-d H:i:s'),
+                    $msg->sender_name ?? $msg->sender_id,
+                    $msg->message,
+                    strtoupper($msg->sentiment),
+                    $msg->confidence,
+                    strtoupper($msg->intent),
+                    strtoupper($msg->status)
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

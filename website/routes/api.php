@@ -13,6 +13,7 @@ Route::middleware('throttle:5,1')->post('/extension/login', [ExtensionAuthContro
 // ─── Extension Protected Routes (butuh api_token) ────────────────────────────
 Route::middleware(['throttle:60,1', ValidateExtensionToken::class])->group(function () {
     Route::get('/extension/status', [ExtensionAuthController::class, 'status']);
+    Route::post('/extension/contact/{sender_id}/resolve', [\App\Http\Controllers\Api\InternalWebhookController::class, 'resolveContact']);
 });
 
 // ─── Internal Webhook (Untuk FastAPI) ──────────────────────────────────────────

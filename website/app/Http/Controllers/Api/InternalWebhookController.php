@@ -33,4 +33,24 @@ class InternalWebhookController extends Controller
 
         return response()->json(['error' => 'Message not found'], 404);
     }
+
+    public function resolveContact(Request $request, $sender_id)
+    {
+        $user = $request->user_from_token;
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Auto-resolve pending complaints for this sender
+        $updated = Message::where('user_id', $user->id)
+            ->where('sender_id', $sender_id)
+            ->where('status', 'pending')
+            ->update([
+                'status' => 'resolved',
+                'resolved_by' => $user->id,
+                'updated_at' => now(), // resolved_at if we had one, but updated_at works
+            ]);
+
+        return response()->json(['status' => 'success', 'resolved_count' => $updated]);
+    }
 }

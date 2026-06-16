@@ -51,6 +51,10 @@ Dokumen ini melacak riwayat pengembangan sistem Emotext-CRM beserta status penye
 | 13 | Ekstensi & API | **Real-Time Streaming Animation (SSE)** | Mengganti *loading* balasan RAG yang stagnan dengan mekanisme *Server-Sent Events (SSE)* agar agen melihat AI mengetik (Token-by-Token) secara seketika (*instant-feedback*). |
 | 14 | Seluruh Sistem | **Restrukturisasi Monorepo (Professional Grade)** | Memisahkan kode produksi dari tes (`tests/`), memusatkan semua model AI ke `models/`, menghapus *dead code* pgvector dan PyTorch, membersihkan `requirements.txt` dari 6 dependensi yang tidak terpakai di runtime. |
 | 15 | NLP Model | **Keterbatasan Pemahaman IndoBERT pada Sarkasme/Slang:** Model NLP kesulitan membaca sarkasme dan singkatan ekstrem. | **[FIXED]** Telah dilakukan *Transfer Learning / Fine-Tuning* ulang (v2.0) dengan 4.015 baris data sintetis. Akurasi meningkat drastis. Sisa *edge-cases* akan ditangani lewat *Manual Correction*. |
+| 16 | Dashboard & Ekstensi | **Auto-Resolve Komplain (Webhook)** | Mengeksekusi perubahan status dari *Pending* menjadi *Resolved* secara otomatis di Dashboard sesaat setelah agen mengirim balasan di WhatsApp Web via Chrome Extension. |
+| 17 | Dashboard (Blade) | **Intent Distribution Chart & SLA Monitor** | Menambahkan grafik donat proporsi intent pesan dan widget peringatan merah untuk 5 *Top Urgent Complaints* (Health Score < 50%) agar supervisor bisa fokus pada kasus kritis. |
+| 18 | Dashboard (Controller) | **Date Filter & Laporan CSV** | Menambahkan fitur rentang waktu (Hari Ini, 7 Hari, Bulan Ini, Semua) yang tersinkronisasi ke seluruh kalkulasi metrik, serta tombol export seluruh riwayat pesan ke format Excel/CSV. |
+| 19 | Dashboard (Laravel) | **SPA Experience & Tab Navigation** | Merombak UX Dasbor menjadi bergaya SPA. Fitur *Knowledge Base* dilebur menjadi Tab "SOP & RAG". Tombol "Tandai Selesai" menggunakan AJAX tanpa *reload*. Widget SLA Monitor otomatis berkurang saat komplain diselesaikan. Posisi *Accordion* kontak yang terbuka otomatis diingat (persistent) meski berganti tab. |
 
 ---
 
@@ -76,5 +80,5 @@ Fitur-fitur ekspansi masif yang mengubah nilai jual (*selling point*) aplikasi d
    - **Tujuan:** Mendukung platform selain WhatsApp, seperti Instagram DM atau Telegram.
 3. **Ekstraksi Histori Chat Awal (Initial Sync) 🔄**
    - **Tujuan:** Menambahkan fungsionalitas di Ekstensi untuk me-*load* 50 obrolan terakhir pelanggan (tarik mundur) ke backend AI `/api/v1/analyze-batch`, sehingga metrik *Health Score* pelanggan bisa langsung terbaca sejak hari pertama mendaftar.
-4. **Visualisasi Komparasi Tanggal & Word Cloud di Analytics 📊**
-   - **Tujuan:** Menambahkan kemampuan filter tanggal lanjutan (*Date Picker*: Hari Ini, Minggu Lalu, Bulan Lalu) serta melatih *Backend* NLP untuk mengekstrak Subjek Komplain (misal: pengiriman, pelayanan, produk rusak) menjadi grafik kata *Word Cloud*.
+4. **Ekstraksi Subjek Komplain & Word Cloud Analytics 📊**
+   - **Tujuan:** Melatih *Backend* NLP untuk mengekstrak Subjek Komplain (misal: "pengiriman lama", "produk rusak") secara otomatis menjadi grafik kata (*Word Cloud*) untuk melengkapi filter tanggal dan analitik tren yang sudah ada.

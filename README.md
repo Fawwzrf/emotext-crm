@@ -10,7 +10,7 @@
 
 Dirancang khusus untuk tim *Customer Service*, sistem ini secara instan menganalisis sentimen, mendeteksi intensi pelanggan, dan memberikan balasan otomatis berlandaskan *Standard Operating Procedure* (SOP) perusahaan menggunakan arsitektur mutakhir **Offline Retrieval-Augmented Generation (RAG)**.
 
-Sistem beroperasi dengan model bisnis **SaaS (Software as a Service)**, memisahkan ekstensi klien yang super ringan (< 5MB) dari mesin AI (*Backend*) raksasa yang aman di server cloud.
+Sistem beroperasi dengan model bisnis **SaaS (Software as a Service)**, memisahkan ekstensi klien yang super ringan (< 5MB) dari mesin AI (*Backend*) raksasa yang aman di server cloud. Manajemen platform ini dilakukan melalui **Unified Web Portal** berarsitektur *Single Page Application* (SPA) untuk pengalaman *real-time* tanpa jeda *loading*.
 
 ---
 

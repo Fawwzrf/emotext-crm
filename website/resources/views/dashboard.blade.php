@@ -1,8 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Sentiment Analysis Dashboard') }}
-        </h2>
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Sentiment Analysis Dashboard') }}
+            </h2>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Date Filter -->
+                <div class="bg-gray-100 p-1 rounded-lg flex text-sm">
+                    <a href="{{ route('dashboard', ['period' => 'today']) }}" class="px-3 py-1.5 rounded-md transition {{ $period === 'today' ? 'bg-white shadow-sm font-bold text-blue-600' : 'text-gray-600 hover:bg-gray-200' }}">Hari Ini</a>
+                    <a href="{{ route('dashboard', ['period' => '7days']) }}" class="px-3 py-1.5 rounded-md transition {{ $period === '7days' ? 'bg-white shadow-sm font-bold text-blue-600' : 'text-gray-600 hover:bg-gray-200' }}">7 Hari</a>
+                    <a href="{{ route('dashboard', ['period' => 'month']) }}" class="px-3 py-1.5 rounded-md transition {{ $period === 'month' ? 'bg-white shadow-sm font-bold text-blue-600' : 'text-gray-600 hover:bg-gray-200' }}">Bulan Ini</a>
+                    <a href="{{ route('dashboard', ['period' => 'all']) }}" class="px-3 py-1.5 rounded-md transition {{ $period === 'all' ? 'bg-white shadow-sm font-bold text-blue-600' : 'text-gray-600 hover:bg-gray-200' }}">Semua</a>
+                </div>
+
+                <!-- Export CSV -->
+                <a href="{{ route('dashboard.export', ['period' => $period]) }}" class="px-4 py-2 bg-green-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-green-700 transition flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    Download CSV
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     {{-- ── Flash Notifications (Upload RAG / Resolve dsb) ──────────────────── --}}
@@ -142,57 +160,17 @@
                 </div>
             </div>
 
-            <div class="bg-gray-200/50 p-1 rounded-xl inline-flex mb-8 w-full md:w-auto" x-data="{ showTextModal: false }">
-                <button @click="showTextModal = true" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Test AI Model</button>
-                <a href="{{ route('dashboard.kb') }}" class="px-6 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm rounded-lg flex items-center transition"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Upload Dokumen RAG</a>
+            <div class="bg-gray-200/50 p-1 rounded-xl inline-flex mb-8 w-full md:w-auto">
+                <button @click="tab = 'rag'" 
+                    :class="tab === 'rag' ? 'bg-white text-gray-900 shadow-sm font-bold' : 'text-gray-700 font-medium'"
+                    class="px-6 py-2 text-sm rounded-lg flex items-center transition-all">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> SOP & RAG
+                </button>
                 
-                <!-- Text Analyzer Modal -->
-                <div x-show="showTextModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="flex items-center justify-center min-h-screen p-4 text-center">
-                        <div x-show="showTextModal" x-transition.opacity class="fixed inset-0 transition-opacity" style="background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" @click="showTextModal = false"></div>
-                        <div x-show="showTextModal" x-transition class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full p-6 border border-gray-100">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Test AI Sentiment Model</h3>
-                            <p class="text-sm text-gray-500 mb-6">Uji coba model klasifikasi teks IndoBERT secara langsung.</p>
-                            
-                            <textarea class="w-full border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500 mb-4 p-3 text-sm" rows="4" placeholder="Ketik kalimat komplain atau pujian di sini..."></textarea>
-                            
-                            <div class="flex justify-end gap-3 mt-4">
-                                <button @click="showTextModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200">Batal</button>
-                                <button @click="alert('API sedang dalam proses integrasi dengan ekstensi.')" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm" style="background-color: #2563eb; color: white;">Analisis Teks</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RAG Upload Modal -->
-                <div x-show="showRagModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="flex items-center justify-center min-h-screen p-4 text-center">
-                        <div x-show="showRagModal" x-transition.opacity class="fixed inset-0 transition-opacity" style="background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);" @click="showRagModal = false"></div>
-                        <div x-show="showRagModal" x-transition class="relative bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full p-6 border border-gray-100">
-                            <form method="POST" action="{{ route('dashboard.upload-kb') }}" enctype="multipart/form-data">
-                                @csrf
-                                <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Upload Dokumen Pengetahuan RAG</h3>
-                                <p class="text-sm text-gray-500 mb-6">Unggah file PDF atau TXT berisi FAQ/SOP. AI akan menggunakan dokumen ini sebagai basis pengetahuan untuk meracik balasan.</p>
-                                
-                                <div class="border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-8 flex flex-col justify-center items-center mb-6 hover:bg-blue-50 transition relative">
-                                    <input type="file" name="file" accept=".pdf,.txt" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <svg class="w-10 h-10 text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                                    <span class="text-sm font-semibold text-blue-600">Klik untuk browse atau drag file kemari</span>
-                                    <span class="text-xs text-gray-400 mt-1">Maks. 5MB per file (PDF, TXT)</span>
-                                </div>
-
-                                <div class="flex justify-end gap-3 mt-4">
-                                    <button type="button" @click="showRagModal = false" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-200">Tutup</button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm" style="background-color: #2563eb; color: white;">Upload & Proses</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>                
                 <button @click="tab = 'sample'" 
                     :class="tab === 'sample' ? 'bg-white text-gray-900 shadow-sm font-bold' : 'text-gray-700 font-medium'"
                     class="px-6 py-2 text-sm rounded-lg flex items-center transition-all">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> Sample Data
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> CRM / Inbox
                 </button>
 
                 <button @click="tab = 'analytics'; setTimeout(() => window.dispatchEvent(new Event('resize')), 50);" 
@@ -202,8 +180,64 @@
                 </button>
             </div>
 
+            <div x-show="tab === 'rag'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" class="space-y-6 mb-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Upload SOP/FAQ (Knowledge Base)</h3>
+                    <p class="text-sm text-gray-500 mb-5">Dokumen ini digunakan AI untuk membalas pelanggan secara otomatis.</p>
+                    <form method="POST" action="{{ route('kb.upload') }}" enctype="multipart/form-data" x-data="{ uploading: false, fileName: null }" @submit="uploading = true">
+                        @csrf
+                        <div class="flex flex-col sm:flex-row gap-4 items-start">
+                            <div class="flex-1 border-2 border-dashed border-blue-200 bg-blue-50/50 rounded-xl p-6 flex flex-col items-center justify-center relative hover:bg-blue-50 transition cursor-pointer" :class="fileName ? 'border-green-400 bg-green-50/50' : ''">
+                                <input type="file" name="file" accept=".pdf,.txt" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" @change="fileName = $event.target.files[0]?.name || null">
+                                <template x-if="!fileName">
+                                    <div class="flex flex-col items-center text-center">
+                                        <svg class="w-8 h-8 text-blue-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                        <span class="text-sm font-semibold text-blue-600">Klik atau drag file kemari</span>
+                                        <span class="text-xs text-gray-400 mt-1">Maks 5MB · PDF, TXT</span>
+                                    </div>
+                                </template>
+                                <template x-if="fileName">
+                                    <div class="flex flex-col items-center text-center">
+                                        <svg class="w-8 h-8 text-green-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span class="text-sm font-semibold text-green-700" x-text="fileName"></span>
+                                    </div>
+                                </template>
+                            </div>
+                            <button type="submit" :disabled="uploading || !fileName" class="shrink-0 px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2">
+                                <span x-show="!uploading">Upload & Proses</span>
+                                <span x-show="uploading">⏳ Memproses...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-800">Dokumen Tersimpan ({{ count($documents ?? []) }})</h3>
+                    </div>
+                    @if(count($documents ?? []) === 0)
+                        <div class="py-10 text-center px-4"><p class="text-gray-500">Belum ada dokumen. AI tidak memiliki referensi khusus.</p></div>
+                    @else
+                        <div class="divide-y divide-gray-50">
+                            @foreach($documents as $doc)
+                            <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition">
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-800">{{ $doc['filename'] }}</p>
+                                    <p class="text-xs text-gray-400">{{ date('d M Y', $doc['created_at']) }}</p>
+                                </div>
+                                <form method="POST" action="{{ route('kb.delete', ['id' => $doc['id']]) }}" onsubmit="return confirm('Hapus dokumen ini?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="text-red-500 hover:text-red-700 bg-red-50 px-3 py-1.5 rounded-lg text-xs font-bold transition">Hapus</button>
+                                </form>
+                            </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <div x-show="tab === 'analytics'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Sentiment Trend (Today)</h3>
                     <div class="h-64"><canvas id="trendChart"></canvas></div>
                 </div>
@@ -211,18 +245,41 @@
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Current Sentiment Distribution</h3>
                     <div class="h-64 flex justify-center"><canvas id="distributionChart"></canvas></div>
                 </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Intent Distribution</h3>
+                    <div class="h-64 flex justify-center"><canvas id="intentChart"></canvas></div>
+                </div>
             </div>
 
             <div x-show="tab === 'sample'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95">
+                <!-- NEW: Urgent Complaints Widget -->
+                @if($urgentContacts->count() > 0)
+                <div class="bg-red-50 border border-red-200 rounded-2xl p-5 mb-8 shadow-sm">
+                    <h3 class="text-red-800 font-bold mb-3 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg> 
+                        Top Urgent Complaints (SLA Monitor)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                        @foreach($urgentContacts as $urgent)
+                            <div class="bg-white p-3 rounded-xl border border-red-100 shadow-sm flex flex-col sla-widget" id="sla-{{ $urgent->sender_id }}">
+                                <span class="font-bold text-gray-800 text-sm truncate">{{ $urgent->sender_name ?? $urgent->sender_id }}</span>
+                                <span class="text-xs text-red-600 font-semibold">{{ round($urgent->health_score) }}% Health</span>
+                                <span class="text-[10px] text-gray-500 mt-1 sla-count">{{ $urgent->pending_msgs }} Unresolved Msgs</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
                 <h3 class="text-xl font-bold text-gray-800">Daftar Kontak (CRM View)</h3>
                 <p class="text-sm text-gray-500 mb-6">Klik pada masing-masing kontak untuk melihat detail dan riwayat keluhan/pesan mereka.</p>
 
                 <div class="space-y-4">
                     @forelse($contactsPaginator as $contact)
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" x-data="{ expanded: false }">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" x-data="{ expanded: sessionStorage.getItem('expanded_{{ $contact->sender_id }}') === 'true' }">
                             
                             <!-- Contact Header (Clickable) -->
-                            <div @click="expanded = !expanded" class="p-5 cursor-pointer hover:bg-gray-50 flex items-center justify-between transition border-b border-transparent" :class="expanded ? 'border-gray-100 bg-gray-50' : ''">
+                            <div @click="expanded = !expanded; sessionStorage.setItem('expanded_{{ $contact->sender_id }}', expanded)" class="p-5 cursor-pointer hover:bg-gray-50 flex items-center justify-between transition border-b border-transparent" :class="expanded ? 'border-gray-100 bg-gray-50' : ''">
                                 <div class="flex items-center gap-4">
                                     <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold">
                                         {{ substr($contact->sender_name ?? $contact->sender_id, 0, 1) }}
@@ -254,7 +311,7 @@
                                 <h5 class="text-sm font-bold text-gray-700 mb-4">Riwayat Pesan Terakhir</h5>
                                 <div class="space-y-4">
                                     @foreach($contact->messages as $msg)
-                                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative" x-data="{ showReply: false, showDetails: false }">
+                                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm relative" x-data="{ showReply: false, showDetails: false, isResolved: {{ $msg->status == 'resolved' ? 'true' : 'false' }}, isResolving: false }">
                                             <div class="flex justify-between items-start mb-2">
                                                 <div class="flex items-center space-x-3">
                                                     <span class="px-3 py-1 bg-gray-50 border border-gray-100 text-[11px] rounded-lg font-bold text-gray-600 uppercase">{{ $msg->intent }}</span>
@@ -277,31 +334,31 @@
                                                 </div>
                                                 
                                                 <div class="flex space-x-2">
-                                                    <button @click="showReply = true" class="px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-[11px] font-bold text-indigo-700 hover:bg-indigo-100 transition">Generate Reply</button>
-                                                    <button @click="showDetails = true" class="px-3 py-1.5 border border-gray-200 rounded-lg text-[11px] font-bold text-gray-700 hover:bg-gray-50 transition">View Details</button>
-                                                </div>
-                                            </div>
-
-                                            <!-- Reply Popup Inline -->
-                                            <div x-show="showReply" x-collapse x-cloak class="mt-4 pt-4 border-t border-gray-100">
-                                                <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4">
-                                                    <div class="flex justify-between items-center mb-2">
-                                                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Saran Balasan AI</span>
-                                                        <button @click="showReply = false" class="text-gray-400 hover:text-gray-600 text-lg">&times;</button>
-                                                    </div>
-                                                    <p class="text-xs text-gray-700 mb-4 leading-relaxed bg-white p-3 rounded-lg border border-gray-200 shadow-sm">"{{ $msg->reply_suggestion }}"</p>
-                                                    
-                                                    <div class="flex flex-col sm:flex-row gap-2" data-suggestion="{{ e($msg->reply_suggestion) }}">
-                                                        <button @click="navigator.clipboard.writeText($el.closest('[data-suggestion]').dataset.suggestion); alert('Disalin ke clipboard!');" 
-                                                            class="flex-1 bg-green-50 text-green-700 py-2 rounded-lg text-xs font-bold hover:bg-green-100 transition border border-green-200">
-                                                            📋 Salin Teks
+                                                    @if($msg->status == 'pending')
+                                                        <button x-show="!isResolved" :disabled="isResolving" @click.prevent="
+                                                            isResolving = true;
+                                                            fetch('{{ route('messages.resolve', $msg->id) }}', {
+                                                                method: 'PATCH',
+                                                                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
+                                                            }).then(res => { 
+                                                                if(res.ok) {
+                                                                    isResolved = true; 
+                                                                    const slaEl = document.getElementById('sla-{{ $contact->sender_id }}');
+                                                                    if(slaEl) {
+                                                                        const countEl = slaEl.querySelector('.sla-count');
+                                                                        let val = parseInt(countEl.innerText);
+                                                                        if(val > 1) countEl.innerText = (val - 1) + ' Unresolved Msgs';
+                                                                        else slaEl.remove();
+                                                                    }
+                                                                }
+                                                                isResolving = false;
+                                                            })
+                                                        " class="px-3 py-1.5 bg-green-50 border border-green-100 rounded-lg text-[11px] font-bold text-green-700 hover:bg-green-100 transition disabled:opacity-50">
+                                                            <span x-show="!isResolving">✓ Tandai Selesai</span>
+                                                            <span x-show="isResolving">⏳ Loading...</span>
                                                         </button>
-                                                        
-                                                        <form action="{{ route('messages.resolve', $msg->id) }}" method="POST" class="flex-1">
-                                                            @csrf @method('PATCH')
-                                                            <button type="submit" class="w-full py-2 bg-gray-800 text-white rounded-lg text-xs font-bold hover:bg-black transition">✓ Tandai Selesai</button>
-                                                        </form>
-                                                    </div>
+                                                    @endif
+                                                    <button @click="showDetails = true" class="px-3 py-1.5 border border-gray-200 rounded-lg text-[11px] font-bold text-gray-700 hover:bg-gray-50 transition">View Details</button>
                                                 </div>
                                             </div>
 
@@ -315,7 +372,7 @@
                                                             <div class="grid grid-cols-3 gap-2"><span class="font-semibold text-gray-500">ID Pesan:</span> <span class="col-span-2 font-mono">#{{ $msg->id }}</span></div>
                                                             <div class="grid grid-cols-3 gap-2"><span class="font-semibold text-gray-500">Sentimen:</span> <span class="col-span-2 uppercase font-bold">{{ $msg->sentiment }} ({{ number_format($msg->confidence * 100, 1) }}%)</span></div>
                                                             <div class="grid grid-cols-3 gap-2"><span class="font-semibold text-gray-500">Status:</span> 
-                                                                <span class="col-span-2 font-bold">{{ $msg->status == 'resolved' ? '✅ Diselesaikan oleh ' . ($msg->resolver->name ?? 'Admin') : '⌛ Menunggu' }}</span>
+                                                                <span class="col-span-2 font-bold" x-text="isResolved ? '✅ Diselesaikan' : '⌛ Menunggu'"></span>
                                                             </div>
                                                         </div>
                                                         <button @click="showDetails = false" class="w-full inline-flex justify-center rounded-lg border border-gray-300 px-4 py-2 bg-white text-sm font-bold text-gray-700 hover:bg-gray-50">Tutup</button>
@@ -385,6 +442,19 @@
                     datasets: [{
                         data: {!! json_encode($pieData) !!},
                         backgroundColor: ['#22c55e', '#ef4444', '#64748b']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Intent Chart
+            new Chart(document.getElementById('intentChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Complaint', 'Order', 'Inquiry', 'Media', 'Other'],
+                    datasets: [{
+                        data: {!! json_encode($intentData) !!},
+                        backgroundColor: ['#ef4444', '#22c55e', '#3b82f6', '#f59e0b', '#64748b']
                     }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }

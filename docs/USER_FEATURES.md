@@ -42,8 +42,14 @@ Jika prediksi AI dirasa kurang tepat:
 
 ---
 
-## 📊 2. Dasbor Analitik (Web Portal)
-Pusat kontrol bagi manajer atau tim *marketing* untuk memantau performa layanan pelanggan secara keseluruhan.
+## 📊 2. Dasbor Analitik (Unified Web Portal)
+Pusat kontrol bagi *Management* atau tim *Customer Success* untuk memantau performa layanan secara holistik. Dasbor telah dirombak dengan arsitektur **Single Page Application (SPA)** untuk transisi antartab yang kilat dan mulus.
+
+### 🗂️ Navigasi Berbasis Tab (Terpadu)
+- **Satu Layar Untuk Semua**: Fitur pemantauan, analisis, dan pengaturan AI kini tergabung dalam satu layar utama tanpa perlu berpindah-pindah URL, memaksimalkan efisiensi.
+- **Tab Analytics**: Menampilkan ringkasan metrik (Grafik dan Statistik).
+- **Tab CRM / Inbox**: Menampilkan daftar pesan komplain dan riwayat percakapan.
+- **Tab SOP & RAG**: Modul khusus untuk mengunggah dan mengatur pedoman perusahaan sebagai dasar otak AI.
 
 ### 🔔 Real-Time WebSockets & Notifikasi Langsung
 - **Toast Notification** — Pop-up seketika setiap ada pesan baru masuk tanpa perlu refresh halaman.
@@ -51,23 +57,27 @@ Pusat kontrol bagi manajer atau tim *marketing* untuk memantau performa layanan 
 - **Auto-Reload Data** — Tabel dan grafik diperbarui otomatis setelah notifikasi masuk.
 
 ### 📈 Visualisasi & Analitik Sentimen
-- **Sentiment Trend (Line Chart)** — Grafik garis yang memantau pergerakan Positif, Negatif, dan Netral per jam.
-- **Distribution (Pie Chart)** — Persentase keseluruhan sentimen hari ini.
-- **Contact Analytics & Message Analytics** — Dua kartu statistik terpisah: jumlah kontak unik dan jumlah pesan masuk.
+- **Sentiment Trend (Line Chart)** — Grafik garis yang memantau pergerakan Positif, Negatif, dan Netral secara periodik.
+- **Sentiment Distribution (Pie Chart)** — Persentase keseluruhan sentimen positif/negatif/netral.
+- **Intent Distribution (Doughnut Chart)** — Proporsi intensi pelanggan (seperti berapa % Keluhan, Pesanan, dsb).
+- **Contact & Message Analytics** — Kartu metrik komprehensif untuk jumlah pesan dan rata-rata skor.
+- **Date Filter Global** — Tombol filter (Hari Ini, 7 Hari, Bulan Ini, Semua) yang akan memuat ulang seluruh angka, grafik, dan tabel secara instan (menggunakan optimasi *Query Agregasi Massal* skala jutaan data).
 
 ### 📇 CRM Table & Customer Tracking
-- Daftar seluruh kontak yang pernah berinteraksi, dikelompokkan berdasarkan nomor WhatsApp.
+- **SLA Monitor (Top Urgent Complaints)** — Widget peringatan khusus untuk menyorot 5 pelanggan dengan keluhan paling kritis (*Health Score* < 50%). Widget ini **cerdas** dan akan otomatis *update* secara mandiri ketika keluhan diselesaikan.
+- **Daftar Kontak (Accordion)** — Daftar seluruh kontak yang pernah berinteraksi. Sistem akan **mengingat** posisi chat mana yang sedang Anda buka (Persistent State), sehingga tidak menutup otomatis saat Anda melakukan *refresh* atau ganti filter.
 - *Health Score* keseluruhan per kontak.
-- **View Details** — Histori lengkap pesan per kontak, termasuk confidence AI dan saran balasan.
+- **View Details** — Histori lengkap pesan per kontak, termasuk *confidence* AI.
+- **Export Laporan (CSV)** — Unduh seluruh riwayat ke format Excel/CSV untuk pelaporan performa (*Performance Report*).
 
-### 🛠️ Resolusi Pesan (Mark as Resolved)
-- Admin dapat menekan **"Tandai Selesai"** pada setiap pesan untuk menandai bahwa komplain/pertanyaan sudah ditangani.
-- Status ini sinkron antara Dasbor Web dan Ekstensi.
+### 🛠️ Resolusi Pesan (Auto-Resolve)
+- **Auto-Resolve Otomatis** — Saat agen mengetik dan membalas pelanggan dari WhatsApp Web, Ekstensi Chrome diam-diam mendeteksinya dan **otomatis mengubah** status komplain di Dashboard menjadi "Selesai" (Resolved) tanpa perlu diklik manual!
+- **Tombol AJAX Instan** — Jika Anda menekan "✓ Tandai Selesai" secara manual, aksi terjadi di latar belakang (*Fetch API*). Tombol memunculkan animasi loading lalu menghilang seketika tanpa perlu me-*reload* keseluruhan halaman.
 
 ### 📚 Knowledge Base Manager (SOP Uploader)
-- Unggah file `.txt` atau `.pdf` SOP/FAQ perusahaan langsung dari Dasbor.
-- AI RAG otomatis memuat ulang dokumen baru dan mulai menggunakannya sebagai referensi balasan.
-- Tampilkan dan hapus dokumen yang sudah tidak relevan.
+- Berada di dalam Tab "SOP & RAG".
+- Unggah file `.txt` atau `.pdf` pedoman perusahaan langsung dari Dasbor secara asinkron (*non-blocking*).
+- AI RAG otomatis memuat ulang dokumen baru dan mulai menggunakannya sebagai referensi balasan untuk CS Anda.
 
 ---
 
