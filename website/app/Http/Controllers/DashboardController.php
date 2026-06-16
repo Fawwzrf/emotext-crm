@@ -234,7 +234,7 @@ class DashboardController extends Controller
             // BUGFIX: Ubah timeout menjadi 1 detik agar tidak blocking UI Laravel. FastAPI akan terus jalan di background.
             \Illuminate\Support\Facades\Http::timeout(1)
                 ->withHeaders([
-                    'X-Internal-Api-Key' => env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026')
+                    'X-Internal-Api-Key' => env('INTERNAL_API_KEY', '')
                 ])
                 ->post(env('FASTAPI_URL', 'http://127.0.0.1:8000') . '/sync-kb');
         } catch (\Exception $e) {
@@ -259,7 +259,7 @@ class DashboardController extends Controller
                 // BUGFIX: Ubah timeout menjadi 1 detik agar tidak blocking UI Laravel
                 \Illuminate\Support\Facades\Http::timeout(1)
                     ->withHeaders([
-                        'X-Internal-Api-Key' => env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026')
+                        'X-Internal-Api-Key' => env('INTERNAL_API_KEY', '')
                     ])
                     ->post(env('FASTAPI_URL', 'http://127.0.0.1:8000') . '/sync-kb');
             } catch (\Exception $e) {}

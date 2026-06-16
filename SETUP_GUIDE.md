@@ -41,8 +41,8 @@ cd Emotext-CRM
    ```
 4. Sesuaikan file `.env`. Karena proyek ini sudah diset menggunakan Supabase PostgreSQL, pastikan baris `DB_CONNECTION` diisi dengan kredensial PostgreSQL Supabase milik tim. Pastikan juga variabel ini ada di `.env`:
    ```env
-   FASTAPI_URL=https://fawwzrf-emotext-backend.hf.space
-   INTERNAL_API_KEY=emotext_secret_internal_key_2026
+   FASTAPI_URL=https://<your-hf-username>-emotext-backend.hf.space
+   INTERNAL_API_KEY=<your_secure_internal_key>
    ```
    *(Catatan: `FASTAPI_URL` ku menunjuk ke cloud Hugging Face sehingga Anda tidak perlu repot menjalankan AI secara lokal).*
 5. Generate *App Key* untuk mengenkripsi *session* lokal Anda:
@@ -88,7 +88,7 @@ Namun, jika Anda bertugas sebagai AI *Engineer* yang ingin merubah *source code*
    ```bash
    cp .env.example .env
    ```
-   *Isi file `.env` dengan kredensial Supabase PostgreSQL (jika pakai DB) dan `INTERNAL_API_KEY=emotext_secret_internal_key_2026`.*
+   *Isi file `.env` dengan kredensial Supabase PostgreSQL (jika pakai DB) dan `INTERNAL_API_KEY=<your_secure_internal_key>`.*
 6. Jalankan server FastAPI:
    ```bash
    uvicorn main:app --reload --port 8000

@@ -13,7 +13,7 @@ class InternalWebhookController extends Controller
     {
         // Security check
         $apiKey = $request->header('X-Internal-Api-Key');
-        $expectedKey = env('INTERNAL_API_KEY', 'emotext_secret_internal_key_2026');
+        $expectedKey = env('INTERNAL_API_KEY', '');
         
         if (!$apiKey || $apiKey !== $expectedKey) {
             return response()->json(['error' => 'Unauthorized'], 401);
