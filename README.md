@@ -1,4 +1,4 @@
-# 🚀 Emotext-CRM (WA-CRM Intelligence)
+# Emotext-CRM (WA-CRM Intelligence)
 
 ![Version](https://img.shields.io/badge/version-1.0.0_Stable-blue.svg)
 ![React](https://img.shields.io/badge/Frontend-React.js-61DAFB?logo=react)
@@ -22,7 +22,7 @@ Sistem beroperasi dengan model bisnis **SaaS (Software as a Service)**, memisahk
 
 ---
 
-## 🏗️ Arsitektur Sistem (Client-Server Architecture)
+## Arsitektur Sistem (Client-Server Architecture)
 
 Untuk melindungi *Intellectual Property* model AI dan menjaga performa perangkat pelanggan (agar tidak membebani RAM laptop), Emotext-CRM memisahkan komputasi berat ke *Cloud*.
 
@@ -67,7 +67,7 @@ graph TD
 
 ---
 
-## 🔀 Alur Pipeline Kecerdasan Buatan (AI Flow)
+## Alur Pipeline Kecerdasan Buatan (AI Flow)
 
 Proses yang terjadi di dalam *Backend* dalam satuan milidetik ketika ada pesan masuk:
 
@@ -99,21 +99,21 @@ sequenceDiagram
 
 ---
 
-## 🌐 Panduan Instalasi & Deployment (Bagi Tim & Pengguna)
+## Panduan Instalasi & Deployment (Bagi Tim & Pengguna)
 
 Kami menyediakan 2 (dua) opsi panduan instalasi yang sangat terperinci tergantung pada infrastruktur yang ingin Anda gunakan. Silakan baca dan ikuti salah satu panduan berikut:
 
-1. ☁️ **[Panduan Mode Cloud / Hugging Face](SETUP_HF_MODEL.md)** *(Sangat Disarankan)*
+1. **[Panduan Mode Cloud / Hugging Face](SETUP_HF_MODEL.md)** *(Sangat Disarankan)*
    Jalur *default* tanpa perlu men-*download* model raksasa. Menjalankan *Web Dashboard* secara lokal dengan menarik *Resource* AI dari Hugging Face Cloud.
 
-2. 💻 **[Panduan Mode Lokal / Offline](SETUP_LOCAL_MODEL.md)** *(Advanced)*
+2. **[Panduan Mode Lokal / Offline](SETUP_LOCAL_MODEL.md)** *(Advanced)*
    Jalur *offline* penuh untuk menjaga kerahasiaan data di *on-premise* Anda atau memanfaatkan akselerasi GPU lokal (NVIDIA). Membutuhkan unduhan model fisik (GGUF & ONNX) dan proses *running* Backend Python secara mandiri.
 
 *(Bagi Pelanggan Akhir: Hubungi administrator sistem Anda untuk mendapatkan URL Dasbor dan Ekstensi terkompresi).*
 
 ---
 
-## 🔑 Panduan Pengaktifan & Login
+## Panduan Pengaktifan & Login
 
 Sistem diamankan dengan kredensial berlangganan untuk mencegah penggunaan pihak ketiga yang tidak sah.
 
