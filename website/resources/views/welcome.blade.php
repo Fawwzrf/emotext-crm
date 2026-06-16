@@ -128,7 +128,7 @@
                     @else
                         <a href="{{ route('login') }}" class="hidden sm:inline-flex text-sm font-semibold text-gray-600 hover:text-gray-900 transition">Log in</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="inline-flex items-center justify-center rounded-full bg-gray-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-600 transition-all duration-300">
+                            <a href="{{ route('install') }}" class="inline-flex items-center justify-center rounded-full bg-gray-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-600 transition-all duration-300">
                                 Mulai Gratis
                             </a>
                         @endif
@@ -316,7 +316,7 @@
                             500 Analisis AI / bulan
                         </li>
                     </ul>
-                    <a href="{{ route('register') }}" class="mt-8 block w-full py-3 px-4 rounded-full border border-gray-300 text-center text-sm font-semibold text-gray-900 hover:bg-gray-50 transition">Mulai Starter</a>
+                    <a href="{{ route('install') }}" class="mt-8 block w-full py-3 px-4 rounded-full border border-gray-300 text-center text-sm font-semibold text-gray-900 hover:bg-gray-50 transition">Mulai Starter</a>
                 </div>
 
                 <!-- Pro Plan (Recommended) -->
@@ -343,7 +343,7 @@
                             Upload SOP PDF (RAG)
                         </li>
                     </ul>
-                    <a href="{{ route('register') }}" class="mt-8 block w-full py-3 px-4 rounded-full bg-brand-600 text-center text-sm font-semibold text-white hover:bg-brand-500 shadow-lg shadow-brand-500/30 transition">Langganan Pro</a>
+                    <a href="{{ route('install') }}" class="mt-8 block w-full py-3 px-4 rounded-full bg-brand-600 text-center text-sm font-semibold text-white hover:bg-brand-500 shadow-lg shadow-brand-500/30 transition">Langganan Pro</a>
                 </div>
 
                 <!-- Enterprise Plan -->
