@@ -99,40 +99,17 @@ sequenceDiagram
 
 ---
 
-## 🌐 Panduan Deployment Backend (Bagi Developer)
-*Agar ekstensi berfungsi, Backend ini wajib di-deploy (di-hosting) di server cloud.*
+## 🌐 Panduan Instalasi & Deployment (Bagi Tim & Pengguna)
 
-Karena model AI (*IndoBERT* dan *FAISS*) membutuhkan RAM yang cukup besar, kami merekomendasikan **Hugging Face Spaces** sebagai solusi *hosting* gratis terbaik (16GB RAM, 2 vCPU).
+Kami menyediakan 2 (dua) opsi panduan instalasi yang sangat terperinci tergantung pada infrastruktur yang ingin Anda gunakan. Silakan baca dan ikuti salah satu panduan berikut:
 
-### Langkah-langkah Deploy ke Hugging Face Spaces (Gratis):
-1. Buat akun di [Hugging Face](https://huggingface.co/).
-2. Buat **Space** baru, berikan nama (misal: `emotext-backend`). Pada bagian SDK, pilih **Docker**, lalu pilih *template* **Blank**. Pastikan *Space hardware* yang terpilih adalah **CPU Basic (Free)**.
-3. Unggah seluruh isi folder `produk_extension/backend/` beserta folder `models/` ke dalam Space tersebut.
-4. Buat file `Dockerfile` di *root* direktori Space Anda dengan konfigurasi standar FastAPI Uvicorn:
-   ```dockerfile
-   FROM python:3.10
-   WORKDIR /app
-   COPY ./requirements.txt /app/requirements.txt
-   RUN pip install --no-cache-dir -r /app/requirements.txt
-   COPY . /app 
-   CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
-   ```
-5. Hugging Face akan otomatis membangun kontainer dan men-*deploy* API Anda. Anda akan mendapatkan URL publik (contoh: `https://username-emotext-backend.hf.space`).
-6. Ubah URL API di dalam *source code* Ekstensi Chrome Anda agar menunjuk ke URL baru tersebut, lalu kompres (*ZIP*) folder ekstensi menjadi `Emotext-Extension.zip` untuk didistribusikan ke pelanggan.
+1. ☁️ **[Panduan Mode Cloud / Hugging Face](SETUP_HF_MODEL.md)** *(Sangat Disarankan)*
+   Jalur *default* tanpa perlu men-*download* model raksasa. Menjalankan *Web Dashboard* secara lokal dengan menarik *Resource* AI dari Hugging Face Cloud.
 
----
+2. 💻 **[Panduan Mode Lokal / Offline](SETUP_LOCAL_MODEL.md)** *(Advanced)*
+   Jalur *offline* penuh untuk menjaga kerahasiaan data di *on-premise* Anda atau memanfaatkan akselerasi GPU lokal (NVIDIA). Membutuhkan unduhan model fisik (GGUF & ONNX) dan proses *running* Backend Python secara mandiri.
 
-## 💻 Panduan Instalasi (Bagi Pelanggan/User)
-
-Pelanggan dapat menikmati layanan Emotext-CRM dengan langkah instalasi yang sangat mudah tanpa memerlukan keahlian teknis.
-
-**Cara Memasang Emotext-Extension:**
-1. Unduh file `Emotext-Extension.zip` dari halaman *Dashboard Website* setelah berlangganan.
-2. Ekstrak (Unzip) file tersebut ke sebuah folder di laptop Anda.
-3. Buka browser **Google Chrome** dan ketik `chrome://extensions/` di kolom URL.
-4. Aktifkan **Developer mode** (Mode Pengembang) di pojok kanan atas layar.
-5. Klik tombol **Load unpacked** (Muat yang tidak dikemas) di pojok kiri atas.
-6. Pilih folder hasil ekstraksi `Emotext-Extension` tadi. Ekstensi berhasil dipasang!
+*(Bagi Pelanggan Akhir: Hubungi administrator sistem Anda untuk mendapatkan URL Dasbor dan Ekstensi terkompresi).*
 
 ---
 
