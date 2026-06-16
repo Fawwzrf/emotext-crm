@@ -55,8 +55,8 @@ def trigger_laravel_broadcast(message_id: int):
 RECENT_MESSAGES: dict = {}
 recent_messages_lock = threading.Lock()
 
-def check_and_set_recent(sender_id: str, message_text: str) -> bool:
-    key = f"{sender_id}:{message_text}"
+def check_and_set_recent(user_id: int, sender_id: str, message_text: str) -> bool:
+    key = f"{user_id}:{sender_id}:{message_text}"
     current_time = time.time()
     with recent_messages_lock:
         if key in RECENT_MESSAGES and current_time - RECENT_MESSAGES[key] < 5:
@@ -284,7 +284,7 @@ async def analyze_message(
     user_id = auth["user_id"]
 
     # ── 1. CACHE CHECK: Blokir duplikat dalam 5 detik ─────────────────────────
-    if not check_and_set_recent(data.sender_id, last_message):
+    if not check_and_set_recent(user_id, data.sender_id, last_message):
         logger.warning(f"[DEDUP] Mengabaikan duplikat dari {data.sender_name}")
         cumulative_score, health_status, _ = await compute_health_score(db, user_id, data.sender_id)
         return {
@@ -300,6 +300,7 @@ async def analyze_message(
     # ── 2. DB CACHE: Pesan lama? Kembalikan instan dari database ──────────────
     existing_result = await db.execute(
         select(Message).filter(
+            Message.user_id == user_id,
             Message.sender_id == data.sender_id,
             Message.message == last_message
         )
