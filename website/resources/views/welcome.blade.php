@@ -165,7 +165,7 @@
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <a href="{{ route('register') }}" class="relative group inline-flex items-center justify-center rounded-full bg-gray-900 px-8 py-3.5 text-base font-semibold text-white overflow-hidden transition-all hover:scale-105">
+                <a href="{{ route('install') }}" class="relative group inline-flex items-center justify-center rounded-full bg-gray-900 px-8 py-3.5 text-base font-semibold text-white overflow-hidden transition-all hover:scale-105">
                     <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-brand-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
                     <span class="relative flex items-center gap-2">
                         Install Ekstensi Gratis

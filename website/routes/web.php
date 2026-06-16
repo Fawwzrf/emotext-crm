@@ -8,6 +8,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/install', function () {
+    return view('install');
+})->name('install');
+
+Route::get('/download-extension', function () {
+    $path = 'd:/Emotext-CRM/docs/EmoText.zip';
+    if (file_exists($path)) {
+        return response()->download($path);
+    }
+    abort(404, 'File Ekstensi tidak ditemukan di server.');
+})->name('download.extension');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth'])
     ->name('dashboard');

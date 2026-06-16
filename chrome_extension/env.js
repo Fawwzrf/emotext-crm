@@ -10,7 +10,7 @@ const ENV = {
     // 1. URL untuk Backend AI (FastAPI / Model Hugging Face)
     // Jika menjalankan AI di localhost (komputer sendiri): http://127.0.0.1:8000
     // Jika AI di-hosting di Hugging Face Cloud: https://<username-anda>-emotext-backend.hf.space
-    API_BASE_URL: 'http://127.0.0.1:8000',
+    API_BASE_URL: 'https://fawwzrf-emotext-backend.hf.space',
 
     // 2. URL untuk Dashboard Website (Laravel)
     // Biasanya menggunakan port 8001 untuk backend lokal: http://127.0.0.1:8001
