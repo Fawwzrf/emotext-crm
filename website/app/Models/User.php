@@ -22,6 +22,7 @@ class User extends Authenticatable
         'subscription_status',
         'trial_started_at',
         'trial_ends_at',
+        'is_superadmin',
     ];
 
     protected $hidden = [
@@ -37,6 +38,7 @@ class User extends Authenticatable
             'password'           => 'hashed',
             'trial_started_at'   => 'datetime',
             'trial_ends_at'      => 'datetime',
+            'is_superadmin'      => 'boolean',
         ];
     }
 
@@ -60,7 +62,7 @@ class User extends Authenticatable
     /** Apakah subscription aktif (trial atau berbayar)? */
     public function isActive(): bool
     {
-        return $this->subscription_status === 'active' || $this->isTrialActive();
+        return in_array($this->subscription_status, ['starter', 'pro', 'enterprise']) || $this->isTrialActive();
     }
 
     /** Sisa hari trial (0 jika sudah habis) */

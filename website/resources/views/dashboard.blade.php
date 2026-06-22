@@ -522,4 +522,52 @@
             }
         });
     </script>
+    {{-- ── Floating Feedback / Contact Us Button & Modal ── --}}
+    <div x-data="{ openFeedback: false, sending: false }" class="fixed bottom-5 left-5 z-[50]">
+        <!-- Trigger Button -->
+        <button @click="openFeedback = true" class="flex items-center gap-2 px-4 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-500/30 font-semibold text-sm transition transform hover:-translate-y-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+            Bantuan & Masukan
+        </button>
+
+        <!-- Modal -->
+        <div x-show="openFeedback" x-cloak class="fixed inset-0 z-[100] overflow-y-auto">
+            <div class="flex items-center justify-center min-h-screen p-4 text-center">
+                <div x-show="openFeedback" x-transition.opacity class="fixed inset-0 transition-opacity bg-gray-900/50 backdrop-blur-sm" @click="openFeedback = false"></div>
+                <div x-show="openFeedback" x-transition class="relative bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:max-w-md sm:w-full border border-gray-100">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <h3 class="text-lg font-bold text-gray-900">Hubungi Tim Emotext</h3>
+                        <button @click="openFeedback = false" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    <form action="{{ route('contact.store') }}" method="POST" class="p-6" @submit="sending = true">
+                        @csrf
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                                <input type="text" name="name" value="{{ auth()->user()->name }}" required readonly class="mt-1 block w-full rounded-xl border-gray-200 px-4 py-2.5 bg-gray-50 text-gray-500 shadow-sm sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" name="email" value="{{ auth()->user()->email }}" required readonly class="mt-1 block w-full rounded-xl border-gray-200 px-4 py-2.5 bg-gray-50 text-gray-500 shadow-sm sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="dashboard_message" class="block text-sm font-medium text-gray-700">Pesan / Masukan Anda</label>
+                                <textarea id="dashboard_message" name="message" rows="4" required placeholder="Apakah ada fitur yang kurang? Atau Anda menemukan bug?" class="mt-1 block w-full rounded-xl border-gray-300 px-4 py-3 text-gray-900 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex gap-3">
+                            <button type="button" @click="openFeedback = false" class="w-full justify-center rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50">Batal</button>
+                            <button type="submit" x-bind:disabled="sending" class="w-full justify-center rounded-xl border border-transparent bg-brand-600 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-brand-500/30 hover:bg-brand-500 flex items-center gap-2">
+                                <span x-show="!sending">Kirim Pesan</span>
+                                <span x-show="sending">Mengirim...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </x-app-layout>

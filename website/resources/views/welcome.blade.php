@@ -369,6 +369,44 @@
         </div>
     </div>
 
+    <!-- Contact Us Section -->
+    <div id="contact" class="py-24 bg-gray-50 border-t border-gray-200" x-data="{ sending: false }">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Hubungi Kami</h2>
+                <p class="mt-4 text-lg text-gray-600">Punya pertanyaan atau masukan tentang Emotext? Jangan ragu untuk menghubungi kami.</p>
+            </div>
+
+            @if(session('success'))
+                <div class="mb-8 p-4 bg-brand-50 border border-brand-200 rounded-xl text-brand-700 text-center font-medium">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('contact.store') }}" method="POST" class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200" @submit="sending = true">
+                @csrf
+                <div class="grid grid-cols-1 gap-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input type="text" name="name" id="name" required class="mt-2 block w-full rounded-xl border-gray-300 px-4 py-3 text-gray-900 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-gray-50/50" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" name="email" id="email" required class="mt-2 block w-full rounded-xl border-gray-300 px-4 py-3 text-gray-900 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-gray-50/50" placeholder="john@example.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700">Pesan / Masukan</label>
+                        <textarea id="message" name="message" rows="4" required class="mt-2 block w-full rounded-xl border-gray-300 px-4 py-3 text-gray-900 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-gray-50/50" placeholder="Tuliskan pesan Anda di sini..."></textarea>
+                    </div>
+                    <button type="submit" x-bind:disabled="sending" class="mt-4 w-full rounded-xl bg-brand-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                        <span x-show="!sending">Kirim Pesan</span>
+                        <span x-show="sending">Mengirim...</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-white py-12 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
